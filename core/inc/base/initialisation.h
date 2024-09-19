@@ -1,8 +1,8 @@
 /**
- * @file    console.h
+ * @file    initialisation.h
  * @author  Merlin Kooshmanian
- * @brief   Header file for Console functions
- * @date    23/02/2024
+ * @brief   Header file initialising tools and HAL
+ * @date    21/01/2023
  *
  * @copyright Copyright (c) TOLOSAT 2024
  */
@@ -10,15 +10,15 @@
 /**
  * @defgroup kernel Kernel
  * @{
- * @defgroup utils Utils
+ * @defgroup core Core
  * @{
- * @defgroup console Console
- * @brief Interface for printing and logging messages.
+ * @defgroup init Initialisation
+ * @brief System and component initialization routines.
  * @{
  */
 
-#ifndef CONSOLE_H
-#define CONSOLE_H
+#ifndef INITIALISATION_H
+#define INITIALISATION_H
 
 /******************************* Include Files *******************************/
 
@@ -32,14 +32,11 @@
 
 /*************************** Functions Declarations **************************/
 
-extern void ConsolePrint(const char *msg);
-extern void ConsolePrintNumber(signed int number);
-extern void ConsolePrintHex(unsigned int hex);
-extern void ConsolePrintFloat(float number, int precision);
+extern void init(void);
 
-#endif /* CONSOLE_H */
+#endif /* INITIALISATION_H */
 
-/** 
+/**
  * @}
  * @}
  * @}
