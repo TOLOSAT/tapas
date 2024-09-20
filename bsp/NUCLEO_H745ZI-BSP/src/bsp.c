@@ -1,5 +1,5 @@
 /**
- * @file    nucleo_h745zi_bsp.c
+ * @file    bsp.c
  * @author  Merlin Kooshmanian
  * @brief   Source file for bsp init
  * @date    27/07/2024
@@ -9,7 +9,7 @@
 
 /******************************* Include Files *******************************/
 
-#include "nucleo_h745zi_bsp.h"
+#include "bsp.h"
 
 /***************************** Macros Definitions ****************************/
 
