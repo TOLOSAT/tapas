@@ -1,7 +1,7 @@
 /**
- * @file    sysmon.h
+ * @file    syswdg.h
  * @author  Merlin Kooshmanian
- * @brief   Header file for system monitoring handling
+ * @brief   Header file for system watchdog handling
  *
  * @copyright Copyright (c) TOLOSAT 2025
  */
@@ -11,13 +11,13 @@
  * @{
  * @defgroup system System
  * @{
- * @defgroup sysmon System Monitoring
- * @brief Provides system monitoring handling interface.
+ * @defgroup syswdg System Watchdog
+ * @brief Provides system watchdog handling interface.
  * @{
  */
 
-#ifndef SYSMON_H
-#define SYSMON_H
+#ifndef SYSWDG_H
+#define SYSWDG_H
 
 /******************************* Include Files *******************************/
 
@@ -29,15 +29,12 @@
 
 /*************************** Variables Declarations **************************/
 
-extern systemUsage_t g_system_usage;
-
 /*************************** Functions Declarations **************************/
 
-extern void InitSYSMON(void);
-extern returnCode_t UpdateSystemUsage(void);
-extern void SYSMONMain(void);
+extern void InitSYSWDG(void);
+extern void SYSWDGMain(void);
 
-#endif /* SYSMON_H */
+#endif /* SYSWDG_H */
 
 /**
  * @}
