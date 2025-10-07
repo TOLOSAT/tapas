@@ -1,0 +1,6 @@
+.vscode
+!.vscode/launch.json
+build
+.config
+.config.old
+.DS_Store
