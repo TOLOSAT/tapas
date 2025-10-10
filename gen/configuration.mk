@@ -33,11 +33,11 @@ menuconfig :
 	@cp $(CONFIGS_DIR)/$@ $(CONFIG_FILE)
 	@rm -f $(OLD_CONFIG_FILE)
 	@rm -rf $(BUILD_DIR)
-	@echo "$(BOLD)$(GREEN)Done$(RESET)"
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
 
 savedefconfig:
 	@printf "$(BLUE)Saving $(CONFIG_NAME)_defconfig...$(RESET)"
 	@cp $(CONFIG_FILE) $(DEFCONFIG_FILE)
-	@echo "$(GREEN)Done$(RESET)"
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
 
 endif # BUILD_CONFIGURATION_MK #
