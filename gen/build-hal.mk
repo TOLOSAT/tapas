@@ -43,15 +43,15 @@ hal : hal-start $(HAL_LIB) hal-end
 
 # Build header
 hal-start :
-	@echo "============================="
-	@echo "===          HAL          ==="
-	@echo "============================="
-	@echo "Files to compile: $(words $(HAL_SRCS))"
-	@echo "Compilation Flags:"
+	@echo "$(BOLD)=============================$(RESET)"
+	@echo "$(BOLD)===          HAL          ===$(RESET)"
+	@echo "$(BOLD)=============================$(RESET)"
+	@echo "$(YELLOW)Files to compile:$(RESET) $(words $(HAL_SRCS))"
+	@echo "$(YELLOW)Compilation Flags:$(RESET)"
 	@echo $(HAL_CFLAGS)
-	@echo "Include Paths:"
+	@echo "$(YELLOW)Include Paths:$(RESET)"
 	@$(foreach dir,$(patsubst $(WORKSPACE)/%,%,$(HAL_INCDIRS)),echo "  - $(dir)";)
-	@echo "Start building:"
+	@echo "$(BLUE)Start building...$(RESET)"
 
 # Building recipes
 $(HAL_OBJDIR)/%.o : $(HAL_SRCDIR)/%.c
@@ -67,14 +67,14 @@ $(HAL_LIB) : $(HAL_OBJS)
 
 # Build footer
 hal-end :
-	@echo "Build done"
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
 	@echo ""
 
 # Clean recipe
 hal-clean :
-	@echo "Cleaning HAL build directory ..."
+	@printf "$(BLUE)Cleaning HAL build directory...$(RESET)"
 	@rm -rf $(HAL_OBJDIR)
 	@rm -rf $(HAL_LIB)
-	@echo "Done"
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
 
 endif # BUILD_HAL_MK #

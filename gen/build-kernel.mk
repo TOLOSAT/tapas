@@ -59,16 +59,16 @@ kernel : pre-build kernel-start $(KERNEL_LIB) kernel-end
 
 # Build header
 kernel-start :
-	@echo "============================="
-	@echo "===         KERNEL        ==="
-	@echo "============================="
-	@echo "Kernel Version: v$(MAJOR).$(MINOR).$(PATCH)"
-	@echo "Files to compile: $(words $(KERNEL_SRCS))"
-	@echo "Compilation Flags:"
+	@echo "$(BOLD)=============================$(RESET)"
+	@echo "$(BOLD)===         KERNEL        ===$(RESET)"
+	@echo "$(BOLD)=============================$(RESET)"
+	@echo "$(YELLOW)Kernel Version:$(RESET) v$(MAJOR).$(MINOR).$(PATCH)"
+	@echo "$(YELLOW)Files to compile:$(RESET) $(words $(KERNEL_SRCS))"
+	@echo "$(YELLOW)Compilation Flags:$(RESET)"
 	@echo $(KERNEL_CFLAGS)
-	@echo "Include Paths:"
+	@echo "$(YELLOW)Include Paths:$(RESET)"
 	@$(foreach dir,$(patsubst $(WORKSPACE)/%,%,$(KERNEL_INCDIRS)),echo "  - $(dir)";)
-	@echo "Start building:"
+	@echo "$(BLUE)Start building...$(RESET)"
 
 # Building recipes
 $(KERNEL_OBJDIR)/%.o : $(KERNEL_SRCDIR)/%.c
@@ -94,14 +94,14 @@ $(KERNEL_LIB) : $(KERNEL_OBJS)
 
 # Build footer
 kernel-end :
-	@echo "Build done"
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
 	@echo ""
 
 # Clean recipe
 kernel-clean :
-	@echo "Cleaning KERNEL build directory ..."
+	@printf "$(BLUE)Cleaning KERNEL build directory...$(RESET)"
 	@rm -rf $(KERNEL_OBJDIR)
 	@rm -rf $(KERNEL_LIB)
-	@echo "Done"
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
 
 endif # BUILD_KERNEL_MK #

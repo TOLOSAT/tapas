@@ -26,11 +26,11 @@ pre-build : pre-build-start autoconf conf-files pre-build-end
 
 # Pre-build header
 pre-build-start :
-	@echo "============================="
-	@echo "===    KERNEL PRE BUILD   ==="
-	@echo "============================="
-	@echo "Files to pre-build: $(words $(AUTOCONF_SRC) $(BSP_CONF_SRCS))"
-	@echo "Start pre-building:"
+	@echo "$(BOLD)=============================$(RESET)"
+	@echo "$(BOLD)===    KERNEL PRE BUILD   ===$(RESET)"
+	@echo "$(BOLD)=============================$(RESET)"
+	@echo "$(YELLOW)Files to pre-build:$(RESET) $(words $(AUTOCONF_SRC) $(BSP_CONF_SRCS))"
+	@echo "$(BLUE)Start pre-building...$(RESET)"
 
 # Autoconf recipes
 autoconf : $(AUTOCONF_SRC)
@@ -53,13 +53,13 @@ $(PRE_BUILD_DIR)/bsp-conf.stamp : $(BSP_JSON)
 
 # Pre-build footer
 pre-build-end :
-	@echo "Build done"
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
 	@echo ""
 
 # Pre-build clean recipes
 pre-build-clean :
-	@echo "Cleaning pre-build directory"
+	@echo "$(BLUE)Cleaning pre-build directory...$(RESET)"
 	@rm -rf $(PRE_BUILD_DIR)
-	@echo "Done"
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
 
 endif # KERNEL_AUTOCONF_MK #

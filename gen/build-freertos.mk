@@ -45,15 +45,15 @@ freertos : freertos-start $(FREERTOS_LIB) freertos-end
 
 # Build header
 freertos-start :
-	@echo "============================="
-	@echo "===        FREERTOS       ==="
-	@echo "============================="
-	@echo "Files to compile: $(words $(FREERTOS_SRCS))"
-	@echo "Compilation Flags:"
+	@echo "$(BOLD)=============================$(RESET)"
+	@echo "$(BOLD)===        FREERTOS       ===$(RESET)"
+	@echo "$(BOLD)=============================$(RESET)"
+	@echo "$(YELLOW)Files to compile:$(RESET) $(words $(FREERTOS_SRCS))"
+	@echo "$(YELLOW)Compilation Flags:$(RESET)"
 	@echo $(FREERTOS_CFLAGS)
-	@echo "Include Paths:"
+	@echo "$(YELLOW)Include Paths:$(RESET)"
 	@$(foreach dir,$(patsubst $(WORKSPACE)/%,%,$(FREERTOS_INCDIRS)),echo "  - $(dir)";)
-	@echo "Start building:"
+	@echo "$(BLUE)Start building...$(RESET)"
 
 # Building recipes
 $(FREERTOS_OBJDIR)/%.o : $(FREERTOS_SRCDIR)/%.c
@@ -69,14 +69,14 @@ $(FREERTOS_LIB) : $(FREERTOS_OBJS)
 
 # Build footer
 freertos-end :
-	@echo "Build done"
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
 	@echo ""
 
 # Clean recipe
 freertos-clean :
-	@echo "Cleaning FREERTOS build directory ..."
+	@printf "$(BLUE)Cleaning FREERTOS build directory...$(RESET)"
 	@rm -rf $(FREERTOS_OBJDIR)
 	@rm -rf $(FREERTOS_LIB)
-	@echo "Done"
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
 
 endif # BUILD_FREERTOS_MK #

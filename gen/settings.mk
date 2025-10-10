@@ -62,9 +62,6 @@ else
 include $(CONFIG_FILE)
 endif
 
-# Project Name
-PROJ_NAME = $(subst ",,$(CONFIG_PROJ_NAME))
-
 # Config Name
 CONFIG_NAME = $(subst ",,$(CONFIG_CONFIG_NAME))
 

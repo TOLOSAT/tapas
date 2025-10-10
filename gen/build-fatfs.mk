@@ -42,15 +42,15 @@ fatfs : fatfs-start $(FATFS_LIB) fatfs-end
 
 # Build header
 fatfs-start :
-	@echo "============================="
-	@echo "===         FATFS         ==="
-	@echo "============================="
-	@echo "Files to compile: $(words $(FATFS_SRCS))"
-	@echo "Compilation Flags:"
+	@echo "$(BOLD)=============================$(RESET)"
+	@echo "$(BOLD)===         FATFS         ===$(RESET)"
+	@echo "$(BOLD)=============================$(RESET)"
+	@echo "$(YELLOW)Files to compile:$(RESET) $(words $(FATFS_SRCS))"
+	@echo "$(YELLOW)Compilation Flags:$(RESET)"
 	@echo $(FATFS_CFLAGS)
-	@echo "Include Paths:"
+	@echo "$(YELLOW)Include Paths:$(RESET)"
 	@$(foreach dir,$(patsubst $(WORKSPACE)/%,%,$(FATFS_INCDIRS)),echo "  - $(dir)";)
-	@echo "Start building:"
+	@echo "$(BLUE)Start building...$(RESET)"
 
 # Building recipes
 $(FATFS_OBJDIR)/%.o : $(FATFS_SRCDIR)/%.c
@@ -66,14 +66,14 @@ $(FATFS_LIB) : $(FATFS_OBJS)
 
 # Build footer
 fatfs-end :
-	@echo "Build done"
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
 	@echo ""
 
 # Clean recipe
 fatfs-clean :
-	@echo "Cleaning FATFS build directory ..."
+	@printf "$(BLUE)Cleaning FATFS build directory...$(RESET)"
 	@rm -rf $(FATFS_OBJDIR)
 	@rm -rf $(FATFS_LIB)
-	@echo "Done"
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
 
 endif # BUILD_FATFS_MK #
