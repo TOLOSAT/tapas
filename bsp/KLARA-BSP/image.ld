@@ -36,17 +36,8 @@ SECTIONS
         *libkernel*.a:*(.text .text.*)
         . = ALIGN(4);
         __kernel_itm_text_end__ = .;
-        . = ALIGN(4);
+        . = ALIGN(0x4000); /* Align on 32KB for MPU RO region */
         __tcm_text_end__ = .;
-    } >ITCM_RAM
-
-    /* ARM exception handling indexes goes after TCM text memory */
-    .ARM.eidx : {
-        . = ALIGN(4);
-        __exidx_start = .;
-        *(.ARM.exidx*)
-        . = ALIGN(4);
-        __exidx_end = .;
     } >ITCM_RAM
 
     /* Part of the kernel read only data go into the .tcm_rodata section, which is faster. */
@@ -60,16 +51,6 @@ SECTIONS
         __kernel_dtm_rodata_end__ = .;
         . = ALIGN(4);
         __tcm_rodata_end__ = .;
-    } >DTCM_RAM
-
-    /* ARM exception handling tables goes after tcm rodata memory */
-    .ARM.extab :
-    {
-        . = ALIGN(4);
-        __extab_start = .;
-        *(.ARM.extab* .gnu.linkonce.armextab.*)
-        . = ALIGN(0x4000); /* Align on 16KB for MPU RO region */
-        __extab_end = .;
     } >DTCM_RAM
 
     /* Part of the kernel data go into the .tcm_data section, which is faster. */
@@ -120,6 +101,15 @@ SECTIONS
         __kernel_text_end__ = .;
     } >AXI_SRAM1
 
+    /* ARM exception handling indexes goes after TCM text memory */
+    .ARM.eidx : {
+        . = ALIGN(4);
+        __exidx_start = .;
+        *(.ARM.exidx*)
+        . = ALIGN(4);
+        __exidx_end = .;
+    } >AXI_SRAM1
+
     /* Constant data goes into .rodata section */
     .protected_rodata :
     {
@@ -128,8 +118,17 @@ SECTIONS
         *libfreertos*.a:*(.rodata .rodata.*)
         *libfatfs*.a:*(.rodata .rodata.*)
         *libhal*.a:*(.rodata .rodata.*)
-        . = ALIGN(0x2000); /* Align on 8KB for MPU RO XN region */
         __kernel_rodata_end__ = .;
+    } >AXI_SRAM1
+
+    /* ARM exception handling tables goes after tcm rodata memory */
+    .ARM.extab :
+    {
+        . = ALIGN(4);
+        __extab_start = .;
+        *(.ARM.extab* .gnu.linkonce.armextab.*)
+        . = ALIGN(0x4000); /* Align on 16KB for MPU RO region */
+        __extab_end = .;
     } >AXI_SRAM1
 
     /* Initialized data go into the .data section */
