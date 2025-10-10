@@ -123,8 +123,6 @@ SECTIONS
         . = ALIGN(4);
         *(.task_stacks)
         . = ALIGN(4);
-        *(.tmpfs)
-        . = ALIGN(4);
         *(.dmabuff)
         . = ALIGN(4);
         __bss_end__ = .;

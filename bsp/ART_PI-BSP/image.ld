@@ -6,7 +6,8 @@ MEMORY
 {
     ITCM_RAM    (rwx) : ORIGIN = 0x00000000, LENGTH = 64K
     DTCM_RAM    (rw)  : ORIGIN = 0x20000000, LENGTH = 128K
-    AXI_SRAM    (rwx) : ORIGIN = 0x24000000, LENGTH = 512K
+    AXI_SRAM1   (rwx) : ORIGIN = 0x24000000, LENGTH = 256K
+    AXI_SRAM2   (rwx) : ORIGIN = 0x24040000, LENGTH = 256K
     SRAM1       (rwx) : ORIGIN = 0x30000000, LENGTH = 128K
     SRAM2       (rwx) : ORIGIN = 0x30020000, LENGTH = 128K
     SRAM3       (rwx) : ORIGIN = 0x30040000, LENGTH = 32K
@@ -109,16 +110,58 @@ SECTIONS
     } >DTCM_RAM
 
     /* The program goes into the .text section */
-    .text :
+    .protected_text :
     {
         . = ALIGN(4);
-        __text_start__ = .;
         __kernel_text_start__ = .;
         *libfreertos*.a:*(.text .text.*)
         *libfatfs*.a:*(.text .text.*)
         *libhal*.a:*(.text .text.*)
-        . = ALIGN(4);
+        . = ALIGN(0x20000); /* Align on 128KB for MPU RO XN region */
         __kernel_text_end__ = .;
+    } >AXI_SRAM1
+
+    /* Constant data goes into .rodata section */
+    .protected_rodata :
+    {
+        . = ALIGN(4);
+        __kernel_rodata_start__ = .;
+        *libfreertos*.a:*(.rodata .rodata.*)
+        *libfatfs*.a:*(.rodata .rodata.*)
+        *libhal*.a:*(.rodata .rodata.*)
+        . = ALIGN(0x2000); /* Align on 8KB for MPU RO XN region */
+        __kernel_rodata_end__ = .;
+    } >AXI_SRAM1
+
+    /* Initialized data go into the .data section */
+    .protected_data :
+    {
+        . = ALIGN(4);
+        __kernel_data_start__ = .;
+        *libfreertos*.a:*(.data .data.*)
+        *libfatfs*.a:*(.data .data.*)
+        *libhal*.a:*(.data .data.*)
+        . = ALIGN(4);
+        __kernel_data_end__ = .;
+    } >AXI_SRAM1
+
+    /* Uninitialised data goes into .bss section */
+    .protected_bss (NOLOAD):
+    {
+        . = ALIGN(4);
+        __kernel_bss_start__ = .;
+        *libfreertos*.a:*(.bss .bss.*)
+        *libfatfs*.a:*(.bss .bss.*)
+        *libhal*.a:*(.bss .bss.*)
+        . = ALIGN(4);
+        __kernel_bss_end__ = .;
+    } >AXI_SRAM1
+
+    /* The program goes into the .text section */
+    .text :
+    {
+        . = ALIGN(4);
+        __text_start__ = .;
         __syscalls_start__ = .;
         *(.syscalls)
         . = ALIGN(4);
@@ -127,54 +170,36 @@ SECTIONS
         *(.text*)
         . = ALIGN(4);
         __text_end__ = .;
-    } >AXI_SRAM
+    } >AXI_SRAM2
 
     /* Constant data goes into .rodata section */
     .rodata :
     {
         . = ALIGN(4);
         __rodata_start__ = .;
-        __kernel_rodata_start__ = .;
-        *libfreertos*.a:*(.rodata .rodata.*)
-        *libfatfs*.a:*(.rodata .rodata.*)
-        *libhal*.a:*(.rodata .rodata.*)
-        . = ALIGN(4);
-        __kernel_rodata_end__ = .;
         *(.config)
         *(.rodata)
         *(.rodata*)
         . = ALIGN(4);
         __rodata_end__ = .;
-    } >AXI_SRAM
+    } >AXI_SRAM2
 
     /* Initialized data go into the .data section */
     .data :
     {
         . = ALIGN(4);
         __data_start__ = .;
-        __kernel_data_start__ = .;
-        *libfreertos*.a:*(.data .data.*)
-        *libfatfs*.a:*(.data .data.*)
-        *libhal*.a:*(.data .data.*)
-        . = ALIGN(4);
-        __kernel_data_end__ = .;
         *(.data)
         *(.data*)
         . = ALIGN(4);
         __data_end__ = .;
-    } >AXI_SRAM
+    } >AXI_SRAM2
 
     /* Uninitialised data goes into .bss section */
     .bss (NOLOAD):
     {
         . = ALIGN(4);
         __bss_start__ = .;
-        __kernel_bss_start__ = .;
-        *libfreertos*.a:*(.bss .bss.*)
-        *libfatfs*.a:*(.bss .bss.*)
-        *libhal*.a:*(.bss .bss.*)
-        . = ALIGN(4);
-        __kernel_bss_end__ = .;
         *(.bss)
         *(.bss*)
         *(COMMON)
@@ -182,7 +207,7 @@ SECTIONS
         *(.task_stacks)
         . = ALIGN(4);
         __bss_end__ = .;
-    } >AXI_SRAM
+    } >AXI_SRAM2
 
     /* Use of the rest of AXI_SRAM for the heap (should remain empty) */
     .heap :
@@ -192,17 +217,7 @@ SECTIONS
         PROVIDE ( _end = . );
         . = . + __Min_Heap_Size__;
         . = ALIGN(8);
-    } >AXI_SRAM
-
-    /* The temporary files of the file system goes into .tmpfs to avoid saturating the AXI SRAM. */
-    .tmpfs :
-    {
-        . = ALIGN(4);
-        __tmpfs_start__ = .;
-        *(.tmpfs)
-        . = ALIGN(4);
-        __tmpfs_end__ = .;
-    } >SRAM2
+    } >AXI_SRAM2
 
     /* The dma buffers goes into .dmabuff to avoid saturating the AXI SRAM. */
     .dmabuff :

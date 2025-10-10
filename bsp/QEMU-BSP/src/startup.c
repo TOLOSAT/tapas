@@ -35,8 +35,8 @@ void Generic_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
 extern uint32_t __stack_end__;
 extern uint32_t __bss_start__;
 extern uint32_t __bss_end__;
-extern uint32_t __tcm_bss_start__;
-extern uint32_t __tcm_bss_end__;
+extern uint32_t __kernel_bss_start__;
+extern uint32_t __kernel_bss_end__;
 
 /**
  * @brief ISR Vector Table
@@ -231,9 +231,9 @@ void Reset_Handler(void)
         *ptr_ram++ = 0;
     }
 
-    // Initialise the .tcm_bss section with zero
-    section_size = (uint32_t)&__tcm_bss_end__ - (uint32_t)&__tcm_bss_start__;
-    ptr_ram      = (uint8_t *)&__tcm_bss_start__;
+    // Initialise the .bss section with zero
+    section_size = (uint32_t)&__kernel_bss_end__ - (uint32_t)&__kernel_bss_start__;
+    ptr_ram      = (uint8_t *)&__kernel_bss_start__;
     for (uint32_t i = 0; i < section_size; i++)
     {
         *ptr_ram++ = 0;
