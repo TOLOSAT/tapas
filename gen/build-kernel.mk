@@ -7,19 +7,16 @@ BUILD_KERNEL_MK := yes
 ############# DIRECTORIES & FILES ############
 ##############################################
 
-KERNEL_MODULES = core drv fdir system
-
 # Directories
-KERNEL_INCDIR	= $(KERNEL_DIR)
-KERNEL_SRCDIR	= $(KERNEL_DIR)
+KERNEL_INCDIR	= $(KERNEL_DIR)/src
 KERNEL_OBJDIR	= $(BUILD_DIR)/kernel
 
 # Files
-KERNEL_SRCS = $(foreach m,$(KERNEL_MODULES), $(wildcard $(KERNEL_SRCDIR)/$(m)/*.c) $(wildcard $(KERNEL_SRCDIR)/$(m)/*/*.c) $(wildcard $(KERNEL_SRCDIR)/$(m)/*/wrapper-$(CHIP_VENDOR)/*.c)) \
-	   		  $(wildcard $(KERNEL_SRCDIR)/bsp/$(BOARD)-BSP/src/*.c) \
-	   		  $(BSP_CONF_SRCS)
-KERNEL_OBJS = $(patsubst $(KERNEL_SRCDIR)/%.c,$(KERNEL_OBJDIR)/%.o, \
-       		  $(patsubst $(PRE_BUILD_DIR)/%.c,$(PRE_BUILD_DIR)/%.o, \
+KERNEL_SRCS = $(wildcard $(KERNEL_DIR)/src/*/*.c) $(wildcard $(KERNEL_DIR)/src/drv/*/wrapper-$(CHIP_VENDOR)/*.c) \
+			  $(wildcard $(KERNEL_DIR)/bsp/$(BOARD)-BSP/src/*.c) \
+			  $(BSP_CONF_SRCS)
+KERNEL_OBJS = $(patsubst $(KERNEL_DIR)/%.c,$(KERNEL_OBJDIR)/%.o, \
+			  $(patsubst $(PRE_BUILD_DIR)/%.c,$(PRE_BUILD_DIR)/%.o, \
 			  $(KERNEL_SRCS)))
 KERNEL_LIB 	= $(LIBS_DIR)/libkernel.a
 
@@ -38,7 +35,7 @@ SYSTEM_DEFINES += -DBOARD=\"$(BOARD)\"
 # Flags
 KERNEL_CFLAGS   = 	$(CFLAGS) \
 				   	-D$(CHIP) -D$(CHIP_FAMILLY) $(CORE_SELECT)
-KERNEL_INCDIRS  =	$(KERNEL_INCDIR) $(KERNEL_HEADERS) $(KERNEL_INCDIR)/bsp/$(BOARD)-BSP/ \
+KERNEL_INCDIRS  =	$(KERNEL_DIR)/src $(KERNEL_HEADERS) $(KERNEL_DIR)/bsp/$(BOARD)-BSP/ \
 					$(FREERTOS_INCLUDES) $(FREERTOS_ARM_DIR) \
 					$(HAL_INCDIR) $(HAL_INCDIR)/Legacy \
 					$(FATFS_INCDIR) \
@@ -71,7 +68,7 @@ kernel-start :
 	@echo "$(BLUE)Start building...$(RESET)"
 
 # Building recipes
-$(KERNEL_OBJDIR)/%.o : $(KERNEL_SRCDIR)/%.c
+$(KERNEL_OBJDIR)/%.o : $(KERNEL_DIR)/%.c
 	@echo "  CC  $(@F)"
 	@mkdir -p $(@D)
 	@$(CC) $(KERNEL_CFLAGS) $(KERNEL_INCFLAGS) $< -o $@
@@ -81,7 +78,7 @@ $(PRE_BUILD_DIR)/%.o  : $(PRE_BUILD_DIR)/%.c
 	@mkdir -p $(@D)
 	@$(CC) $(KERNEL_CFLAGS) $(KERNEL_INCFLAGS) $< -o $@
 
-$(KERNEL_OBJDIR)/system/sysinfo.o : $(KERNEL_SRCDIR)/system/sysinfo.c
+$(KERNEL_OBJDIR)/src/system/sysinfo.o : $(KERNEL_DIR)/src/system/sysinfo.c
 	@echo "  CC  $(@F)"
 	@mkdir -p $(@D)
 	@$(CC) $(KERNEL_CFLAGS) $(SYSTEM_DEFINES) $(KERNEL_INCFLAGS) $< -o $@

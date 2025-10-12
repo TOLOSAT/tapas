@@ -13,7 +13,7 @@ CHECKER_ERROR_MSG = "\033[1;31mCode checked: errors have been found. Please corr
 
 # Checker files and includes
 CONF_MISRA = $(GEN_DIR)/MISRA/misra.json
-CHECKER_SRCS = $(foreach m,$(KERNEL_MODULES), $(wildcard $(KERNEL_SRCDIR)/$(m)/*.c) $(wildcard $(KERNEL_SRCDIR)/$(m)/*/*.c) $(wildcard $(KERNEL_SRCDIR)/$(m)/*/wrapper-$(CHIP_VENDOR)/*.c))
+CHECKER_SRCS = $(wildcard $(KERNEL_DIR)/src/*/*.c) $(wildcard $(KERNEL_DIR)/src/drv/*/wrapper-$(CHIP_VENDOR)/*.c)
 CHECKER_INCS = -I$(KERNEL_INCDIR) -I$(KERNEL_HEADERS) -I$(PRE_BUILD_DIR) -I$(THIRD_PARTIES_CONFDIR)
 CHECKER_DEFS = -D$(CHIP) -D$(CHIP_FAMILLY)
 CHECKER_LOGS = $(KERNEL_OBJDIR)/code-checking.log
