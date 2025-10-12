@@ -34,8 +34,12 @@
 /*************************** Functions Declarations **************************/
 
 extern void ErrorHandler(void);
+extern void HAL_SDRAM_MspInit(SDRAM_HandleTypeDef *hsdram);
+extern void HAL_SDRAM_MspDeInit(SDRAM_HandleTypeDef *hsdram);
 
 static void SdramInit(void);
+static void HAL_FMC_MspInit(void);
+static void HAL_FMC_MspDeInit(void);
 
 /*************************** Variables Definitions ***************************/
 

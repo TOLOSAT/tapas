@@ -222,8 +222,9 @@ void InitMPU(void)
     ARM_MPU_SetRegion(rbar, rasr);
 
     // Protect kernel text region
-    rbar = ARM_MPU_RBAR(KERNEL_TEXT_REGION_NO, KERNEL_TEXT_REGION_BASE_ADDR); // cppcheck-suppress misra-c2012-11.4; Exception: memory needs to be
-                                                                              // addressed
+    // cppcheck-suppress unmatchedSuppression
+    // cppcheck-suppress misra-c2012-11.4; Exception: memory needs to be addressed
+    rbar = ARM_MPU_RBAR(KERNEL_TEXT_REGION_NO, KERNEL_TEXT_REGION_BASE_ADDR); //
     rasr = ARM_MPU_RASR_EX(KERNEL_TEXT_REGION_XN,                             //
                            KERNEL_TEXT_REGION_AP,                             //
                            ARM_MPU_ACCESS_(                                   //
@@ -238,8 +239,9 @@ void InitMPU(void)
     ARM_MPU_SetRegion(rbar, rasr);
 
     // Protect kernel data region
-    rbar = ARM_MPU_RBAR(KERNEL_DATA_REGION_NO, KERNEL_DATA_REGION_BASE_ADDR); // cppcheck-suppress misra-c2012-11.4; Exception: memory needs to be
-                                                                              // addressed
+    // cppcheck-suppress unmatchedSuppression
+    // cppcheck-suppress misra-c2012-11.4; Exception: memory needs to be addressed
+    rbar = ARM_MPU_RBAR(KERNEL_DATA_REGION_NO, KERNEL_DATA_REGION_BASE_ADDR); //
     rasr = ARM_MPU_RASR_EX(KERNEL_DATA_REGION_XN,                             //
                            KERNEL_DATA_REGION_AP,                             //
                            ARM_MPU_ACCESS_(                                   //
@@ -254,8 +256,9 @@ void InitMPU(void)
     ARM_MPU_SetRegion(rbar, rasr);
 
     // Protect kernel rodata region
-    rbar = ARM_MPU_RBAR(KERNEL_RODATA_REGION_NO, KERNEL_RODATA_REGION_BASE_ADDR); // cppcheck-suppress misra-c2012-11.4; Exception: memory needs to be
-                                                                                  // addressed
+    // cppcheck-suppress unmatchedSuppression
+    // cppcheck-suppress misra-c2012-11.4; Exception: memory needs to be addressed
+    rbar = ARM_MPU_RBAR(KERNEL_RODATA_REGION_NO, KERNEL_RODATA_REGION_BASE_ADDR); //
     rasr = ARM_MPU_RASR_EX(KERNEL_RODATA_REGION_XN,                               //
                            KERNEL_RODATA_REGION_AP,                               //
                            ARM_MPU_ACCESS_(                                       //
@@ -271,8 +274,9 @@ void InitMPU(void)
 
 #if defined(CONFIG_HAS_TCM)
     // Protect kernel text region
-    rbar = ARM_MPU_RBAR(KERNEL_TCM_TEXT_REGION_NO, KERNEL_TCM_TEXT_REGION_BASE_ADDR); // cppcheck-suppress misra-c2012-11.4; Exception: memory needs
-                                                                                      // to be addressed
+    // cppcheck-suppress unmatchedSuppression
+    // cppcheck-suppress misra-c2012-11.4; Exception: memory needs to be addressed
+    rbar = ARM_MPU_RBAR(KERNEL_TCM_TEXT_REGION_NO, KERNEL_TCM_TEXT_REGION_BASE_ADDR); //
     rasr = ARM_MPU_RASR_EX(KERNEL_TCM_TEXT_REGION_XN,                                 //
                            KERNEL_TCM_TEXT_REGION_AP,                                 //
                            ARM_MPU_ACCESS_(                                           //
@@ -287,8 +291,9 @@ void InitMPU(void)
     ARM_MPU_SetRegion(rbar, rasr);
 
     // Protect kernel data region
-    rbar = ARM_MPU_RBAR(KERNEL_TCM_DATA_REGION_NO, KERNEL_TCM_DATA_REGION_BASE_ADDR); // cppcheck-suppress misra-c2012-11.4; Exception: memory needs
-                                                                                      // to be addressed
+    // cppcheck-suppress unmatchedSuppression
+    // cppcheck-suppress misra-c2012-11.4; Exception: memory needs to be addressed
+    rbar = ARM_MPU_RBAR(KERNEL_TCM_DATA_REGION_NO, KERNEL_TCM_DATA_REGION_BASE_ADDR); //
     rasr = ARM_MPU_RASR_EX(KERNEL_TCM_DATA_REGION_XN,                                 //
                            KERNEL_TCM_DATA_REGION_AP,                                 //
                            ARM_MPU_ACCESS_(                                           //
@@ -303,8 +308,9 @@ void InitMPU(void)
     ARM_MPU_SetRegion(rbar, rasr);
 
     // Protect kernel rodata region
-    rbar = ARM_MPU_RBAR(KERNEL_TCM_RODATA_REGION_NO, KERNEL_TCM_RODATA_REGION_BASE_ADDR); // cppcheck-suppress misra-c2012-11.4; Exception: memory
-                                                                                          // needs to be addressed
+    // cppcheck-suppress unmatchedSuppression
+    // cppcheck-suppress misra-c2012-11.4; Exception: memory needs to be addressed
+    rbar = ARM_MPU_RBAR(KERNEL_TCM_RODATA_REGION_NO, KERNEL_TCM_RODATA_REGION_BASE_ADDR); //
     rasr = ARM_MPU_RASR_EX(KERNEL_TCM_RODATA_REGION_XN,                                   //
                            KERNEL_TCM_RODATA_REGION_AP,                                   //
                            ARM_MPU_ACCESS_(                                               //
@@ -320,8 +326,9 @@ void InitMPU(void)
 #endif /* CONFIG_HAS_TCM */
 
     // Protect DMABUFF region
-    rbar = ARM_MPU_RBAR(DMABUFF_REGION_NO, DMABUFF_REGION_BASE_ADDR); // cppcheck-suppress misra-c2012-11.4; Exception: memory needs to be
-                                                                      // addressed
+    // cppcheck-suppress unmatchedSuppression
+    // cppcheck-suppress misra-c2012-11.4; Exception: memory needs to be addressed
+    rbar = ARM_MPU_RBAR(DMABUFF_REGION_NO, DMABUFF_REGION_BASE_ADDR); //
     rasr = ARM_MPU_RASR_EX(DMABUFF_REGION_XN,                         //
                            DMABUFF_REGION_AP,                         //
                            ARM_MPU_ACCESS_(                           //
