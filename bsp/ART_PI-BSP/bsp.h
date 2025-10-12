@@ -34,9 +34,9 @@
 #define BSP_KERNEL_RODATA_REGION_SIZE          ARM_MPU_REGION_SIZE_16KB
 #define BSP_DMABUFF_REGION_SIZE                ARM_MPU_REGION_SIZE_32KB
 
-#define BSP_KERNEL_TCM_TEXT_REGION_BASE_ADDR   (uint32_t)&__kernel_itm_text_start__
-#define BSP_KERNEL_TCM_DATA_REGION_BASE_ADDR   (uint32_t)&__kernel_itm_data_start__
-#define BSP_KERNEL_TCM_RODATA_REGION_BASE_ADDR (uint32_t)&__kernel_itm_rodata_start__
+#define BSP_KERNEL_TCM_TEXT_REGION_BASE_ADDR   (uint32_t)&__kernel_tcm_text_start__
+#define BSP_KERNEL_TCM_DATA_REGION_BASE_ADDR   (uint32_t)&__kernel_tcm_data_start__
+#define BSP_KERNEL_TCM_RODATA_REGION_BASE_ADDR (uint32_t)&__kernel_tcm_rodata_start__
 
 #define BSP_KERNEL_TCM_TEXT_REGION_SIZE        ARM_MPU_REGION_SIZE_64KB
 #define BSP_KERNEL_TCM_DATA_REGION_SIZE        ARM_MPU_REGION_SIZE_128KB
@@ -51,9 +51,9 @@ extern uint32_t __kernel_rodata_start__;
 extern uint32_t __kernel_data_start__;
 extern uint32_t __dmabuff_start__;
 
-extern uint32_t __kernel_icm_text_start__;
-extern uint32_t __kernel_icm_rodata_start__;
-extern uint32_t __kernel_icm_data_start__;
+extern uint32_t __kernel_tcm_text_start__;
+extern uint32_t __kernel_tcm_rodata_start__;
+extern uint32_t __kernel_tcm_data_start__;
 
 /*************************** Functions Declarations **************************/
 
