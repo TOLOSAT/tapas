@@ -46,6 +46,7 @@
 
 #include "stm32f4xx.h"
 #include "autoconf.h"
+#include "system_stm32f4xx.h"
 
 #if !defined(HSE_VALUE)
 #define HSE_VALUE ((uint32_t)25000000) /*!< Default value of the External oscillator in Hz */
@@ -210,7 +211,11 @@ void SystemInit(void)
  */
 void SystemCoreClockUpdate(void)
 {
-    uint32_t tmp = 0, pllvco = 0, pllp = 2, pllsource = 0, pllm = 2;
+    uint32_t tmp       = 0;
+    uint32_t pllvco    = 0;
+    uint32_t pllp      = 2;
+    uint32_t pllsource = 0;
+    uint32_t pllm      = 2;
 
     /* Get SYSCLK source -------------------------------------------------------*/
     tmp = RCC->CFGR & RCC_CFGR_SWS;
@@ -231,7 +236,7 @@ void SystemCoreClockUpdate(void)
             pllsource = (RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) >> 22;
             pllm      = RCC->PLLCFGR & RCC_PLLCFGR_PLLM;
 
-            if (pllsource != 0)
+            if (pllsource != 0u)
             {
                 /* HSE used as PLL clock source */
                 pllvco = (HSE_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
@@ -371,7 +376,9 @@ void SystemInit_ExtMemCtl(void)
 
     /* Delay */
     for (index = 0; index < 1000; index++)
-        ;
+    {
+        /* Delay loop */
+    }
 
     /* PALL command */
     FMC_Bank5_6->SDCMR = 0x00000012;
@@ -579,7 +586,9 @@ void SystemInit_ExtMemCtl(void)
 
     /* Delay */
     for (index = 0; index < 1000; index++)
-        ;
+    {
+        /* Delay loop */
+    }
 
     /* PALL command */
     FMC_Bank5_6->SDCMR = 0x00000012;

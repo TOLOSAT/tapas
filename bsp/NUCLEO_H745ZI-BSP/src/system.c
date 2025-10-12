@@ -47,9 +47,10 @@
  * @{
  */
 
+#include <math.h>
 #include "stm32h7xx.h"
 #include "autoconf.h"
-#include <math.h>
+#include "system_stm32h7xx.h"
 
 #if !defined(HSE_VALUE)
 #define HSE_VALUE ((uint32_t)25000000) /*!< Value of the External oscillator in Hz */
@@ -238,7 +239,7 @@ void SystemInit(void)
     {
         /* if stm32h7 revY*/
         /* Change  the switch matrix read issuing capability to 1 for the AXI SRAM target (Target 7) */
-        *((__IO uint32_t *)0x51008108) = 0x000000001U;
+        *((__IO uint32_t *)0x51008108) = 0x000000001U; // cppcheck-suppress misra-c2012-11.4; Exception: memory needs to be addressed
     }
 
 #endif /* CORE_CM7*/
@@ -306,9 +307,15 @@ void SystemInit(void)
  */
 void SystemCoreClockUpdate(void)
 {
-    uint32_t pllp, pllsource, pllm, pllfracen, hsivalue, tmp;
+    uint32_t pllp;
+    uint32_t pllsource;
+    uint32_t pllm;
+    uint32_t pllfracen;
+    uint32_t hsivalue;
+    uint32_t tmp;
     uint32_t common_system_clock;
-    float_t fracn1, pllvco;
+    float_t fracn1;
+    float_t pllvco;
 
     /* Get SYSCLK source -------------------------------------------------------*/
 

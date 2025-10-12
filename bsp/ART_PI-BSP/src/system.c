@@ -44,9 +44,10 @@
  * @{
  */
 
+#include <math.h>
 #include "stm32h7xx.h"
 #include "autoconf.h"
-#include <math.h>
+#include "system_stm32h7xx.h"
 
 #if !defined(HSE_VALUE)
 #define HSE_VALUE ((uint32_t)25000000) /*!< Value of the External oscillator in Hz */
@@ -229,7 +230,7 @@ void SystemInit(void)
     /* Disable all interrupts */
     RCC->CIER = 0x00000000;
 
-#if (STM32H7_DEV_ID == 0x450UL)
+#if defined(STM32H7_DEV_ID) && (STM32H7_DEV_ID == 0x450UL)
     /* dual core CM7 or single core line */
     if ((DBGMCU->IDCODE & 0xFFFF0000U) < 0x20000000U)
     {
@@ -305,9 +306,15 @@ void SystemInit(void)
  */
 void SystemCoreClockUpdate(void)
 {
-    uint32_t pllp, pllsource, pllm, pllfracen, hsivalue, tmp;
+    uint32_t pllp;
+    uint32_t pllsource;
+    uint32_t pllm;
+    uint32_t pllfracen;
+    uint32_t hsivalue;
+    uint32_t tmp;
     uint32_t common_system_clock;
-    float_t fracn1, pllvco;
+    float_t fracn1;
+    float_t pllvco;
 
     /* Get SYSCLK source -------------------------------------------------------*/
 
