@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file    system_stm32f4xx.c
+ * @file    system.c
  * @author  MCD Application Team
  * @brief   CMSIS Cortex-M4 Device Peripheral Access Layer System Source File.
  *
@@ -32,18 +32,6 @@
  ******************************************************************************
  */
 
-/** @addtogroup CMSIS
- * @{
- */
-
-/** @addtogroup stm32f4xx_system
- * @{
- */
-
-/** @addtogroup STM32F4xx_System_Private_Includes
- * @{
- */
-
 #include "stm32f4xx.h"
 #include "autoconf.h"
 #include "system_stm32f4xx.h"
@@ -55,22 +43,6 @@
 #if !defined(HSI_VALUE)
 #define HSI_VALUE ((uint32_t)16000000) /*!< Value of the Internal oscillator in Hz*/
 #endif                                 /* HSI_VALUE */
-
-/**
- * @}
- */
-
-/** @addtogroup STM32F4xx_System_Private_TypesDefinitions
- * @{
- */
-
-/**
- * @}
- */
-
-/** @addtogroup STM32F4xx_System_Private_Defines
- * @{
- */
 
 /************************* Miscellaneous Configuration ************************/
 /*!< Uncomment the following line if you need to use external SRAM or SDRAM as data memory  */
@@ -104,50 +76,32 @@
 /******************************************************************************/
 
 /**
- * @}
+ * @brief System core clock frequency (Hz).
+ *
+ * Updated automatically when calling:
+ * - SystemCoreClockUpdate()
+ * - HAL_RCC_GetHCLKFreq()
+ * - HAL_RCC_ClockConfig()
  */
-
-/** @addtogroup STM32F4xx_System_Private_Macros
- * @{
- */
+uint32_t SystemCoreClock = 16000000;
 
 /**
- * @}
+ * @brief AHB prescaler lookup table.
+ *
+ * Maps AHB prescaler settings to shift values (division factors).
  */
-
-/** @addtogroup STM32F4xx_System_Private_Variables
- * @{
- */
-/* This variable is updated in three ways:
-    1) by calling CMSIS function SystemCoreClockUpdate()
-    2) by calling HAL API function HAL_RCC_GetHCLKFreq()
-    3) each time HAL_RCC_ClockConfig() is called to configure the system clock frequency
-       Note: If you use this function to configure the system clock; then there
-             is no need to call the 2 first functions listed above, since SystemCoreClock
-             variable is updated automatically.
-*/
-uint32_t SystemCoreClock        = 16000000;
 const uint8_t AHBPrescTable[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9 };
-const uint8_t APBPrescTable[8]  = { 0, 0, 0, 0, 1, 2, 3, 4 };
-/**
- * @}
- */
 
-/** @addtogroup STM32F4xx_System_Private_FunctionPrototypes
- * @{
+/**
+ * @brief APB prescaler lookup table.
+ *
+ * Maps APB prescaler settings to shift values (division factors).
  */
+const uint8_t APBPrescTable[8] = { 0, 0, 0, 0, 1, 2, 3, 4 };
 
 #if defined(DATA_IN_ExtSRAM) || defined(DATA_IN_ExtSDRAM)
 static void SystemInit_ExtMemCtl(void);
 #endif /* DATA_IN_ExtSRAM || DATA_IN_ExtSDRAM */
-
-/**
- * @}
- */
-
-/** @addtogroup STM32F4xx_System_Private_Functions
- * @{
- */
 
 /**
  * @brief  Setup the microcontroller system
@@ -732,14 +686,3 @@ void SystemInit_ExtMemCtl(void)
     (void)(tmp);
 }
 #endif /* DATA_IN_ExtSRAM && DATA_IN_ExtSDRAM */
-/**
- * @}
- */
-
-/**
- * @}
- */
-
-/**
- * @}
- */

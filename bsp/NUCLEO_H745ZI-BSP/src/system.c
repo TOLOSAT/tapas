@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file    system_stm32h7xx_dualcore_boot_cm4_cm7.c
+ * @file    system.c
  * @author  MCD Application Team
  * @brief   CMSIS Cortex-Mx Device Peripheral Access Layer System Source File.
  *          This provides system initialization template function is case of
@@ -35,18 +35,6 @@
  ******************************************************************************
  */
 
-/** @addtogroup CMSIS
- * @{
- */
-
-/** @addtogroup stm32h7xx_system
- * @{
- */
-
-/** @addtogroup STM32H7xx_System_Private_Includes
- * @{
- */
-
 #include <math.h>
 #include "stm32h7xx.h"
 #include "autoconf.h"
@@ -63,22 +51,6 @@
 #if !defined(HSI_VALUE)
 #define HSI_VALUE ((uint32_t)64000000) /*!< Value of the Internal oscillator in Hz*/
 #endif                                 /* HSI_VALUE */
-
-/**
- * @}
- */
-
-/** @addtogroup STM32H7xx_System_Private_TypesDefinitions
- * @{
- */
-
-/**
- * @}
- */
-
-/** @addtogroup STM32H7xx_System_Private_Defines
- * @{
- */
 
 /************************* Miscellaneous Configuration ************************/
 /* Note: Following vector table addresses must be defined in line with linker
@@ -107,50 +79,32 @@
 #error Please #define CORE_CM4 or CORE_CM7
 #endif /* CORE_CM4 */
 #endif /* USER_VECT_TAB_ADDRESS */
-       /******************************************************************************/
+
+/******************************************************************************/
 
 /**
- * @}
+ * @brief System core clock frequency (Hz).
+ *
+ * Updated automatically when calling:
+ * - SystemCoreClockUpdate()
+ * - HAL_RCC_GetHCLKFreq()
+ * - HAL_RCC_ClockConfig()
  */
-
-/** @addtogroup STM32H7xx_System_Private_Macros
- * @{
- */
+uint32_t SystemCoreClock = 64000000;
 
 /**
- * @}
+ * @brief D2 domain clock frequency (Hz).
+ *
+ * Updated together with SystemCoreClock when the system clock changes.
  */
+uint32_t SystemD2Clock = 64000000;
 
-/** @addtogroup STM32H7xx_System_Private_Variables
- * @{
+/**
+ * @brief D1 domain core prescaler lookup table.
+ *
+ * Maps prescaler settings to shift values (division factors).
  */
-/* This variable is updated in three ways:
-    1) by calling CMSIS function SystemCoreClockUpdate()
-    2) by calling HAL API function HAL_RCC_GetHCLKFreq()
-    3) each time HAL_RCC_ClockConfig() is called to configure the system clock frequency
-       Note: If you use this function to configure the system clock; then there
-             is no need to call the 2 first functions listed above, since SystemCoreClock
-             variable is updated automatically.
-*/
-uint32_t SystemCoreClock           = 64000000;
-uint32_t SystemD2Clock             = 64000000;
 const uint8_t D1CorePrescTable[16] = { 0, 0, 0, 0, 1, 2, 3, 4, 1, 2, 3, 4, 6, 7, 8, 9 };
-
-/**
- * @}
- */
-
-/** @addtogroup STM32H7xx_System_Private_FunctionPrototypes
- * @{
- */
-
-/**
- * @}
- */
-
-/** @addtogroup STM32H7xx_System_Private_Functions
- * @{
- */
 
 /**
  * @brief  Setup the microcontroller system
@@ -400,15 +354,3 @@ void SystemCoreClockUpdate(void)
     SystemCoreClock = common_system_clock;
 #endif /* CORE_CM4 */
 }
-
-/**
- * @}
- */
-
-/**
- * @}
- */
-
-/**
- * @}
- */

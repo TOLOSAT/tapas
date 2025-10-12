@@ -56,7 +56,7 @@ HAL_StatusTypeDef HAL_InitTick(void)
     HAL_StatusTypeDef hal_status = HAL_OK;
 
     // Setup the timer information
-    haltick_timer.instance    = HAL_TIMER_REF;
+    haltick_timer.instance    = HAL_TIMER_PERIPH;
     haltick_timer.mode_1      = HAL_DUALTIMER_PERIODIC;
     haltick_timer.size_1      = HAL_DUALTIMER_32_BITS;
     haltick_timer.prescaler_1 = HAL_DUALTIMER_PRESCALER_1;

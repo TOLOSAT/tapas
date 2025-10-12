@@ -12,6 +12,13 @@
 
 /***************************** Macros Definitions ****************************/
 
+/***************************** Type Definitions ****************************/
+
+/**
+ * @brief Exception Interrupt Handler Function Prototype
+ */
+typedef void (*isrVector_t)(void);
+
 /*************************** Functions Declarations **************************/
 
 extern int main(void);
@@ -19,15 +26,15 @@ extern void Default_Handler(void);
 
 // Cortex-M system exceptions
 void Reset_Handler(void);
-void NMI_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void HardFault_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void MemManage_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void BusFault_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void UsageFault_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void SVC_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void DebugMon_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void PendSV_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void SysTick_Handler(void) __attribute__((weak, alias("Default_Handler")));
+void NMI_Handler(void) __attribute__((weak, alias("Default_Handler")));        /**< @brief NMI Exception Handler */
+void HardFault_Handler(void) __attribute__((weak, alias("Default_Handler")));  /**< @brief HardFault Exception Handler */
+void MemManage_Handler(void) __attribute__((weak, alias("Default_Handler")));  /**< @brief MemManage Exception Handler */
+void BusFault_Handler(void) __attribute__((weak, alias("Default_Handler")));   /**< @brief BusFault Exception Handler */
+void UsageFault_Handler(void) __attribute__((weak, alias("Default_Handler"))); /**< @brief UsageFault Exception Handler */
+void SVC_Handler(void) __attribute__((weak, alias("Default_Handler")));        /**< @brief SVC Exception Handler */
+void DebugMon_Handler(void) __attribute__((weak, alias("Default_Handler")));   /**< @brief DebugMon Exception Handler */
+void PendSV_Handler(void) __attribute__((weak, alias("Default_Handler")));     /**< @brief PendSV Exception Handler */
+void SysTick_Handler(void) __attribute__((weak, alias("Default_Handler")));    /**< @brief SysTick Exception Handler */
 
 // Interrupt Handlers
 void Generic_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
@@ -39,14 +46,14 @@ extern uint32_t __bss_start__;
 extern uint32_t __bss_end__;
 extern uint32_t __kernel_bss_start__;
 extern uint32_t __kernel_bss_end__;
-extern void (*const isr_vectors[256])(void);
+extern const isrVector_t isr_vectors[256];
 
 /*************************** Variables Definitions ***************************/
 
 /**
  * @brief ISR Vector Table
  */
-__attribute__((section(".isr_vector"))) void (*const isr_vectors[256])(void) = {
+const isrVector_t isr_vectors[256] __attribute__((section(".isr_vector"))) = {
     (void (*)(void))&__stack_end__,
     Reset_Handler,
     NMI_Handler,

@@ -1,5 +1,5 @@
 /******************************************************************************
- * @file     system_CMSDK_CM7.c
+ * @file     system.c
  * @brief    CMSIS System Source File for CMSDK_CM7 Device
  ******************************************************************************/
 /* Copyright (c) 2011 - 2022 ARM LIMITED
@@ -54,6 +54,10 @@ extern const VECTOR_TABLE_Type isr_vectors[256];
 /*----------------------------------------------------------------------------
   System Core Clock Variable
  *----------------------------------------------------------------------------*/
+
+/**
+ * @brief System core clock frequency (Hz).
+ */
 uint32_t SystemCoreClock = SYSTEM_CLOCK; /* System Core Clock Frequency */
 
 /*----------------------------------------------------------------------------
