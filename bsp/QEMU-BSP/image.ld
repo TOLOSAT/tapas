@@ -4,10 +4,10 @@ ENTRY(Reset_Handler)
 /* Memories definition */
 MEMORY
 {
-    ISR      (rwx) : ORIGIN = 0x00000000, LENGTH = 64k  /* Vector table in QEMU internal ROM */
-    PR_SRAM  (rwx) : ORIGIN = 0x20000000, LENGTH = 512k /* Protected zone */
-    SRAM     (rwx) : ORIGIN = 0x20080000, LENGTH = 512k
-    PSRAM    (rw)  : ORIGIN = 0x60000000, LENGTH = 16M
+    ISR     (rwx) : ORIGIN = 0x00000000, LENGTH = 64k  /* Vector table in QEMU internal ROM */
+    SRAM1   (rwx) : ORIGIN = 0x20000000, LENGTH = 512k /* Protected zone */
+    SRAM2   (rwx) : ORIGIN = 0x20080000, LENGTH = 512k
+    PSRAM   (rw)  : ORIGIN = 0x60000000, LENGTH = 16M
 }
 
 /*
@@ -17,7 +17,7 @@ MEMORY
  */
 
 /* Stack & Heap definitions */
-__stack_end__       = ORIGIN(SRAM) + LENGTH(SRAM);
+__stack_end__       = ORIGIN(SRAM1) + LENGTH(SRAM1);
 __Min_Heap_Size__   = 0x200;
 __Min_Stack_Size__  = 0x400;
 
@@ -46,7 +46,7 @@ SECTIONS
         *libhal*.a:*(.text .text.*)
         . = ALIGN(4);
         __kernel_text_end__ = .;
-    } >PR_SRAM
+    } >SRAM1
 
     /* ARM exception handling indexes goes after protected text memory */
     .ARM.eidx : {
@@ -55,7 +55,7 @@ SECTIONS
         *(.ARM.exidx*)
         . = ALIGN(0x20000); /* Align on 128KB for MPU RO region */
         __exidx_end = .;
-    } >PR_SRAM
+    } >SRAM1
 
     /* Protected constant data goes into .rodata section */
     .protected_rodata :
@@ -68,7 +68,7 @@ SECTIONS
         *libhal*.a:*(.rodata .rodata.*)
         . = ALIGN(4);
         __kernel_rodata_end__ = .;
-    } >PR_SRAM
+    } >SRAM1
 
     /* ARM exception handling tables goes after protected rodata memory */
     .ARM.extab :
@@ -78,7 +78,7 @@ SECTIONS
         *(.ARM.extab* .gnu.linkonce.armextab.*)
         . = ALIGN(0x20000); /* Align on 128KB for MPU RO XN region */
         __extab_end = .;
-    } >PR_SRAM
+    } >SRAM1
 
     /* Protected initialized data go into the .data section */
     .protected_data :
@@ -93,7 +93,7 @@ SECTIONS
         *libhal*.a:*(.data .data.*)
         . = ALIGN(4);
         __kernel_data_end__ = .;
-    } >PR_SRAM
+    } >SRAM1
 
     /* Protected uninitialised data goes into .bss section */
     .protected_bss (NOLOAD):
@@ -106,7 +106,15 @@ SECTIONS
         *libhal*.a:*(.bss .bss.*)
         . = ALIGN(4);
         __kernel_bss_end__ = .;
-    } >PR_SRAM
+    } >SRAM1
+
+    /* Use of the rest of SRAM1 for the main stack */
+    .stack :
+    {
+        . = ALIGN(8);
+        . = . + __Min_Stack_Size__;
+        . = ALIGN(8);
+    } >SRAM1
 
     /* The program goes into the .text section */
     .text :
@@ -121,7 +129,7 @@ SECTIONS
         *(.text*)
         . = ALIGN(4);
         __text_end__ = .;
-    } >SRAM
+    } >SRAM2
 
     /* Constant data goes into .rodata section */
     .rodata :
@@ -133,7 +141,7 @@ SECTIONS
         *(.rodata*)
         . = ALIGN(4);
         __rodata_end__ = .;
-    } >SRAM
+    } >SRAM2
 
     /* Initialized data go into the .data section */
     .data :
@@ -144,7 +152,7 @@ SECTIONS
         *(.data*)
         . = ALIGN(4);
         __data_end__ = .;
-    } >SRAM
+    } >SRAM2
 
     /* Uninitialised data goes into .bss section */
     .bss (NOLOAD):
@@ -158,7 +166,7 @@ SECTIONS
         *(.task_stacks)
         . = ALIGN(4);
         __bss_end__ = .;
-    } >SRAM
+    } >SRAM2
 
     /* The dma buffers goes into .dmabuff to avoid saturating the AXI SRAM. */
     .dmabuff :
@@ -168,7 +176,7 @@ SECTIONS
         *(.dmabuff)
         . = ALIGN(4);
         __dmabuff_end__ = .;
-    } >SRAM
+    } >SRAM2
 
     /* Use of the rest of SRAM for the heap (should remain empty) */
     .heap :
@@ -178,15 +186,7 @@ SECTIONS
         PROVIDE ( _end = . );
         . = . + __Min_Heap_Size__;
         . = ALIGN(8);
-    } >SRAM
-
-    /* Use of the rest of SRAM for the main stack */
-    .stack :
-    {
-        . = ALIGN(8);
-        . = . + __Min_Stack_Size__;
-        . = ALIGN(8);
-    } >SRAM
+    } >SRAM2
 
     /* PSRAM zone used for RAM file system */
     .ramfs (NOLOAD):

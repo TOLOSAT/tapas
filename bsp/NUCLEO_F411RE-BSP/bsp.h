@@ -15,13 +15,13 @@
 /***************************** Macros Definitions ****************************/
 
 /* INTERNAL TIMERS */
-#define HAL_TIMER_REF           TIM4
-#define HAL_TIMER_IRQ_NO        TIM4_IRQn
-#define MONITORING_TIMER_REF    TIM3
-#define MONITORING_TIMER_IRQ_NO TIM3_IRQn
+#define HAL_TIMER_PERIPH        TIM4      /**< HAL timer peripheral */
+#define HAL_TIMER_IRQ_NO        TIM4_IRQn /**< HAL timer interruption numero */
+#define MONITORING_TIMER_REF    TIM3      /**< Monitoring timer peripheral */
+#define MONITORING_TIMER_IRQ_NO TIM3_IRQn /**< Monitoring timer interruption numero */
 
 /* WATCHDOG CONSTANTS */
-#define WATCHDOG_REF            IWDG
+#define WATCHDOG_PERIPH         IWDG /**< Internal watchdog peripheral */
 
 /***************************** Types Definitions *****************************/
 

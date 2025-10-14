@@ -15,32 +15,35 @@
 /***************************** Macros Definitions ****************************/
 
 /* INTERNAL TIMERS */
-#define HAL_TIMER_REF                          TIM4
-#define HAL_TIMER_IRQ_NO                       TIM4_IRQn
-#define MONITORING_TIMER_REF                   TIM3
-#define MONITORING_TIMER_IRQ_NO                TIM3_IRQn
+#define HAL_TIMER_PERIPH                       TIM4      /**< HAL timer peripheral */
+#define HAL_TIMER_IRQ_NO                       TIM4_IRQn /**< HAL timer interruption numero */
+#define MONITORING_TIMER_REF                   TIM3      /**< Monitoring timer peripheral */
+#define MONITORING_TIMER_IRQ_NO                TIM3_IRQn /**< Monitoring timer interruption numero */
 
 /* WATCHDOG CONSTANTS */
-#define WATCHDOG_REF                           IWDG1
+#define WATCHDOG_PERIPH                        IWDG1 /**< Internal watchdog peripheral */
 
 /* MEMORY REGIONS */
-#define BSP_KERNEL_TEXT_REGION_BASE_ADDR       (uint32_t)&__kernel_text_start__
-#define BSP_KERNEL_DATA_REGION_BASE_ADDR       (uint32_t)&__kernel_data_start__
-#define BSP_KERNEL_RODATA_REGION_BASE_ADDR     (uint32_t)&__kernel_rodata_start__
-#define BSP_DMABUFF_REGION_BASE_ADDR           (uint32_t)&__dmabuff_start__
+#define BSP_KERNEL_TCM_TEXT_REGION_BASE_ADDR   (uint32_t)&__kernel_tcm_text_start__ /**< Kernel TCM text region base address */
+#define BSP_KERNEL_TCM_TEXT_REGION_SIZE        ARM_MPU_REGION_SIZE_64KB             /**< Kernel TCM text region size */
 
-#define BSP_KERNEL_TEXT_REGION_SIZE            ARM_MPU_REGION_SIZE_128KB
-#define BSP_KERNEL_DATA_REGION_SIZE            ARM_MPU_REGION_SIZE_128KB
-#define BSP_KERNEL_RODATA_REGION_SIZE          ARM_MPU_REGION_SIZE_16KB
-#define BSP_DMABUFF_REGION_SIZE                ARM_MPU_REGION_SIZE_32KB
+#define BSP_KERNEL_TCM_DATA_REGION_BASE_ADDR   (uint32_t)&__kernel_tcm_data_start__ /**< Kernel TCM data (and bss) region base address */
+#define BSP_KERNEL_TCM_DATA_REGION_SIZE        ARM_MPU_REGION_SIZE_128KB            /**< Kernel TCM data (and bss) region size */
 
-#define BSP_KERNEL_TCM_TEXT_REGION_BASE_ADDR   (uint32_t)&__kernel_itm_text_start__
-#define BSP_KERNEL_TCM_DATA_REGION_BASE_ADDR   (uint32_t)&__kernel_itm_data_start__
-#define BSP_KERNEL_TCM_RODATA_REGION_BASE_ADDR (uint32_t)&__kernel_itm_rodata_start__
+#define BSP_KERNEL_TCM_RODATA_REGION_BASE_ADDR (uint32_t)&__kernel_tcm_rodata_start__ /**< Kernel TCM rodata region base address */
+#define BSP_KERNEL_TCM_RODATA_REGION_SIZE      ARM_MPU_REGION_SIZE_16KB               /**< Kernel TCM rodata region size */
 
-#define BSP_KERNEL_TCM_TEXT_REGION_SIZE        ARM_MPU_REGION_SIZE_64KB
-#define BSP_KERNEL_TCM_DATA_REGION_SIZE        ARM_MPU_REGION_SIZE_128KB
-#define BSP_KERNEL_TCM_RODATA_REGION_SIZE      ARM_MPU_REGION_SIZE_16KB
+#define BSP_KERNEL_TEXT_REGION_BASE_ADDR       (uint32_t)&__kernel_text_start__ /**< Kernel text region base address */
+#define BSP_KERNEL_TEXT_REGION_SIZE            ARM_MPU_REGION_SIZE_128KB        /**< Kernel text region size */
+
+#define BSP_KERNEL_DATA_REGION_BASE_ADDR       (uint32_t)&__kernel_data_start__ /**< Kernel data (and bss) region base address */
+#define BSP_KERNEL_DATA_REGION_SIZE            ARM_MPU_REGION_SIZE_128KB        /**< Kernel data (and bss) region size */
+
+#define BSP_KERNEL_RODATA_REGION_BASE_ADDR     (uint32_t)&__kernel_rodata_start__ /**< Kernel rodata region base address */
+#define BSP_KERNEL_RODATA_REGION_SIZE          ARM_MPU_REGION_SIZE_16KB           /**< Kernel rodata region size  */
+
+#define BSP_DMABUFF_REGION_BASE_ADDR           (uint32_t)&__dmabuff_start__ /**< DMA buffer region base address */
+#define BSP_DMABUFF_REGION_SIZE                ARM_MPU_REGION_SIZE_32KB     /**< DMA buffer region size */
 
 /***************************** Types Definitions *****************************/
 
@@ -51,9 +54,9 @@ extern uint32_t __kernel_rodata_start__;
 extern uint32_t __kernel_data_start__;
 extern uint32_t __dmabuff_start__;
 
-extern uint32_t __kernel_icm_text_start__;
-extern uint32_t __kernel_icm_rodata_start__;
-extern uint32_t __kernel_icm_data_start__;
+extern uint32_t __kernel_tcm_text_start__;
+extern uint32_t __kernel_tcm_rodata_start__;
+extern uint32_t __kernel_tcm_data_start__;
 
 /*************************** Functions Declarations **************************/
 

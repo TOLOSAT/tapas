@@ -47,7 +47,7 @@ returnCode_t InitWatchDog(uint32_t timeout_ms)
     // First check timeout parameter
     if (timeout_ms < WDG_MAX_TIMEOUT_MS)
     {
-        wdg_inst.Instance       = WATCHDOG_REF;
+        wdg_inst.Instance       = WATCHDOG_PERIPH;
         wdg_inst.Init.Prescaler = WDG_PRESCALER;
         wdg_inst.Init.Reload    = MS_TO_WDG_COUNTER_VALUE(timeout_ms);
 #if defined(STM32H7)

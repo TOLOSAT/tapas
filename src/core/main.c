@@ -11,6 +11,7 @@
 #include "main.h"
 #include "core/initialisation.h"
 #include "core/os.h"
+#include "fdir/fdir.h"
 
 /***************************** Macros Definitions ****************************/
 
@@ -32,10 +33,9 @@ int main(void)
 
     // Start Operating System
     StartOS();
-    while (1)
-    {
-        // Do Nothing
-    }
+
+    // Shouldn't go here
+    KernelPanic();
 
     return 0;
 }

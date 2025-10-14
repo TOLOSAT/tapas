@@ -16,26 +16,30 @@
 
 // SDRAM defines
 // Note SDRAM Freq : HCLK3 / FMC_SDRAM_CLOCK_PERIOD_2 = 200MHz / 2 = 100 MHz -> tCK =10ns
-#define SDRAM_REFRESH_COUNT                   ((uint32_t)0x02FA) // Refresh rate : [(SDRAM self refresh time / number of row) x  SDRAM CLK] – 20 = 762
-#define SDRAM_LOAD_TO_ACTIVE_DELAY            2                  // tRRD : 2 * tCK
-#define SDRAM_EXIT_SELF_REFRESH_DELAY         8                  // tXSR : 72 ns = 8 * tCK
-#define SDRAM_SELF_REFRESH_TIME               5                  // tRAS : 42 ns = 5 * tCK
-#define SDRAM_ROW_CYCLE_DELAY                 6                  // tRC  : 60 ns = 6 * tCK
-#define SDRAM_WRITE_RECOVERY_TIME             2                  // tWR  : 2 * tCK
-#define SDRAM_RP_DELAY                        2                  // tRP  : 15 ns = 2 * tCK
-#define SDRAM_RCD_DELAY                       2                  // tRCD : 15 ns = 2 * tCK
-#define SDRAM_MODEREG_BURST_LENGTH_2          ((uint16_t)0x0001)
-#define SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL   ((uint16_t)0x0000)
-#define SDRAM_MODEREG_CAS_LATENCY_2           ((uint16_t)0x0020)
-#define SDRAM_MODEREG_CAS_LATENCY_3           ((uint16_t)0x0030)
-#define SDRAM_MODEREG_OPERATING_MODE_STANDARD ((uint16_t)0x0000)
-#define SDRAM_MODEREG_WRITEBURST_MODE_SINGLE  ((uint16_t)0x0200)
+#define SDRAM_REFRESH_COUNT                   ((uint32_t)0x02FA) /**< SDRAM refresh rate ([(SDRAM self refresh time / number of row) x SDRAM CLK] – 20 = 762). */
+#define SDRAM_LOAD_TO_ACTIVE_DELAY            2                  /**< Delay between LOAD MODE and ACTIVE commands (tMRD = 15 ns -> 2 × tCK). */
+#define SDRAM_EXIT_SELF_REFRESH_DELAY         8                  /**< Delay to exit self-refresh mode (tXSR = 72 ns -> 8 × tCK). */
+#define SDRAM_SELF_REFRESH_TIME               5                  /**< Self-refresh period (tRAS = 42 ns -> 5 × tCK). */
+#define SDRAM_ROW_CYCLE_DELAY                 6                  /**< Row cycle delay (tRC = 60 ns -> 6 × tCK). */
+#define SDRAM_WRITE_RECOVERY_TIME             2                  /**< Write recovery time (tWR = 15 ns -> 2 × tCK). */
+#define SDRAM_RP_DELAY                        2                  /**< Row precharge delay (tRP = 15 ns -> 2 × tCK). */
+#define SDRAM_RCD_DELAY                       2                  /**< Row-to-column delay (tRCD = 15 ns -> 2 × tCK). */
+#define SDRAM_MODEREG_BURST_LENGTH_2          ((uint16_t)0x0001) /**< SDRAM mode: burst length = 2. */
+#define SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL   ((uint16_t)0x0000) /**< SDRAM mode: sequential burst type. */
+#define SDRAM_MODEREG_CAS_LATENCY_2           ((uint16_t)0x0020) /**< SDRAM mode: CAS latency = 2. */
+#define SDRAM_MODEREG_CAS_LATENCY_3           ((uint16_t)0x0030) /**< SDRAM mode: CAS latency = 3. */
+#define SDRAM_MODEREG_OPERATING_MODE_STANDARD ((uint16_t)0x0000) /**< SDRAM mode: standard operation. */
+#define SDRAM_MODEREG_WRITEBURST_MODE_SINGLE  ((uint16_t)0x0200) /**< SDRAM mode: single write burst. */
 
 /*************************** Functions Declarations **************************/
 
 extern void ErrorHandler(void);
+extern void HAL_SDRAM_MspInit(SDRAM_HandleTypeDef *hsdram);
+extern void HAL_SDRAM_MspDeInit(SDRAM_HandleTypeDef *hsdram);
 
 static void SdramInit(void);
+static void HAL_FMC_MspInit(void);
+static void HAL_FMC_MspDeInit(void);
 
 /*************************** Variables Definitions ***************************/
 

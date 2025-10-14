@@ -29,15 +29,15 @@ SECTIONS
         __tcm_text_start__ = .;
         KEEP(*(.isr_vector))
         . = ALIGN(4);
-        __kernel_itm_text_start__ = .;
+        __kernel_tcm_text_start__ = .;
         *(.text.Default_Handler)
         *(.text.Reset_Handler)
         *(.text.SystemInit)
         *(.text.SystemClock_Config)
         *libkernel*.a:*(.text .text.*)
         . = ALIGN(4);
-        __kernel_itm_text_end__ = .;
-        . = ALIGN(0x4000); /* Align on 32KB for MPU RO region */
+        __kernel_tcm_text_end__ = .;
+        . = ALIGN(4);
         __tcm_text_end__ = .;
     } >ITCM_RAM
 
@@ -46,11 +46,11 @@ SECTIONS
     {
         . = ALIGN(4);
         __tcm_rodata_start__ = .;
-        __kernel_dtm_rodata_start__ = .;
+        __kernel_tcm_rodata_start__ = .;
         *libkernel*.a:*(.rodata .rodata.*)
         . = ALIGN(4);
-        __kernel_dtm_rodata_end__ = .;
-        . = ALIGN(4);
+        __kernel_tcm_rodata_end__ = .;
+        . = ALIGN(0x4000); /* Align on 16KB for MPU RO region */
         __tcm_rodata_end__ = .;
     } >DTCM_RAM
 
@@ -59,12 +59,12 @@ SECTIONS
     {
         . = ALIGN(4);
         __tcm_data_start__ = .;
-        __kernel_dtm_data_start__ = .;
+        __kernel_tcm_data_start__ = .;
         *(.data.SystemCoreClock)
         *(.data.SystemD2Clock)
         *libkernel*.a:*(.data .data.*)
         . = ALIGN(4);
-        __kernel_dtm_data_end__ = .;
+        __kernel_tcm_data_end__ = .;
         . = ALIGN(4);
         __tcm_data_end__ = .;
     } >DTCM_RAM
@@ -74,10 +74,10 @@ SECTIONS
     {
         __tcm_bss_start__ = .;
         . = ALIGN(4);
-        __kernel_dtm_bss_start__ = .;
+        __kernel_tcm_bss_start__ = .;
         *libkernel*.a:*(.bss .bss.*)
         . = ALIGN(4);
-        __kernel_dtm_bss_end__ = .;
+        __kernel_tcm_bss_end__ = .;
         . = ALIGN(4);
         __tcm_bss_end__ = .;
     } >DTCM_RAM

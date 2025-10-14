@@ -12,9 +12,9 @@
 
 /***************************** Macros Definitions ****************************/
 
-#define NAND_WP_PIN          GPIO_PIN_10
-#define NAND_WP_PORT         GPIOD
-#define NAND_WP_CLK_ENABLE() __HAL_RCC_GPIOD_CLK_ENABLE()
+#define NAND_WP_PIN          GPIO_PIN_10                  /**< NAND Write protection GPIO pin */
+#define NAND_WP_PORT         GPIOD                        /**< NAND Write protection GPIO port */
+#define NAND_WP_CLK_ENABLE() __HAL_RCC_GPIOD_CLK_ENABLE() /**< NAND Write protection GPIO enable clock */
 
 /*************************** Functions Declarations **************************/
 

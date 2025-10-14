@@ -19,7 +19,7 @@ all : pre-build hal fatfs freertos kernel
 clean : kernel-clean
 
 echoes :
-	@echo "TAPAS"
+	@echo $(KERNEL_SRCS)
 
 ##############################################
 ################## INCLUDES ##################

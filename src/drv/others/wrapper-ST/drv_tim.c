@@ -63,7 +63,7 @@ static volatile uint64_t monitoring_tick;
 HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
 {
     // First init timer clock source
-    TimInitClock(HAL_TIMER_REF);
+    TimInitClock(HAL_TIMER_PERIPH);
 
     // Get clock configuration
     RCC_ClkInitTypeDef clkconfig = { 0 };
@@ -90,7 +90,7 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
     uint32_t hal_tick_timer_prescaler = (uint32_t)((APB1_timers_clock / 1000000U) - 1U);
 
     // Initialize HAL tick timer
-    hal_tick_timer.Instance               = HAL_TIMER_REF;
+    hal_tick_timer.Instance               = HAL_TIMER_PERIPH;
     hal_tick_timer.Init.Period            = 999u; // 1000 us - 1, i.e. interrupt occurs every 1ms
     hal_tick_timer.Init.Prescaler         = hal_tick_timer_prescaler;
     hal_tick_timer.Init.ClockDivision     = TIM_CLOCKDIVISION_DIV1;

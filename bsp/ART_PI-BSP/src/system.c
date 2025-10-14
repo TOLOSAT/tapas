@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file    system_stm32h7xx.c
+ * @file    system.c
  * @author  MCD Application Team
  * @brief   CMSIS Cortex-Mx Device Peripheral Access Layer System Source File.
  *
@@ -32,21 +32,10 @@
  ******************************************************************************
  */
 
-/** @addtogroup CMSIS
- * @{
- */
-
-/** @addtogroup stm32h7xx_system
- * @{
- */
-
-/** @addtogroup STM32H7xx_System_Private_Includes
- * @{
- */
-
+#include <math.h>
 #include "stm32h7xx.h"
 #include "autoconf.h"
-#include <math.h>
+#include "system_stm32h7xx.h"
 
 #if !defined(HSE_VALUE)
 #define HSE_VALUE ((uint32_t)25000000) /*!< Value of the External oscillator in Hz */
@@ -59,22 +48,6 @@
 #if !defined(HSI_VALUE)
 #define HSI_VALUE ((uint32_t)64000000) /*!< Value of the Internal oscillator in Hz*/
 #endif                                 /* HSI_VALUE */
-
-/**
- * @}
- */
-
-/** @addtogroup STM32H7xx_System_Private_TypesDefinitions
- * @{
- */
-
-/**
- * @}
- */
-
-/** @addtogroup STM32H7xx_System_Private_Defines
- * @{
- */
 
 /************************* Miscellaneous Configuration ************************/
 /*!< Uncomment the following line if you need to use initialized data in D2 domain SRAM (AHB SRAM) */
@@ -98,47 +71,28 @@
 /******************************************************************************/
 
 /**
- * @}
+ * @brief System core clock frequency (Hz).
+ *
+ * Updated automatically when calling:
+ * - SystemCoreClockUpdate()
+ * - HAL_RCC_GetHCLKFreq()
+ * - HAL_RCC_ClockConfig()
  */
-
-/** @addtogroup STM32H7xx_System_Private_Macros
- * @{
- */
+uint32_t SystemCoreClock = 64000000;
 
 /**
- * @}
+ * @brief D2 domain clock frequency (Hz).
+ *
+ * Updated together with SystemCoreClock when the system clock changes.
  */
+uint32_t SystemD2Clock = 64000000;
 
-/** @addtogroup STM32H7xx_System_Private_Variables
- * @{
+/**
+ * @brief D1 domain core prescaler lookup table.
+ *
+ * Maps prescaler settings to shift values (division factors).
  */
-/* This variable is updated in three ways:
-    1) by calling CMSIS function SystemCoreClockUpdate()
-    2) by calling HAL API function HAL_RCC_GetHCLKFreq()
-    3) each time HAL_RCC_ClockConfig() is called to configure the system clock frequency
-       Note: If you use this function to configure the system clock; then there
-             is no need to call the 2 first functions listed above, since SystemCoreClock
-             variable is updated automatically.
-*/
-uint32_t SystemCoreClock           = 64000000;
-uint32_t SystemD2Clock             = 64000000;
 const uint8_t D1CorePrescTable[16] = { 0, 0, 0, 0, 1, 2, 3, 4, 1, 2, 3, 4, 6, 7, 8, 9 };
-
-/**
- * @}
- */
-
-/** @addtogroup STM32H7xx_System_Private_FunctionPrototypes
- * @{
- */
-
-/**
- * @}
- */
-
-/** @addtogroup STM32H7xx_System_Private_Functions
- * @{
- */
 
 /**
  * @brief  Setup the microcontroller system
@@ -229,7 +183,7 @@ void SystemInit(void)
     /* Disable all interrupts */
     RCC->CIER = 0x00000000;
 
-#if (STM32H7_DEV_ID == 0x450UL)
+#if defined(STM32H7_DEV_ID) && (STM32H7_DEV_ID == 0x450UL)
     /* dual core CM7 or single core line */
     if ((DBGMCU->IDCODE & 0xFFFF0000U) < 0x20000000U)
     {
@@ -305,9 +259,15 @@ void SystemInit(void)
  */
 void SystemCoreClockUpdate(void)
 {
-    uint32_t pllp, pllsource, pllm, pllfracen, hsivalue, tmp;
+    uint32_t pllp;
+    uint32_t pllsource;
+    uint32_t pllm;
+    uint32_t pllfracen;
+    uint32_t hsivalue;
+    uint32_t tmp;
     uint32_t common_system_clock;
-    float_t fracn1, pllvco;
+    float_t fracn1;
+    float_t pllvco;
 
     /* Get SYSCLK source -------------------------------------------------------*/
 
@@ -399,15 +359,3 @@ void SystemCoreClockUpdate(void)
 #endif
     SystemCoreClock = common_system_clock;
 }
-
-/**
- * @}
- */
-
-/**
- * @}
- */
-
-/**
- * @}
- */
