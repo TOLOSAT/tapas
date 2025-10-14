@@ -21,13 +21,6 @@ CHECKER_INCS = -I$(KERNEL_INCDIR) -I$(KERNEL_HEADERS) -I$(KERNEL_DIR)/bsp/$(BOAR
 CHECKER_DEFS = -D$(CHIP) -D$(CHIP_FAMILLY)
 CHECKER_LOGS = $(KERNEL_OBJDIR)/code-checking.log
 
-# Add system_%.h depending on the chip vendor (+ ST file name workaround)
-ifeq ($(CONFIG_CHIP_VENDOR), "ST")
-CHECKER_INCS += --include=$(CMSIS_INCDIR_DEVICE)/system_$(CONFIG_CHIP_FAMILLY)xx.h
-else
-CHECKER_INCS += --include=$(CMSIS_INCDIR_DEVICE)/system_$(CONFIG_CHIP).h
-endif
-
 # Add define indicating which core is used when dual core
 ifdef CONFIG_DUAL_CORE
 CHECKER_DEFS += -D$(CONFIG_CORE_SELECT)
@@ -42,11 +35,6 @@ CHECKER_CMDS += --addon=$(CONF_MISRA) # Check MISRA C compliancee if misra setti
 CHECKER_CMDS += --output-file=$(CHECKER_LOGS) # Print the result in a log file
 CHECKER_CMDS += --error-exitcode=1 # Returns 1 if cppcheck has encountered an error
 CHECKER_CMDS += --suppress=misra-c2012-11.5 # Suppression of this rule because its often use to pass parameters for callbacks inside the kernel
-
-# Workaround disabling MISRA rule 21.5 violation in system_stm32f4xx.h because of ST bad macro name
-ifeq ($(CONFIG_CHIP_FAMILLY), "STM32F4")
-CHECKER_CMDS += --suppress=misra-c2012-21.1:$(CMSIS_INCDIR_DEVICE)/system_$(CONFIG_CHIP_FAMILLY)xx.h
-endif
 
 # Checker recipes
 verif : autoconf conf-files

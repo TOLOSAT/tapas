@@ -58,12 +58,12 @@ extern const VECTOR_TABLE_Type isr_vectors[256];
 /**
  * @brief System core clock frequency (Hz).
  */
-uint32_t SystemCoreClock = SYSTEM_CLOCK; /* System Core Clock Frequency */
+uint32_t SystemCoreClock = SYSTEM_CLOCK; // cppcheck-suppress misra-c2012-8.4; Present in CMSDK_CM7.h
 
 /*----------------------------------------------------------------------------
   System Core Clock update function
  *----------------------------------------------------------------------------*/
-void SystemCoreClockUpdate(void)
+void SystemCoreClockUpdate(void) // cppcheck-suppress misra-c2012-8.4; Present in CMSDK_CM7.h
 {
     SystemCoreClock = SYSTEM_CLOCK;
 }
@@ -71,7 +71,7 @@ void SystemCoreClockUpdate(void)
 /*----------------------------------------------------------------------------
   System initialization function
  *----------------------------------------------------------------------------*/
-void SystemInit(void)
+void SystemInit(void) // cppcheck-suppress misra-c2012-8.4; Present in CMSDK_CM7.h
 {
 #if defined(__VTOR_PRESENT) && (__VTOR_PRESENT == 1U)
     SCB->VTOR = (uint32_t)&(isr_vectors[0]);

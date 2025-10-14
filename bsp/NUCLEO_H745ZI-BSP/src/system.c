@@ -90,21 +90,22 @@
  * - HAL_RCC_GetHCLKFreq()
  * - HAL_RCC_ClockConfig()
  */
-uint32_t SystemCoreClock = 64000000;
+uint32_t SystemCoreClock = 64000000; // cppcheck-suppress misra-c2012-8.4; Present in system_stm32h7xx.h
 
 /**
  * @brief D2 domain clock frequency (Hz).
  *
  * Updated together with SystemCoreClock when the system clock changes.
  */
-uint32_t SystemD2Clock = 64000000;
+uint32_t SystemD2Clock = 64000000; // cppcheck-suppress misra-c2012-8.4; Present in system_stm32h7xx.h
 
 /**
  * @brief D1 domain core prescaler lookup table.
  *
  * Maps prescaler settings to shift values (division factors).
  */
-const uint8_t D1CorePrescTable[16] = { 0, 0, 0, 0, 1, 2, 3, 4, 1, 2, 3, 4, 6, 7, 8, 9 };
+const uint8_t D1CorePrescTable[16] = { 0, 0, 0, 0, 1, 2, 3, 4, 1, 2, 3, 4, 6, 7, 8, 9 }; // cppcheck-suppress misra-c2012-8.4; Present in
+                                                                                         // system_stm32h7xx.h
 
 /**
  * @brief  Setup the microcontroller system
@@ -113,7 +114,7 @@ const uint8_t D1CorePrescTable[16] = { 0, 0, 0, 0, 1, 2, 3, 4, 1, 2, 3, 4, 6, 7,
  * @param  None
  * @retval None
  */
-void SystemInit(void)
+void SystemInit(void) // cppcheck-suppress misra-c2012-8.4; Present in system_stm32h7xx.h
 {
 /* FPU settings ------------------------------------------------------------*/
 #if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
@@ -259,7 +260,7 @@ void SystemInit(void)
  * @param  None
  * @retval None
  */
-void SystemCoreClockUpdate(void)
+void SystemCoreClockUpdate(void) // cppcheck-suppress misra-c2012-8.4; Present in system_stm32h7xx.h
 {
     uint32_t pllp;
     uint32_t pllsource;
