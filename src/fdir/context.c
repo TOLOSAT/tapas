@@ -10,8 +10,8 @@
 
 #include <string.h>
 
-#include "system/context.h"
-#include "system/sysinfo.h"
+#include "fdir/context.h"
+#include "mc/info.h"
 #include "drv/memories.h"
 #include "fdir/fdir.h"
 

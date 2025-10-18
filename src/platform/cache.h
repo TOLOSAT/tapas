@@ -1,7 +1,7 @@
 /**
- * @file    sysmon.h
+ * @file    cache.h
  * @author  Merlin Kooshmanian
- * @brief   Header file for system monitoring handling
+ * @brief   Header file for CACHE functions
  *
  * @copyright Copyright (c) TOLOSAT 2025
  */
@@ -9,15 +9,15 @@
 /**
  * @defgroup kernel Kernel
  * @{
- * @defgroup system System
+ * @defgroup platform Platform
  * @{
- * @defgroup sysmon System Monitoring
- * @brief Provides system monitoring handling interface.
+ * @defgroup cache Cache
+ * @brief Cache interface.
  * @{
  */
 
-#ifndef SYSMON_H
-#define SYSMON_H
+#ifndef CACHE_H
+#define CACHE_H
 
 /******************************* Include Files *******************************/
 
@@ -30,15 +30,11 @@
 
 /*************************** Variables Declarations **************************/
 
-extern systemUsage_t g_system_usage;
-extern taskUsage_t g_task_usages[CONFIG_MAX_NB_TASKS];
-
 /*************************** Functions Declarations **************************/
 
-extern void InitSYSMON(void);
-extern void SYSMONMain(void);
+extern void InitCache(void);
 
-#endif /* SYSMON_H */
+#endif /* CACHE_H */
 
 /**
  * @}

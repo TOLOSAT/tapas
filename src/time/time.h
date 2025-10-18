@@ -1,7 +1,7 @@
 /**
- * @file    context.h
- * @author  Théo Bessel
- * @brief   Header file for Context API
+ * @file    time.h
+ * @author  Merlin Kooshmanian
+ * @brief   Header file for Time Management
  *
  * @copyright Copyright (c) TOLOSAT 2025
  */
@@ -9,22 +9,20 @@
 /**
  * @defgroup kernel Kernel
  * @{
- * @defgroup system System
+ * @defgroup time Time
  * @{
- * @defgroup context Context
- * @brief Interface for saving and restoring kernel context.
+ * @defgroup time_handling Time Handling
+ * @brief Time handling interface.
  * @{
  */
 
-#ifndef CONTEXT_H
-#define CONTEXT_H
+#ifndef TIME_H
+#define TIME_H
 
 /******************************* Include Files *******************************/
 
 #include "autoconf.h"
 #include "kernel_types.h"
-#include "fdir/fdir.h"
-#include "system/sysinfo.h"
 
 /***************************** Macros Definitions ****************************/
 
@@ -34,12 +32,14 @@
 
 /*************************** Functions Declarations **************************/
 
-extern void InitContext(void);
-extern returnCode_t ReadContext(context_t *context);
-extern returnCode_t WriteContext(context_t *context);
-extern returnCode_t EraseContext(void);
+extern tick_t GetTick(void);
+extern void Sleep(tick_t tick);
+extern void SleepPeriodic(void);
+extern time_t GetTime(void);
+extern returnCode_t SetTime(time_t time);
+extern uint32_t GetTickFreq(void);
 
-#endif /* CONTEXT_H */
+#endif /* TIME_H */
 
 /**
  * @}

@@ -8,7 +8,7 @@
 
 /******************************* Include Files *******************************/
 
-#include "system/mpu.h"
+#include "platform/mpu.h"
 #include "bsp.h"
 
 #if defined(CONFIG_MPU)

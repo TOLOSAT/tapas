@@ -11,8 +11,7 @@
 
 #include "fdir/stacktrace.h"
 #include "core/tasks.h"
-#include "system/console.h"
-#include "system/sysleds.h"
+#include "mc/console.h"
 #include "utils/log.h"
 #include "bsp.h"
 

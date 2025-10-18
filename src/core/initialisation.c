@@ -19,15 +19,15 @@
 #include "drv/others/drv_rtc.h"
 #include "drv/others/drv_wdg.h"
 #include "fdir/fdir.h"
-#include "core/fs.h"
-#include "system/cache.h"
-#include "system/console.h"
-#include "system/context.h"
-#include "system/mpu.h"
-#include "system/sysinfo.h"
-#include "system/sysleds.h"
-#include "system/sysmon.h"
-#include "system/syswdg.h"
+#include "fdir/context.h"
+#include "fs/fs.h"
+#include "platform/cache.h"
+#include "platform/mpu.h"
+#include "platform/wdg.h"
+#include "mc/console.h"
+#include "mc/info.h"
+#include "mc/indicators.h"
+#include "mc/mon.h"
 #include "utils/log.h"
 
 /***************************** Macros Definitions ****************************/
@@ -60,7 +60,7 @@ void init(void)
     BSPLateInit();
 
     // System LEDs Initialisation
-    InitSysLEDs();
+    InitIndicators();
 
     // Peripherals Initialisation
     InitPeripherals();

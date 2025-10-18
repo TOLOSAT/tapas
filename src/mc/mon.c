@@ -1,5 +1,5 @@
 /**
- * @file    sysmon.h
+ * @file    mon.h
  * @author  Merlin Kooshmanian
  * @brief   Source file for system monitoring handling
  *
@@ -8,12 +8,12 @@
 
 /******************************* Include Files *******************************/
 
-#include "system/sysmon.h"
+#include "mc/mon.h"
 #include "core/tasks.h"
 #include "drv/others/drv_tim.h"
 #include "fdir/fdir.h"
-#include "system/console.h"
-#include "system/sysleds.h"
+#include "mc/console.h"
+#include "mc/indicators.h"
 #include "utils/log.h"
 
 /***************************** Macros Definitions ****************************/

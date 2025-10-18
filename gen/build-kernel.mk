@@ -78,7 +78,7 @@ $(PRE_BUILD_DIR)/%.o  : $(PRE_BUILD_DIR)/%.c
 	@mkdir -p $(@D)
 	@$(CC) $(KERNEL_CFLAGS) $(KERNEL_INCFLAGS) $< -o $@
 
-$(KERNEL_OBJDIR)/src/system/sysinfo.o : $(KERNEL_DIR)/src/system/sysinfo.c
+$(KERNEL_OBJDIR)/src/mc/info.o : $(KERNEL_DIR)/src/mc/info.c
 	@echo "  CC  $(@F)"
 	@mkdir -p $(@D)
 	@$(CC) $(KERNEL_CFLAGS) $(SYSTEM_DEFINES) $(KERNEL_INCFLAGS) $< -o $@

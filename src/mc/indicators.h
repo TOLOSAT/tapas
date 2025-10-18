@@ -1,7 +1,7 @@
 /**
- * @file    cache.h
+ * @file    indicators.h
  * @author  Merlin Kooshmanian
- * @brief   Header file for CACHE functions
+ * @brief   Header file for system indicators (such as LED) handling
  *
  * @copyright Copyright (c) TOLOSAT 2025
  */
@@ -9,15 +9,15 @@
 /**
  * @defgroup kernel Kernel
  * @{
- * @defgroup system System
+ * @defgroup mc Monitoring & Control
  * @{
- * @defgroup cache Cache
- * @brief Cache interface.
+ * @defgroup indicators Indicators
+ * @brief Provides system indicators handling.
  * @{
  */
 
-#ifndef CACHE_H
-#define CACHE_H
+#ifndef INDICATORS_H
+#define INDICATORS_H
 
 /******************************* Include Files *******************************/
 
@@ -32,9 +32,11 @@
 
 /*************************** Functions Declarations **************************/
 
-extern void InitCache(void);
+extern void InitIndicators(void);
+extern void LEDStatToggle(void);
+extern void LEDErrorOn(void);
 
-#endif /* CACHE_H */
+#endif /* INDICATORS_H */
 
 /**
  * @}

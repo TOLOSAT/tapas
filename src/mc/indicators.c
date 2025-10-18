@@ -1,14 +1,14 @@
 /**
- * @file    sysleds.c
+ * @file    indicators.c
  * @author  Merlin Kooshmanian
- * @brief   Source file for system LEDs handling
+ * @brief   Header file for system indicators (such as LED) handling
  *
  * @copyright Copyright (c) TOLOSAT 2025
  */
 
 /******************************* Include Files *******************************/
 
-#include "system/sysleds.h"
+#include "mc/indicators.h"
 #include "drv/peripherals.h"
 #include "fdir/fdir.h"
 
@@ -53,11 +53,11 @@ extern gpioInst_t led_error_inst;
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      InitSysLEDs(void)
+ * @fn      InitIndicators(void)
  * @brief   Function that initialises the system leds (used for debug)
  * @return  Nothing
  */
-void InitSysLEDs(void)
+void InitIndicators(void)
 {
     returnCode_t return_value;
 

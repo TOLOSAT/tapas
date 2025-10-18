@@ -10,10 +10,10 @@
 /******************************* Include Files *******************************/
 
 #include "fdir/fdir.h"
+#include "fdir/context.h"
 #include "core/tasks.h"
-#include "system/context.h"
-#include "system/console.h"
-#include "system/sysleds.h"
+#include "mc/console.h"
+#include "mc/indicators.h"
 #include "utils/log.h"
 #include "bsp.h"
 

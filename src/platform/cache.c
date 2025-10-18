@@ -8,7 +8,7 @@
 
 /******************************* Include Files *******************************/
 
-#include "system/cache.h"
+#include "platform/cache.h"
 #include "bsp.h"
 
 /***************************** Macros Definitions ****************************/

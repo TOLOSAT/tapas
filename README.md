@@ -116,6 +116,7 @@ The kernel is written entirely in **C** and developed according to best practice
 | ECSS    | European Cooperation for Space Standardization     |
 | FDIR    | Failure Detection, Isolation and Recovery          |
 | HAL     | Hardware Abstraction Layer                         |
+| MC      | Monitoring & Control                               |
 | NVM     | Non-Volatile Memory                                |
 | OS      | Operating System                                   |
 | PUS     | Packet Utilization Standard                        |
@@ -128,5 +129,6 @@ The kernel is written entirely in **C** and developed according to best practice
 ## 9. Authors and Maintainers
 
 - **Merlin Kooshmanian** — Flight Software Architect
+- **Theo Bessel** — Flight Software Maintainer
 
 For technical questions, please contact the TOLOSAT Flight Software team.

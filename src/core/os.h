@@ -27,6 +27,8 @@
 
 /*************************** Variables Declarations **************************/
 
+extern const uint32_t syscall_vector[NB_SYSCALLS];
+
 /*************************** Functions Declarations **************************/
 
 extern void StartOS(void);

@@ -8,11 +8,11 @@
 
 /******************************* Include Files *******************************/
 
-#include "system/console.h"
-#include "core/time.h"
+#include "mc/console.h"
+#include "time/time.h"
 #include "core/tasks.h"
 #include "fdir/fdir.h"
-#include "core/fs.h"
+#include "fs/fs.h"
 #include "drv/peripherals.h"
 
 /***************************** Macros Definitions ****************************/

@@ -1,14 +1,14 @@
 /**
- * @file    syswdg.h
+ * @file    wdg.h
  * @author  Merlin Kooshmanian
- * @brief   Source file for system watchdog handling
+ * @brief   Source file for watchdog handling
  *
  * @copyright Copyright (c) TOLOSAT 2025
  */
 
 /******************************* Include Files *******************************/
 
-#include "system/syswdg.h"
+#include "platform/wdg.h"
 #include "core/tasks.h"
 #include "drv/others/drv_wdg.h"
 #include "fdir/fdir.h"

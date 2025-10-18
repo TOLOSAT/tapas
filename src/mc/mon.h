@@ -1,7 +1,7 @@
 /**
- * @file    mpu.h
+ * @file    mon.h
  * @author  Merlin Kooshmanian
- * @brief   Header file for MPU functions
+ * @brief   Header file for system monitoring handling
  *
  * @copyright Copyright (c) TOLOSAT 2025
  */
@@ -9,15 +9,15 @@
 /**
  * @defgroup kernel Kernel
  * @{
- * @defgroup system System
+ * @defgroup mc Monitoring & Control
  * @{
- * @defgroup mpu MPU
- * @brief Memory Protection Unit interface.
+ * @defgroup mon Monitoring
+ * @brief Provides system monitoring handling interface.
  * @{
  */
 
-#ifndef MPU_H
-#define MPU_H
+#ifndef MON_H
+#define MON_H
 
 /******************************* Include Files *******************************/
 
@@ -30,11 +30,15 @@
 
 /*************************** Variables Declarations **************************/
 
+extern systemUsage_t g_system_usage;
+extern taskUsage_t g_task_usages[CONFIG_MAX_NB_TASKS];
+
 /*************************** Functions Declarations **************************/
 
-extern void InitMPU(void);
+extern void InitSYSMON(void);
+extern void SYSMONMain(void);
 
-#endif /* MPU_H */
+#endif /* MON_H */
 
 /**
  * @}

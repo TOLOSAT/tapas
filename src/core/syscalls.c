@@ -11,6 +11,17 @@
 #include "autoconf.h"
 #include "kernel_types.h"
 
+#include "core/os.h"
+#include "time/time.h"
+#include "core/tasks.h"
+#include "core/buffers.h"
+#include "core/mutex.h"
+#include "core/devices.h"
+#include "core/signals.h"
+#include "core/timers.h"
+#include "mc/console.h"
+#include "fdir/fdir.h"
+
 /***************************** Macros Definitions ****************************/
 
 /*************************** Functions Declarations **************************/
@@ -44,6 +55,39 @@ extern void sys_ConsolePrint(const char *msg, signed int dnumber, unsigned int h
 extern void sys_SVCExit(void);
 
 /*************************** Variables Definitions ***************************/
+
+/**
+ * @brief Syscall Vector Table
+ */
+const uint32_t syscall_vector[NB_SYSCALLS] = {
+    (uint32_t)ErrorHandler,    // RESERVED DO NOT USE
+    (uint32_t)CheckError,      // SYSCALL_CHECK_ERROR
+    (uint32_t)Sleep,           // SYSCALL_SLEEP
+    (uint32_t)SleepPeriodic,   // SYSCALL_SLEEP_PERIODIC
+    (uint32_t)GetTick,         // SYSCALL_GET_TICK
+    (uint32_t)GetTime,         // SYSCALL_GET_TIME
+    (uint32_t)SetTime,         // SYSCALL_SET_TIME
+    (uint32_t)GetTickFreq,     // SYSCALL_GET_TICK_FREQ
+    (uint32_t)DeviceOpen,      // SYSCALL_DEVICE_OPEN
+    (uint32_t)DeviceWrite,     // SYSCALL_DEVICE_WRITE
+    (uint32_t)DeviceRead,      // SYSCALL_DEVICE_READ
+    (uint32_t)DeviceIoctl,     // SYSCALL_DEVICE_IOCTL
+    (uint32_t)DeviceClose,     // SYSCALL_DEVICE_CLOSE
+    (uint32_t)GetCurrentTask,  // SYSCALL_GET_CURRENT_TASK
+    (uint32_t)SuspendTask,     // SYSCALL_SUSPEND_TASK
+    (uint32_t)ResumeTask,      // SYSCALL_RESUME_TASK
+    (uint32_t)GetTaskPriority, // SYSCALL_GET_TASK_PRIORITY
+    (uint32_t)SetTaskPriority, // SYSCALL_SET_TASK_PRIORITY
+    (uint32_t)AcquireMutex,    // SYSCALL_ACQUIRE_MUTEX
+    (uint32_t)ReleaseMutex,    // SYSCALL_RELEASE_MUTEX
+    (uint32_t)SendSignal,      // SYSCALL_SEND_SIGNAL
+    (uint32_t)WaitSignal,      // SYSCALL_WAIT_SIGNAL
+    (uint32_t)StartTimer,      // SYSCALL_START_TIMER
+    (uint32_t)PauseTimer,      // SYSCALL_PAUSE_TIMER
+    (uint32_t)ResumeTimer,     // SYSCALL_RESUME_TIMER
+    (uint32_t)SetTimer,        // SYSCALL_SET_TIMER
+    (uint32_t)ConsolePrint,    // SYSCALL_CONSOLE_PRINT
+};
 
 /************************** System Calls Definitions *************************/
 

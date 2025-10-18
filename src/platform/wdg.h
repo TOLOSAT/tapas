@@ -1,7 +1,7 @@
 /**
- * @file    sysleds.h
+ * @file    wdg.h
  * @author  Merlin Kooshmanian
- * @brief   Header file for system LEDs handling
+ * @brief   Header file for watchdog handling
  *
  * @copyright Copyright (c) TOLOSAT 2025
  */
@@ -9,15 +9,15 @@
 /**
  * @defgroup kernel Kernel
  * @{
- * @defgroup system System
+ * @defgroup platform Platform
  * @{
- * @defgroup sysleds System LED
- * @brief Provides system LED handling.
+ * @defgroup wdg Watchdog
+ * @brief Provides system watchdog handling interface.
  * @{
  */
 
-#ifndef SYSLEDS_H
-#define SYSLEDS_H
+#ifndef WDG_H
+#define WDG_H
 
 /******************************* Include Files *******************************/
 
@@ -32,11 +32,10 @@
 
 /*************************** Functions Declarations **************************/
 
-extern void InitSysLEDs(void);
-extern void LEDStatToggle(void);
-extern void LEDErrorOn(void);
+extern void InitSYSWDG(void);
+extern void SYSWDGMain(void);
 
-#endif /* SYSLEDS_H */
+#endif /* WDG_H */
 
 /**
  * @}

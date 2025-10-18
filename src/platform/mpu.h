@@ -1,7 +1,7 @@
 /**
- * @file    syswdg.h
+ * @file    mpu.h
  * @author  Merlin Kooshmanian
- * @brief   Header file for system watchdog handling
+ * @brief   Header file for MPU functions
  *
  * @copyright Copyright (c) TOLOSAT 2025
  */
@@ -9,15 +9,15 @@
 /**
  * @defgroup kernel Kernel
  * @{
- * @defgroup system System
+ * @defgroup platform Platform
  * @{
- * @defgroup syswdg System Watchdog
- * @brief Provides system watchdog handling interface.
+ * @defgroup mpu MPU
+ * @brief Memory Protection Unit interface.
  * @{
  */
 
-#ifndef SYSWDG_H
-#define SYSWDG_H
+#ifndef MPU_H
+#define MPU_H
 
 /******************************* Include Files *******************************/
 
@@ -32,10 +32,9 @@
 
 /*************************** Functions Declarations **************************/
 
-extern void InitSYSWDG(void);
-extern void SYSWDGMain(void);
+extern void InitMPU(void);
 
-#endif /* SYSWDG_H */
+#endif /* MPU_H */
 
 /**
  * @}

@@ -24,7 +24,7 @@
 #include "autoconf.h"
 #include "kernel_types.h"
 #include "core/buffers.h"
-#include "core/fs.h"
+#include "fs/fs.h"
 #include "drv/peripherals.h"
 
 /***************************** Macros Definitions ****************************/

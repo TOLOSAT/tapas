@@ -9,7 +9,7 @@
 /**
  * @defgroup kernel Kernel
  * @{
- * @defgroup system System
+ * @defgroup mc Monitoring & Control
  * @{
  * @defgroup console Console
  * @brief Interface for printing and LOGging messages.

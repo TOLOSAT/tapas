@@ -1,5 +1,5 @@
 /**
- * @file    sysinfo.h
+ * @file    info.h
  * @author  Merlin Kooshmanian
  * @brief   Header defining system information handling
  *
@@ -9,9 +9,9 @@
 /**
  * @defgroup kernel Kernel
  * @{
- * @defgroup system System
+ * @defgroup mc Monitoring & Control
  * @{
- * @defgroup sysinfo System Information
+ * @defgroup info System Information
  * @brief Provides hardcoded system information.
  * @{
  */
