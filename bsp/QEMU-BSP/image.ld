@@ -49,10 +49,10 @@ SECTIONS
     } >SRAM1
 
     /* ARM exception handling indexes goes after protected text memory */
-    .ARM.eidx : {
+    .ARM.exidx : {
         . = ALIGN(4);
         __exidx_start = .;
-        *(.ARM.exidx*)
+        *(.ARM.exidx* .gnu.linkonce.armexidx.*)
         . = ALIGN(0x20000); /* Align on 128KB for MPU RO region */
         __exidx_end = .;
     } >SRAM1

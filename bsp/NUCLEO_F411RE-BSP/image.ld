@@ -45,10 +45,10 @@ SECTIONS
     } >FLASH
 
     /* ARM exception handling indexes goes after text memory */
-    .ARM.eidx : {
+    .ARM.exidx : {
         . = ALIGN(4);
         __exidx_start = .;
-        *(.ARM.exidx*)
+        *(.ARM.exidx* .gnu.linkonce.armexidx.*)
         . = ALIGN(4);
         __exidx_end = .;
     } >FLASH
