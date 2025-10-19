@@ -69,7 +69,6 @@ void CreateTimers(void)
  * @param[in]   timer  The ID of the timer to start
  * @retval      #RET_INVALID_PARAM if the timer is not a valid timer.
  * @retval      #RET_SUCCESSFUL if the timer failed to start
- * @retval      #RET_ERROR else
  */
 returnCode_t StartTimer(timerNo_t timer)
 {
@@ -82,7 +81,7 @@ returnCode_t StartTimer(timerNo_t timer)
         BaseType_t test_timer = xTimerStart(TIMER_DESC(timer).handle, 0);
         if (test_timer != pdPASS)
         {
-            return_value = RET_ERROR;
+            KernelPanic();
         }
     }
     else
@@ -98,7 +97,6 @@ returnCode_t StartTimer(timerNo_t timer)
  * @param[in]   timer  The ID of the timer to pause
  * @retval      #RET_INVALID_PARAM if the timer is not a valid timer.
  * @retval      #RET_SUCCESSFUL if the timer failed to pause
- * @retval      #RET_ERROR else
  *
  * This function does not support timeout.
  */
@@ -118,7 +116,7 @@ returnCode_t PauseTimer(timerNo_t timer)
         }
         else
         {
-            return_value = RET_ERROR;
+            KernelPanic();
         }
     }
     else
@@ -134,7 +132,6 @@ returnCode_t PauseTimer(timerNo_t timer)
  * @param[in]   timer  The ID of the timer to resume
  * @retval      #RET_INVALID_PARAM if the timer is not a valid timer.
  * @retval      #RET_INVALID_PARAM if the timer is in periodic mode.
- * @retval      #RET_ERROR if the timer failed to resume
  * @retval      #RET_SUCCESSFUL else
  */
 returnCode_t ResumeTimer(timerNo_t timer)
@@ -162,12 +159,12 @@ returnCode_t ResumeTimer(timerNo_t timer)
                 test_timer = xTimerStart(TIMER_DESC(timer).handle, 0);
                 if (test_timer != pdPASS)
                 {
-                    return_value = RET_ERROR;
+                    KernelPanic();
                 }
             }
             else
             {
-                return_value = RET_ERROR;
+                KernelPanic();
             }
         }
     }
@@ -188,7 +185,6 @@ returnCode_t ResumeTimer(timerNo_t timer)
  * @retval      #RET_INVALID_PARAM if the period is zero.
  * @retval      #RET_INVALID_PARAM if the mode is neither TIMER_ONESHOT nor TIMER_PERIODIC.
  * @retval      #RET_SUCCESSFUL if the timer failed to set its period
- * @retval      #RET_ERROR else
  */
 returnCode_t SetTimer(timerNo_t timer, tick_t period, timerMode_t mode)
 {
@@ -198,16 +194,23 @@ returnCode_t SetTimer(timerNo_t timer, tick_t period, timerMode_t mode)
     if ((IS_A_VALID_TIMER(timer)) && (GetCurrentTask() == TIMER_DESC(timer).owner) && (period != 0u)
         && ((mode == TIMER_ONESHOT) || (mode == TIMER_PERIODIC)))
     {
-        // First change timer period
+        // First change the reload mode
+        vTimerSetReloadMode(TIMER_DESC(timer).handle, mode);
+
+        // Then change timer period
         BaseType_t test_timer = xTimerChangePeriod(TIMER_DESC(timer).handle, period, 0);
         if (test_timer == pdPASS)
         {
-            // Then change the reload mode
-            vTimerSetReloadMode(TIMER_DESC(timer).handle, mode);
+            // Stop the timer because xTimerChangePeriod automatically starts the timers
+            test_timer = xTimerStop(TIMER_DESC(timer).handle, 0);
+            if (test_timer != pdPASS)
+            {
+                KernelPanic();
+            }
         }
         else
         {
-            return_value = RET_ERROR;
+            KernelPanic();
         }
     }
     else
