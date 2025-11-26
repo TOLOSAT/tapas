@@ -182,7 +182,7 @@ returnCode_t SetUpDMA(DMAHandleStruct_t *dma_handle, const DMAConf_t *const dma_
         dma_handle->Init.MemInc              = DMA_MINC_ENABLE;
         dma_handle->Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
         dma_handle->Init.MemDataAlignment    = DMA_MDATAALIGN_BYTE;
-        dma_handle->Init.Mode                = DMA_NORMAL;
+        dma_handle->Init.Mode                = (dma_conf->is_circular) ? DMA_CIRCULAR : DMA_NORMAL;
         dma_handle->Init.Priority            = DMA_PRIORITY_LOW;
         dma_handle->Init.FIFOMode            = DMA_FIFOMODE_DISABLE;
 
