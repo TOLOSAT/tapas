@@ -3,7 +3,7 @@
  * @author  Merlin Kooshmanian
  * @brief   Source file defining devices
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /******************************* Include Files *******************************/

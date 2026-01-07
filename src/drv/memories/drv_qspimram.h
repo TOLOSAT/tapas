@@ -3,7 +3,7 @@
  * @author  Merlin Kooshmanian
  * @brief   Header file for QSPI_MRAM flash memory using QSPI bus
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /**

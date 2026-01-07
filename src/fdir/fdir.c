@@ -4,7 +4,7 @@
  * @author  Théo Bessel
  * @brief   Source file for Failure Detection, Identification and Recovery (FDIR).
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /******************************* Include Files *******************************/

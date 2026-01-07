@@ -3,7 +3,7 @@
  * @author  Merlin Kooshmanian
  * @brief   OS API header file
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 #ifndef OS_H

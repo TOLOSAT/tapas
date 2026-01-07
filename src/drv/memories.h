@@ -4,7 +4,7 @@
  * @author  Merlin Kooshmanian
  * @brief   Header file for memory driver functions
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /**

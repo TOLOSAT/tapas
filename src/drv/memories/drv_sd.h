@@ -3,7 +3,7 @@
  * @author  Merlin Kooshmanian
  * @brief   Header file for SD card memory using SDIO bus
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /**

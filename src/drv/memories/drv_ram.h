@@ -3,7 +3,7 @@
  * @author  Merlin Kooshmanian
  * @brief   Header file for RAM-emulated memory
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /**

@@ -3,7 +3,7 @@
  * @author  Matteo Planchet
  * @brief   Header file for time conversions
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /**

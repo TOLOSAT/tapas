@@ -4,7 +4,7 @@
  * @author  Mathis Steinberger
  * @brief   Source file for WDG functions
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /******************************* Include Files *******************************/

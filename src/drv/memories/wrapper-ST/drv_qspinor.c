@@ -4,7 +4,7 @@
  * @author  Merlin Kooshmanian
  * @brief   Source file for QSPI_NOR flash memory using QSPI bus
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 #if !defined(STM32F411xE)

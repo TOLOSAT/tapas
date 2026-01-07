@@ -4,7 +4,7 @@
  * @author  Nell Truong
  * @brief   Header file defining timers
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /**

@@ -4,7 +4,7 @@
  * @author  Nell Truong
  * @brief   Source file defining timer
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /******************************* Include Files *******************************/

@@ -20,7 +20,7 @@ def generate_peripherals_conf(peripherals, output_directory):
  * @author  Auto-generated
  * @date    {current_date}
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /******************************* Include Files *******************************/
@@ -38,7 +38,7 @@ def generate_peripherals_conf(peripherals, output_directory):
  * @author  Auto-generated
  * @date    {current_date}
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 #ifndef PERIPHERALS_CONF_H
@@ -167,7 +167,7 @@ def generate_system_peripherals_conf(peripherals, output_directory):
  * @author  Auto-generated
  * @date    {current_date}
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /******************************* Include Files *******************************/
@@ -191,7 +191,7 @@ def generate_system_peripherals_conf(peripherals, output_directory):
  * @author  Auto-generated
  * @date    {current_date}
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 #ifndef SYSTEM_PERIPHERALS_CONF_H
@@ -303,7 +303,7 @@ def generate_memories_conf(memories, fs_mem, context_mem, output_directory):
  * @author  Auto-generated
  * @date    {current_date}
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /******************************* Include Files *******************************/
@@ -321,7 +321,7 @@ def generate_memories_conf(memories, fs_mem, context_mem, output_directory):
  * @author  Auto-generated
  * @date    {current_date}
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 #ifndef MEMORIES_CONF_H

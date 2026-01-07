@@ -3,7 +3,7 @@
  * @author  Merlin Kooshmanian
  * @brief   Source file for SD card memory over SPI bus
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /******************************* Include Files *******************************/

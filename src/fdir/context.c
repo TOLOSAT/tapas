@@ -3,7 +3,7 @@
  * @author  Théo Bessel
  * @brief   Source file for Context API
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /******************************* Include Files *******************************/

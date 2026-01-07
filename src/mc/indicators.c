@@ -3,7 +3,7 @@
  * @author  Merlin Kooshmanian
  * @brief   Header file for system indicators (such as LED) handling
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /******************************* Include Files *******************************/

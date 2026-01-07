@@ -20,7 +20,7 @@ def parse_config(config_file, output_dir):
  * @author  Auto-generated
  * @date    {current_date}
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 #ifndef AUTOCONF_H

@@ -3,7 +3,7 @@
  * @author  Merlin Kooshmanian
  * @brief   Source file for NAND memory using FMC
  *
- * @copyright Copyright (c) TOLOSAT 2025
+ * @copyright Copyright (c) TOLOSAT 2026
  */
 
 #if !defined(STM32F411xE)
