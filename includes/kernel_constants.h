@@ -125,6 +125,7 @@
 #define IOCTL_I2C_SET_SLAVE_ADDR      311u /**< I2C IO CTL set slave adress */
 #define IOCTL_SPI_SET_TX_MSG          312u /**< SPI IO CTL set transmit message (when doing a read) */
 #define IOCTL_OW_INIT_CONNECTION      313u /**< OW IO CTL init connection */
+#define IOCTL_UART_GET_RX_COUNTER     314u /**< UART IOCTL get remaining DMA transfer count for RX */
 
 #define IOCTL_MEMORY_GET_STATUS       400u /**< Memory IOCTL command for getting memory status */
 #define IOCTL_MEMORY_SYNC             401u /**< Memory IOCTL command for completing pending write process */
