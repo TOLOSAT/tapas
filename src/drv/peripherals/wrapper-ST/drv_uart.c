@@ -989,6 +989,7 @@ static void UartGenericIRQHandler(void *param)
     uartInst_t *uart_inst = (uartInst_t *)param;
 
     // Save pre-interrupt status
+    uint16_t rx_count = uart_inst->handle_struct.RxXferCount;
     HAL_UART_StateTypeDef tx_status = uart_inst->handle_struct.gState;
     HAL_UART_StateTypeDef rx_status = uart_inst->handle_struct.RxState;
 
@@ -1010,6 +1011,16 @@ static void UartGenericIRQHandler(void *param)
         if (uart_inst->callback_tx_completed != NULL)
         {
             uart_inst->callback_tx_completed(uart_inst->callback_tx_completed_param);
+        }
+    }
+    // In circular mode call the callback for every rx event
+    if ((uart_inst->current_mode == DMA_MODE) && (uart_inst->p_conf->dma_rx.is_circular == true) && 
+        ((rx_count != uart_inst->handle_struct.RxXferCount) || ((uart_inst->handle_struct.RxEventType == HAL_UART_RXEVENT_TC) && (uart_inst->handle_struct.RxXferCount != 0))))
+    {
+        // RX completed
+        if (uart_inst->callback_rx_completed != NULL)
+        {
+            uart_inst->callback_rx_completed(uart_inst->callback_rx_completed_param);
         }
     }
 }
