@@ -209,20 +209,6 @@ returnCode_t BufferIoctl(bufferNo_t buffer, uint32_t cmd, void *data, uint32_t d
                     return_value = RET_INVALID_PARAM;
                 }
                 break;
-            case IOCTL_BUFFER_SET_WRITE_RX_INDEX :
-                if (data_size == sizeof(uint16_t)) {
-                    BUFFER_CONF(buffer).write_index_rx = *(uint16_t*)data;
-                } else {
-                    return_value = RET_INVALID_PARAM;
-                }
-                break;
-            case IOCTL_BUFFER_GET_WRITE_RX_INDEX :
-                if (data_size == sizeof(uint16_t)) {
-                    *(uint16_t*)data = BUFFER_CONF(buffer).write_index_rx;
-                } else {
-                    return_value = RET_INVALID_PARAM;
-                }
-                break;
             default :
                 return_value = RET_INVALID_PARAM;
                 break;
