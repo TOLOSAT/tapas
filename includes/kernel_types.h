@@ -96,7 +96,6 @@ typedef struct
     taskNo_t receiver; /**< @brief Task reference number of the receiver */
     length_t max_size; /**< @brief Maximum message size the buffer can handle */
     length_t max_nb;   /**< @brief Maximum number of message the buffer can handle */
-    uint16_t write_index_rx; /**< @brief Index where we are in RX buffer (circular mode) */
 } bufferConf_t;
 
 /*************************************/
