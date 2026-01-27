@@ -107,6 +107,9 @@
 #define IOCTL_BUFFER_GET_COUNT        100u /**< BUFFER IOCTL get buffer count (how many message are in the buffer) */
 #define IOCTL_BUFFER_GET_RECEIVER     101u /**< BUFFER IOCTL get buffer receiver */
 #define IOCTL_BUFFER_GET_SENDER       102u /**< BUFFER IOCTL get buffer sender */
+#define IOCTL_BUFFER_SET_WRITE_RX_INDEX 103u /**< BUFFER IOCTL to set the buffer rx index */
+#define IOCTL_BUFFER_GET_WRITE_RX_INDEX 104u /**< BUFFER IOCTL get buffer write index of RX for circular mode */
+
 
 #define IOCTL_FS_GET_SIZE             200u /**< FS IOCTL get file size */
 #define IOCTL_FS_SEEK                 201u /**< FS IOCTL moves read/write pointer in the file */
