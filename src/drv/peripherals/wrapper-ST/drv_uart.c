@@ -289,10 +289,10 @@ returnCode_t UartIoctl(uartInst_t *uart_inst, uint32_t cmd, void *data, uint32_t
                 return_value = UartStopRXTX(uart_inst);
                 break;
             case IOCTL_UART_GET_RX_COUNTER :
-                if ((data_size == sizeof(uint32_t)) && (data != NULL)
+                if ((data_size == sizeof(length_t)) && (data != NULL)
                         && (uart_inst->current_mode == DMA_MODE)) 
                 {
-                   *(uint32_t *)data = __HAL_DMA_GET_COUNTER(&uart_inst->dma_rx_handle_struct);
+                   *(length_t *)data = __HAL_DMA_GET_COUNTER(&uart_inst->dma_rx_handle_struct);
                 }
                 else 
                 {
