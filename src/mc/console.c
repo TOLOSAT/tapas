@@ -250,8 +250,8 @@ static void ConsoleUnlock(void)
 static const char *StringOfInt(int value, bool sign)
 {
     static char result[12];
-    int neg        = (value < 0);
-    unsigned int u = 0;
+    bool neg       = (value < 0);
+    unsigned int u = 0u;
     if (sign)
     {
         u = neg ? -value : value;
@@ -265,9 +265,9 @@ static const char *StringOfInt(int value, bool sign)
     // Get the digits
     do
     {
-        result[i++]  = (u % 10) + '0';
+        result[i++]  = (u % 10u) + '0';
         u           /= 10;
-    } while (u > 0);
+    } while (u > 0u);
 
     // Add '-' if number is negative
     if (neg)
@@ -279,7 +279,7 @@ static const char *StringOfInt(int value, bool sign)
     result[i] = '\0';
 
     // Revers the string
-    for (int j = 0; j < i / 2; ++j)
+    for (int j = 0; j < (i / 2); ++j)
     {
         char tmp          = result[j];
         result[j]         = result[i - j - 1];
@@ -305,11 +305,11 @@ static const char *StringOfHex(int value, bool uppercase)
     // Get the hex digits (in reverse order)
     do
     {
-        unsigned int digit  = u % 16;
+        unsigned int digit  = u % 16u;
         char a              = uppercase ? 'A' : 'a';
-        result[i++]         = (digit < 10) ? (digit + '0') : (digit - 10 + a);
-        u                  /= 16;
-    } while (u > 0);
+        result[i++]         = (digit < 10u) ? (digit + '0') : (digit - 10u + a);
+        u                  /= 16u;
+    } while (u > 0u);
 
     // Add the "0x" prefix
     result[i++] = 'x';
@@ -319,7 +319,7 @@ static const char *StringOfHex(int value, bool uppercase)
     result[i] = '\0';
 
     // Reverse the string
-    for (int j = 0; j < i / 2; ++j)
+    for (int j = 0; j < (i / 2); ++j)
     {
         char tmp          = result[j];
         result[j]         = result[i - j - 1];
@@ -344,9 +344,9 @@ static const char *StringOfOctal(int value)
     // Get the octal digits (in reverse order)
     do
     {
-        result[i++]  = (u % 8) + '0';
-        u           /= 8;
-    } while (u > 0);
+        result[i++]  = (u % 8u) + '0';
+        u           /= 8u;
+    } while (u > 0u);
 
     // Add the "0" prefix
     result[i++] = '0';
@@ -355,7 +355,7 @@ static const char *StringOfOctal(int value)
     result[i] = '\0';
 
     // Reverse the string
-    for (int j = 0; j < i / 2; ++j)
+    for (int j = 0; j < (i / 2); ++j)
     {
         char tmp          = result[j];
         result[j]         = result[i - j - 1];
