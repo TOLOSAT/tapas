@@ -368,7 +368,7 @@ static const char *StringOfOctal(int value)
 /**
  * @fn          StringOfTimestamp(void)
  * @brief       Function that prints the header of each line
- * @return      Nothing
+ * @return      The timestamp formated as a string
  *
  * Currently the header is the CUC time
  */
@@ -530,6 +530,12 @@ static void CheckConsoleSize(void)
     }
 }
 
+/**
+ * @fn          ConsolePrintString(const char *str)
+ * @brief       Function used to print a string
+ * @param[in]   str String that will be printed
+ * @return      Nothing
+ */
 static void ConsolePrintString(const char *str)
 {
     // Calls ConsolePrintChar for each char of the string until the null terminator is reached
@@ -610,6 +616,12 @@ static void CheckConsoleSize(void)
     // Nothing to do
 }
 
+/**
+ * @fn          ConsolePrintString(const char *str)
+ * @brief       Function used to print a string
+ * @param[in]   str String that will be printed
+ * @return      Nothing
+ */
 static void ConsolePrintString(const char *str)
 {
     // Calls ConsolePrintChar for each char of the string until the null terminator is reached
@@ -670,6 +682,12 @@ static void CheckConsoleSize(void)
     // Nothing to do
 }
 
+/**
+ * @fn          ConsolePrintString(const char *str)
+ * @brief       Function used to print a string
+ * @param[in]   str String that will be printed
+ * @return      Nothing
+ */
 static void ConsolePrintString(const char *str)
 {
     // Calls ConsolePrintChar for each char of the string until the null terminator is reached
@@ -738,6 +756,12 @@ static void CheckConsoleSize(void)
     // Nothing to do
 }
 
+/**
+ * @fn          ConsolePrintString(const char *str)
+ * @brief       Function used to print a string
+ * @param[in]   str String that will be printed
+ * @return      Nothing
+ */
 static void ConsolePrintString(const char *str)
 {
     // Calls ConsolePrintChar for each char of the string until the null terminator is reached
