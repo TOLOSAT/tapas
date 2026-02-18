@@ -28,7 +28,6 @@
 #include "mc/info.h"
 #include "mc/indicators.h"
 #include "mc/mon.h"
-#include "utils/log.h"
 
 /***************************** Macros Definitions ****************************/
 

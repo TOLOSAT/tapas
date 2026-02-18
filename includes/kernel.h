@@ -17,7 +17,6 @@
 /******************************* Include Files *******************************/
 
 #include "kernel_types.h"
-#include "utils/log.h"
 #include "utils/endianness.h"
 #include "utils/time_conversions.h"
 
@@ -82,7 +81,7 @@ extern returnCode_t StartTimer(timerNo_t timer);
 extern returnCode_t PauseTimer(timerNo_t timer);
 extern returnCode_t ResumeTimer(timerNo_t timer);
 extern returnCode_t SetTimer(timerNo_t timer, tick_t period, timerMode_t mode);
-extern void ConsolePrint(const char *msg, signed int dnumber, unsigned int hnumber, float fnumber, unsigned int fprecision);
+extern ATTR_CHECK_FORMAT void ConsolePrint(const char *fmt, ...);
 
 #endif /* KERNEL_H */
 
