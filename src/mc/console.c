@@ -123,7 +123,7 @@ extern ATTR_CHECK_FORMAT void ConsolePrint(const char *fmt, ...)
         ConsolePrintString(StringOfTimestamp());
 
         // Get the first arg after fmt from the function stack
-        uint32_t *argp = (uint32_t *)(&fmt + 1);
+        const uint32_t *argp = (const uint32_t *)(&fmt + 1);
 
         // Parse the format string
         while (*fmt)
@@ -162,7 +162,7 @@ extern ATTR_CHECK_FORMAT void ConsolePrint(const char *fmt, ...)
                         break;
                     // If format is %s then print a string
                     case 's' :
-                        ConsolePrintString((const char *)*argp++);
+                        ConsolePrintString((const char *)*argp++); // cppcheck-suppress misra-c2012-11.4; Required to get variadic args
                         break;
                     // If format is %c then print a char
                     case 'c' :
@@ -265,14 +265,16 @@ static const char *StringOfInt(int value, bool sign)
     // Get the digits
     do
     {
-        result[i++]  = (u % 10u) + '0';
-        u           /= 10;
+        result[i] = (u % 10u) + '0';
+        i++;
+        u /= 10;
     } while (u > 0u);
 
     // Add '-' if number is negative
     if (neg)
     {
-        result[i++] = '-';
+        result[i] = '-';
+        i++;
     }
 
     // End the string with '\0'
@@ -307,13 +309,15 @@ static const char *StringOfHex(int value, bool uppercase)
     {
         unsigned int digit  = u % 16u;
         char a              = uppercase ? 'A' : 'a';
-        result[i++]         = (digit < 10u) ? (digit + '0') : (digit - 10u + a);
+        result[i++]         = (digit < 10u) ? (digit + (unsigned int)'0') : (digit - 10u + (unsigned int)a);
         u                  /= 16u;
     } while (u > 0u);
 
     // Add the "0x" prefix
-    result[i++] = 'x';
-    result[i++] = '0';
+    result[i] = 'x';
+    i++;
+    result[i] = '0';
+    i++;
 
     // End the string
     result[i] = '\0';
@@ -344,12 +348,14 @@ static const char *StringOfOctal(int value)
     // Get the octal digits (in reverse order)
     do
     {
-        result[i++]  = (u % 8u) + '0';
-        u           /= 8u;
+        result[i] = (u % 8u) + '0';
+        i++;
+        u /= 8u;
     } while (u > 0u);
 
     // Add the "0" prefix
-    result[i++] = '0';
+    result[i] = '0';
+    i++;
 
     // End the string
     result[i] = '\0';
@@ -405,22 +411,28 @@ static const char *StringOfTimestamp(void)
     }
 
     // Print task no
-    uint32_t index            = 1u + (2u * sizeof(time_t));
-    timestamp_buffer[index++] = ',';
-    timestamp_buffer[index++] = '#';
+    uint32_t index          = 1u + (2u * sizeof(time_t));
+    timestamp_buffer[index] = ',';
+    index++;
+    timestamp_buffer[index] = '#';
+    index++;
 
     // Convert task number to string and append to buffer
     const char *task_str = StringOfInt(task, false);
     for (int j = 0; task_str[j] != '\0'; j++)
     {
-        timestamp_buffer[index++] = task_str[j];
+        timestamp_buffer[index] = task_str[j];
+        index++;
     }
 
     // Print header end
-    timestamp_buffer[index++] = ']';
-    timestamp_buffer[index++] = ':';
-    timestamp_buffer[index++] = ' ';
-    timestamp_buffer[index]   = '\0';
+    timestamp_buffer[index] = ']';
+    index++;
+    timestamp_buffer[index] = ':';
+    index++;
+    timestamp_buffer[index] = ' ';
+    index++;
+    timestamp_buffer[index] = '\0';
 
     return timestamp_buffer;
 }
