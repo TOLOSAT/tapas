@@ -11,7 +11,6 @@
 #include "mc/info.h"
 #include "fdir/context.h"
 #include "mc/console.h"
-#include "utils/log.h"
 
 /***************************** Macros Definitions ****************************/
 
@@ -56,52 +55,49 @@ void PrintSystemInfo(void)
 {
     context_t context = { 0 };
 
-    LOG("===============================================\n");
-    LOG("Welcome on " PROGRAM_NAME "\n");
-    LOG("System : " SYSTEM_NAME);
-    LOG_DECIMAL("  Major : %d", MAJOR);
-    LOG_DECIMAL("  Minor : %d", MINOR);
-    LOG_DECIMAL("  Patch : %d", PATCH);
-    LOG("  Build on " __DATE__ " at " __TIME__ ", for " BOARD "\n");
+    ConsolePrint("===============================================\n");
+    ConsolePrint("Welcome on %s\n", PROGRAM_NAME);
+    ConsolePrint("System : %s v%u.%u.%u\n", SYSTEM_NAME, MAJOR, MINOR, PATCH);
+    ConsolePrint("Built on %s at %s, for target %s\n", __DATE__, __TIME__, BOARD);
 
     if (ReadContext(&context) == RET_SUCCESSFUL)
     {
-        LOG("-----------------------------------------------\n");
-        LOG("System context :\n");
+        ConsolePrint("-----------------------------------------------\n");
+        ConsolePrint("System context :\n");
         if (context.state == SOFTWARE_STATE_NOMINAL)
         {
-            LOG("  State : Nominal\n");
+            ConsolePrint("  State : Nominal\n");
         }
         else if (context.state == SOFTWARE_STATE_SAFE)
         {
-            LOG("  State : Safe\n");
+            ConsolePrint("  State : Safe\n");
         }
         else
         {
-            LOG("  State : Unknown\n");
+            ConsolePrint("  State : Unknown\n");
         }
-        LOG_DECIMAL("  Safe software ID : %d\n", context.safe_software_id);
-        LOG_DECIMAL("  Nominal software ID : %d\n", context.nominal_software_id);
-        LOG_DECIMAL("  Boot count : %d\n", context.boot);
-        LOG_DECIMAL("  Critical error count : %d\n", context.critical_error);
+        ConsolePrint("  Safe software ID : %u\n", context.safe_software_id);
+        ConsolePrint("  Nominal software ID : %u\n", context.nominal_software_id);
+        ConsolePrint("  Boot count : %lu\n", context.boot);
+        ConsolePrint("  Critical error count : %lu\n", context.critical_error);
 
-        LOG_HEXDECIMAL("  CFSR : %x\n", context.cfsr);
-        LOG_HEXDECIMAL("  HFSR : %x\n", context.hfsr);
-        LOG_HEXDECIMAL("  R0 : %x\n", context.registers.r[0]);
-        LOG_HEXDECIMAL("  R1 : %x\n", context.registers.r[1]);
-        LOG_HEXDECIMAL("  R2 : %x\n", context.registers.r[2]);
-        LOG_HEXDECIMAL("  R3 : %x\n", context.registers.r[3]);
-        LOG_HEXDECIMAL("  R12 : %x\n", context.registers.r12);
-        LOG_HEXDECIMAL("  xPSR : %x\n", context.registers.xpsr);
-        LOG_HEXDECIMAL("  LR : %x\n", context.registers.lr);
-        LOG_HEXDECIMAL("  PC : %x\n", context.registers.pc);
+        ConsolePrint("  CFSR : %lx\n", context.cfsr);
+        ConsolePrint("  HFSR : %lx\n", context.hfsr);
+        ConsolePrint("  R0 : %lx\n", context.registers.r[0]);
+        ConsolePrint("  R1 : %lx\n", context.registers.r[1]);
+        ConsolePrint("  R2 : %lx\n", context.registers.r[2]);
+        ConsolePrint("  R3 : %lx\n", context.registers.r[3]);
+        ConsolePrint("  R12 : %lx\n", context.registers.r12);
+        ConsolePrint("  xPSR : %lx\n", context.registers.xpsr);
+        ConsolePrint("  LR : %lx\n", context.registers.lr);
+        ConsolePrint("  PC : %lx\n", context.registers.pc);
 
-        LOG("  Call stack :\n");
+        ConsolePrint("  Call stack :\n");
         for (uint32_t i = 0; i < context.call_stack.calls_nb; i++)
         {
-            LOG_HEXDECIMAL("    %x", context.call_stack.calls[i].function);
-            LOG_HEXDECIMAL("+%x\n", context.call_stack.calls[i].offset);
+            ConsolePrint("    %lx", context.call_stack.calls[i].function);
+            ConsolePrint("+%lx\n", context.call_stack.calls[i].offset);
         }
     }
-    LOG("===============================================\n");
+    ConsolePrint("===============================================\n");
 }

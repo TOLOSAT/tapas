@@ -14,7 +14,6 @@
 #include "core/tasks.h"
 #include "mc/console.h"
 #include "mc/indicators.h"
-#include "utils/log.h"
 #include "bsp.h"
 
 /***************************** Macros Definitions ****************************/
@@ -73,7 +72,7 @@ void CheckError(returnCode_t retcode)
     if (retcode == RET_ERROR)
     {
         // Indicates an error occured and system goes into error handler
-        LOG("System : KO\n");
+        ConsolePrint("System : KO\n");
 
         // Go to error handler
         ErrorHandler();

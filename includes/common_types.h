@@ -64,6 +64,12 @@
  */
 #define ATTR_SYSCALL       IN_SYSCALL_SECTION ATTR_NAKED
 
+/**
+ * @def     ATTR_CHECK_FORMAT
+ * @brief   Check printf-like function calls
+ */
+#define ATTR_CHECK_FORMAT  __attribute__((format(printf, 1, 2)))
+
 /*************************************/
 /************** SECTIONS *************/
 /*************************************/

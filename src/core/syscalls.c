@@ -51,7 +51,7 @@ extern returnCode_t sys_StartTimer(timerNo_t timer);
 extern returnCode_t sys_PauseTimer(timerNo_t timer);
 extern returnCode_t sys_ResumeTimer(timerNo_t timer);
 extern returnCode_t sys_SetTimer(timerNo_t timer, tick_t period, timerMode_t mode);
-extern void sys_ConsolePrint(const char *msg, signed int dnumber, unsigned int hnumber, float fnumber, unsigned int fprecision);
+extern ATTR_CHECK_FORMAT void sys_ConsolePrint(const char *fmt, ...);
 extern void sys_SVCExit(void);
 
 /*************************** Variables Definitions ***************************/
@@ -762,17 +762,13 @@ returnCode_t ATTR_SYSCALL sys_SetTimer(timerNo_t timer, tick_t period, timerMode
 }
 
 /**
- * @fn      sys_ConsolePrint(const char *msg, signed int dnumber, unsigned int hnumber, float fnumber, unsigned int fprecision)
+ * @fn      sys_ConsolePrint(const char *fmt, ...)
  * @brief   Syscall declaration for ConsolePrint
  */
-void ATTR_SYSCALL sys_ConsolePrint(const char *msg, signed int dnumber, unsigned int hnumber, float fnumber, unsigned int fprecision)
+void ATTR_SYSCALL ATTR_CHECK_FORMAT sys_ConsolePrint(const char *fmt, ...)
 {
     // Ignore unused parameters
-    (void)(msg);
-    (void)(dnumber);
-    (void)(hnumber);
-    (void)(fnumber);
-    (void)(fprecision);
+    (void)(fmt);
 
     // Call SVC exception
     __asm volatile(" .extern ConsolePrint              \n" // Declare kernel function

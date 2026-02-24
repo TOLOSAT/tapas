@@ -22,12 +22,16 @@
 #if !defined(CONFIG_CONSOLE_NONE)
 static void ConsoleLock(void);
 static void ConsoleUnlock(void);
-static void ConsolePrintNumber(signed int number);
-static void ConsolePrintHex(unsigned int hex);
-static void ConsolePrintFloat(float number, unsigned int precision);
-static void ConsolePrintHeader(void);
+
+static const char *StringOfInt(int value, bool sign);
+static const char *StringOfHex(int value, bool uppercase);
+static const char *StringOfOctal(int value);
+
+static const char *StringOfTimestamp(void);
 static void ConsoleSpecificInit(void);
 static void CheckConsoleSize(void);
+
+static void ConsolePrintString(const char *str);
 static void ConsolePrintChar(char c);
 static void ConsoleSync(void);
 #endif
@@ -79,23 +83,36 @@ void CreateConsoleMutexes(void)
 }
 
 /**
- * @fn          ConsolePrint(const char *msg, signed int dnumber, unsigned int hnumber, float fnumber, unsigned int fprecision)
- * @brief       Print message in console
- * @param[in]   msg         Message we want to print
- * @param[in]   dnumber     Signed number, '%d' must be included in the message
- * @param[in]   hnumber     Hexadecimal number, '%x' must be included in the message
- * @param[in]   fnumber     Floating point number, '%f' must be included in the message
- * @param[in]   fprecision  Floating point number precision, it means how many digits will be printed after decimal seperator
+ * @fn          ConsolePrint(const char *fmt, ...)
+ * @brief       This function prints a string to the console following the
+ *              format passed as first argument and the values as other
+ *              arguments.
+ * @param[in]   fmt The format string
+ * @param[in]   ... The argument to replace in the format
  * @return      Nothing
+ *
+ * The types are checked compile time due to GCC attribute making this function
+ * safe to use for the ARMv7 ABI.
+ *
+ * The currently supported formats are:
+ *  - %u -> print usigned int
+ *  - %d -> print signed int
+ *  - %i -> print signed int
+ *  - %x -> print lowercase hex
+ *  - %X -> print uppercase hex
+ *  - %o -> print octal int
+ *  - %s -> print string
+ *  - %c -> print char
  */
-extern void ConsolePrint(const char *msg, signed int dnumber, unsigned int hnumber, float fnumber, unsigned int fprecision)
+extern ATTR_CHECK_FORMAT void ConsolePrint(const char *fmt, ...)
 {
 #if !defined(CONFIG_CONSOLE_NONE)
     // Print only if the console is initialised
     if (console_status == CONSOLE_INITIALISED)
     {
-        uint32_t line_index = 0u;
-        uint32_t i          = 0u;
+        // Declare two iterators: i to access fmt and j to acces the varargs
+        uint32_t i = 0;
+        uint32_t j = 0;
 
         // First lock the console
         ConsoleLock();
@@ -103,55 +120,76 @@ extern void ConsolePrint(const char *msg, signed int dnumber, unsigned int hnumb
         // Then Check the console size
         CheckConsoleSize();
 
-        // While there are still characters in the string
-        while (msg[i] != '\0')
+        // Print the timestamp
+        ConsolePrintString(StringOfTimestamp());
+
+        // Get the first arg after fmt from the function stack
+        const uint32_t *argp = (const uint32_t *)(&fmt + 1); // cppcheck-suppress misra-c2012-18.4; Required to get variadic args
+
+        // Parse the format string
+        while (fmt[i] != '\0')
         {
-            // If first char of the line, print the header
-            if (line_index == 0u)
+            if (fmt[i] == '%')
             {
-                ConsolePrintHeader();
-            }
+                // If format is %l_ then print a long number
+                if (fmt[i + 1u] == 'l')
+                {
+                    i++;
+                }
 
-            // Check for format specifiers
-            if ((msg[i] == '%') && (msg[i + 1u] == 'd'))
-            {
-                ConsolePrintNumber(dnumber);
-                i++; // Skip the format specifier
-            }
-            else if ((msg[i] == '%') && (msg[i + 1u] == 'x'))
-            {
-                ConsolePrintHex(hnumber);
-                i++; // Skip the format specifier
-            }
-            else if ((msg[i] == '%') && (msg[i + 1u] == 'f'))
-            {
-                ConsolePrintFloat(fnumber, fprecision);
-                i++; // Skip the format specifier
+                // In case it is a format, match the char after %
+                switch (fmt[i + 1u])
+                {
+                    // If format is %u then print an usigned int
+                    case 'u' :
+                        ConsolePrintString(StringOfInt(argp[j], false));
+                        j++;
+                        break;
+                    // If format is %d or %i then print a signed int
+                    case 'd' :
+                    case 'i' :
+                        ConsolePrintString(StringOfInt(argp[j], true));
+                        j++;
+                        break;
+                    // If format is %x then print a lowercase hex number
+                    case 'x' :
+                        ConsolePrintString(StringOfHex(argp[j], false));
+                        j++;
+                        break;
+                    // If format is %X then print an uppercase hex number
+                    case 'X' :
+                        ConsolePrintString(StringOfHex(argp[j], true));
+                        j++;
+                        break;
+                    // If format is %o then print an octal number
+                    case 'o' :
+                        ConsolePrintString(StringOfOctal(argp[j]));
+                        j++;
+                        break;
+                    // If format is %s then print a string
+                    case 's' :
+                        ConsolePrintString((const char *)argp[j]); // cppcheck-suppress misra-c2012-11.4; Required to print the variadic arg as a
+                                                                   // string
+                        j++;
+                        break;
+                    // If format is %c then print a char
+                    case 'c' :
+                        ConsolePrintChar((char)argp[j]);
+                        j++;
+                        break;
+                    // Else it is not a valid format so just print the char
+                    default :
+                        ConsolePrintChar(fmt[i + 1u]);
+                        break;
+                }
+                i++;
             }
             else
             {
-                // Print the character normally
-                ConsolePrintChar(msg[i]);
+                // Else the current string position is not a format so we just print the format string content
+                ConsolePrintChar(fmt[i]);
             }
-
-            // If the char was '\n' reset line_index
-            if (msg[i] == '\n')
-            {
-                line_index = 0u;
-            }
-            else
-            {
-                line_index++;
-            }
-
-            // Increment index of the message
             i++;
-        }
-
-        // Check if the last character is not '\n'
-        if ((i > 0u) && (msg[i - 1u] != '\n'))
-        {
-            ConsolePrintChar('\n'); // Add a newline if not already present
         }
 
         // Synchronise console
@@ -161,11 +199,7 @@ extern void ConsolePrint(const char *msg, signed int dnumber, unsigned int hnumb
         ConsoleUnlock();
     }
 #else
-    (void)(msg);
-    (void)(dnumber);
-    (void)(hnumber);
-    (void)(fnumber);
-    (void)(fprecision);
+    (void)(fmt);
 #endif /* CONFIG_CONSOLE_NONE */
 }
 
@@ -211,147 +245,169 @@ static void ConsoleUnlock(void)
 }
 
 /**
- * @fn          ConsolePrintNumber(signed int number)
- * @brief       Function used to print an signed integer
- * @param[in]   number  Number that will be printed
- * @return      Nothing
+ * @fn StringOfInt
+ * @brief This function converts an int to a string
+ * @param[in] value The int to convert
+ * @param[in] sign If the integer is signed
+ * @return A string representing the int given as input
  */
-void ConsolePrintNumber(signed int number)
+static const char *StringOfInt(int value, bool sign)
 {
-    int remaining_number = number;
-
-    // If number is zero print 0
-    if (remaining_number == 0)
+    static char result[12];
+    bool neg       = (value < 0);
+    unsigned int u = 0u;
+    if (sign)
     {
-        ConsolePrintChar('0');
+        u = neg ? -value : value;
     }
     else
     {
-        // Init string buffer
-        char buffer[12]; // 12 characters is sufficient to store a signed integer (absolute max value is 2147483648 which is 10 char + 1 sign char +
-                         // we add 1 char of margin)
-        int i = 0;
-
-        // Handle negative numbers
-        if (remaining_number < 0)
-        {
-            ConsolePrintChar('-');
-            remaining_number = -remaining_number;
-        }
-
-        // Convert the number to a string in reverse order
-        while (remaining_number > 0)
-        {
-            buffer[i]         = (remaining_number % 10) + '0';
-            remaining_number /= 10;
-            i++;
-        }
-
-        // Print the number in the correct order
-        while (i > 0)
-        {
-            i--;
-            ConsolePrintChar(buffer[i]);
-        }
+        u = (unsigned int)value;
     }
+    int i = 0;
+
+    // Get the digits
+    do
+    {
+        result[i] = (u % 10u) + '0';
+        i++;
+        u /= 10;
+    } while (u > 0u);
+
+    // Add '-' if number is negative
+    if (neg)
+    {
+        result[i] = '-';
+        i++;
+    }
+
+    // End the string with '\0'
+    result[i] = '\0';
+
+    // Revers the string
+    for (int j = 0; j < (i / 2); ++j)
+    {
+        char tmp          = result[j];
+        result[j]         = result[i - j - 1];
+        result[i - j - 1] = tmp;
+    }
+
+    return result;
 }
 
 /**
- * @fn          ConsolePrintHex(unsigned int hex)
- * @brief       Function used to print an hexadecimal number
- * @param[in]   hex Number that will be printed
- * @return      Nothing
+ * @fn StringOfHex
+ * @brief This function converts an int to a hexadecimal string
+ * @param[in] value The int to convert
+ * @param[in] uppercase If the hex output uses upercase
+ * @return A string representing the int in hexadecimal format
  */
-static void ConsolePrintHex(unsigned int hex)
+static const char *StringOfHex(int value, bool uppercase)
 {
-    // Print hex start
-    ConsolePrintChar('0');
-    ConsolePrintChar('x');
+    static char result[11]; // "0x" + 8 hex digits + '\0' = 11
+    unsigned int u = (unsigned int)value;
+    int i          = 0;
 
-    // Print each hexadecimal digit
-    for (uint32_t i = 1u; i <= (2u * sizeof(unsigned int)); i++)
+    // Get the hex digits (in reverse order)
+    do
     {
-        // Compute position of the 4 bits that will be printed
-        uint32_t shift = 4u * ((2u * sizeof(unsigned int)) - i);
+        unsigned int digit = u % 16u;
+        unsigned int base  = 0u;
 
-        // Extract the current hex digit by shifting and masking
-        uint8_t hex_digit = (uint8_t)((hex >> shift) & 0x000000000000000Fllu);
-
-        // Convert to character and print
-        if (hex_digit < 10u)
+        if (digit < 10u)
         {
-            ConsolePrintChar('0' + hex_digit);
+            base      = (unsigned int)'0';
+            result[i] = (char)(base + digit); // cppcheck-suppress misra-c2012-10.8; Here it's not breaking the code behaviour, in case there is a
+                                              // problem the print with just print an erroneor character.
         }
         else
         {
-            ConsolePrintChar('a' + (hex_digit - 10u));
+            base      = uppercase ? (unsigned int)'A' : (unsigned int)'a';
+            result[i] = (char)(base + (digit - 10u)); // cppcheck-suppress misra-c2012-10.8; Here it's not breaking the code behaviour, in case there
+                                                      // is a problem the print with just print an erroneor character.
         }
+
+        i++;
+        u /= 16u;
+
+    } while (u > 0u);
+
+    // Add the "0x" prefix
+    result[i] = 'x';
+    i++;
+    result[i] = '0';
+    i++;
+
+    // End the string
+    result[i] = '\0';
+
+    // Reverse the string
+    for (int j = 0; j < (i / 2); ++j)
+    {
+        char tmp          = result[j];
+        result[j]         = result[i - j - 1];
+        result[i - j - 1] = tmp;
     }
+
+    return result;
 }
 
 /**
- * @fn          ConsolePrintFloat(float number, unsigned int precision)
- * @brief       Function used to print a floating point number with specified precision
- * @param[in]   number    Number that will be printed
- * @param[in]   precision Number of digits after the decimal point
- * @return      Nothing
+ * @fn StringOfOctal
+ * @brief This function converts an int to an octal string
+ * @param[in] value The int to convert
+ * @return A string representing the int in octal format
  */
-static void ConsolePrintFloat(float number, unsigned int precision)
+static const char *StringOfOctal(int value)
 {
-    int integerPart      = 0;
-    float fractionalPart = 0.0f;
+    static char result[14]; // "0" + up to 11 octal digits for 32-bit + '\0'
+    unsigned int u = (unsigned int)value;
+    int i          = 0;
 
-    // Check the sign
-    if (number < 0.0f)
+    // Get the octal digits (in reverse order)
+    do
     {
-        // Number is negative
-        ConsolePrintChar('-');
-        integerPart    = (int)(-number);
-        fractionalPart = (-number) - (float)integerPart;
-    }
-    else
+        result[i] = (u % 8u) + '0';
+        i++;
+        u /= 8u;
+    } while (u > 0u);
+
+    // Add the "0" prefix
+    result[i] = '0';
+    i++;
+
+    // End the string
+    result[i] = '\0';
+
+    // Reverse the string
+    for (int j = 0; j < (i / 2); ++j)
     {
-        // Number is positive
-        integerPart    = (int)number;
-        fractionalPart = number - (float)integerPart;
+        char tmp          = result[j];
+        result[j]         = result[i - j - 1];
+        result[i - j - 1] = tmp;
     }
 
-    // Print the integer part
-    ConsolePrintNumber(integerPart);
-
-    // Print the decimal point
-    ConsolePrintChar('.');
-
-    // Print the fractional part
-    for (unsigned int i = 0; i < precision; i++)
-    {
-        // Move the next digit to the integer part
-        fractionalPart *= 10.0f;
-        int digit       = (int)fractionalPart;
-
-        // Print the digit
-        ConsolePrintChar('0' + digit);
-
-        // Remove the printed digit from the fractional part
-        fractionalPart -= (float)digit;
-    }
+    return result;
 }
 
 /**
- * @fn          ConsolePrintHeader
+ * @fn          StringOfTimestamp(void)
  * @brief       Function that prints the header of each line
- * @return      Nothing
+ * @return      The timestamp formated as a string
  *
  * Currently the header is the CUC time
  */
-static void ConsolePrintHeader(void)
+static const char *StringOfTimestamp(void)
 {
+    // Init a buffer for the timestamp
+    static char timestamp_buffer[33u] = { 0 };
+
     // First get time and task no
     time_t time   = GetTime();
     taskNo_t task = GetCurrentTask();
 
-    // Print header start
-    ConsolePrintChar('[');
+    // Start header
+    timestamp_buffer[0] = '[';
 
     // Print timestamp
     for (uint32_t i = 1u; i <= (2u * sizeof(time_t)); i++)
@@ -362,26 +418,42 @@ static void ConsolePrintHeader(void)
         // Extract the current hex digit by shifting and masking
         uint8_t hex_digit = (uint8_t)((time >> shift) & 0x000000000000000Fllu);
 
-        // Convert to character and print
+        // Convert to character and store in buffer
         if (hex_digit < 10u)
         {
-            ConsolePrintChar('0' + hex_digit);
+            timestamp_buffer[i] = '0' + hex_digit;
         }
         else
         {
-            ConsolePrintChar('a' + (hex_digit - 10u));
+            timestamp_buffer[i] = 'a' + (hex_digit - 10u);
         }
     }
 
     // Print task no
-    ConsolePrintChar(',');
-    ConsolePrintChar('#');
-    ConsolePrintNumber(task);
+    uint32_t index          = 1u + (2u * sizeof(time_t));
+    timestamp_buffer[index] = ',';
+    index++;
+    timestamp_buffer[index] = '#';
+    index++;
+
+    // Convert task number to string and append to buffer
+    const char *task_str = StringOfInt(task, false);
+    for (int j = 0; task_str[j] != '\0'; j++)
+    {
+        timestamp_buffer[index] = task_str[j];
+        index++;
+    }
 
     // Print header end
-    ConsolePrintChar(']');
-    ConsolePrintChar(':');
-    ConsolePrintChar(' ');
+    timestamp_buffer[index] = ']';
+    index++;
+    timestamp_buffer[index] = ':';
+    index++;
+    timestamp_buffer[index] = ' ';
+    index++;
+    timestamp_buffer[index] = '\0';
+
+    return timestamp_buffer;
 }
 #endif /* CONFIG_CONSOLE_NONE */
 
@@ -490,6 +562,24 @@ static void CheckConsoleSize(void)
 }
 
 /**
+ * @fn          ConsolePrintString(const char *str)
+ * @brief       Function used to print a string
+ * @param[in]   str String that will be printed
+ * @return      Nothing
+ */
+static void ConsolePrintString(const char *str)
+{
+    uint32_t i = 0;
+
+    // Calls ConsolePrintChar for each char of the string until the null terminator is reached
+    while (str[i] != '\0')
+    {
+        ConsolePrintChar(str[i]);
+        i++;
+    }
+}
+
+/**
  * @fn          ConsolePrintChar(char c)
  * @brief       Function used to print a character
  * @param[in]   c Character that will be printed
@@ -561,6 +651,24 @@ static void CheckConsoleSize(void)
 }
 
 /**
+ * @fn          ConsolePrintString(const char *str)
+ * @brief       Function used to print a string
+ * @param[in]   str String that will be printed
+ * @return      Nothing
+ */
+static void ConsolePrintString(const char *str)
+{
+    uint32_t i = 0;
+
+    // Calls ConsolePrintChar for each char of the string until the null terminator is reached
+    while (str[i] != '\0')
+    {
+        ConsolePrintChar(str[i]);
+        i++;
+    }
+}
+
+/**
  * @fn          ConsolePrintChar(char c)
  * @brief       Function used to print a character
  * @param[in]   c Character that will be printed
@@ -609,6 +717,24 @@ static void ConsoleSpecificInit(void)
 static void CheckConsoleSize(void)
 {
     // Nothing to do
+}
+
+/**
+ * @fn          ConsolePrintString(const char *str)
+ * @brief       Function used to print a string
+ * @param[in]   str String that will be printed
+ * @return      Nothing
+ */
+static void ConsolePrintString(const char *str)
+{
+    uint32_t i = 0;
+
+    // Calls ConsolePrintChar for each char of the string until the null terminator is reached
+    while (str[i] != '\0')
+    {
+        ConsolePrintChar(str[i]);
+        i++;
+    }
 }
 
 /**
@@ -668,6 +794,24 @@ static void ConsoleSpecificInit(void)
 static void CheckConsoleSize(void)
 {
     // Nothing to do
+}
+
+/**
+ * @fn          ConsolePrintString(const char *str)
+ * @brief       Function used to print a string
+ * @param[in]   str String that will be printed
+ * @return      Nothing
+ */
+static void ConsolePrintString(const char *str)
+{
+    uint32_t i = 0;
+
+    // Calls ConsolePrintChar for each char of the string until the null terminator is reached
+    while (str[i] != '\0')
+    {
+        ConsolePrintChar(str[i]);
+        i++;
+    }
 }
 
 /**

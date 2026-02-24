@@ -44,7 +44,7 @@ typedef enum
 
 extern void InitConsole(void);
 extern void CreateConsoleMutexes(void);
-extern void ConsolePrint(const char *msg, signed int dnumber, unsigned int hnumber, float fnumber, unsigned int fprecision);
+extern ATTR_CHECK_FORMAT void ConsolePrint(const char *fmt, ...);
 
 #endif /* CONSOLE_H */
 

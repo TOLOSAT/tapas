@@ -14,7 +14,6 @@
 #include "fdir/fdir.h"
 #include "mc/console.h"
 #include "mc/indicators.h"
-#include "utils/log.h"
 
 /***************************** Macros Definitions ****************************/
 
@@ -102,7 +101,7 @@ void SYSMONMain(void)
         CheckError(UpdateSystemUsage());
 
         // Indicates that the system status is OK
-        LOG("System : OK\n");
+        ConsolePrint("System : OK\n");
 
         // Blink status LED
         LEDStatToggle();

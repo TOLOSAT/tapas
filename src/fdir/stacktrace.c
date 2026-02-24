@@ -12,7 +12,6 @@
 #include "fdir/stacktrace.h"
 #include "core/tasks.h"
 #include "mc/console.h"
-#include "utils/log.h"
 #include "bsp.h"
 
 /***************************** Macros Definitions ****************************/
