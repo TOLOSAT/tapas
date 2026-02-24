@@ -12,7 +12,6 @@
 #include "core/tasks.h"
 #include "fdir/fdir.h"
 
-
 /***************************** Macros Definitions ****************************/
 
 /*************************** Functions Declarations **************************/
