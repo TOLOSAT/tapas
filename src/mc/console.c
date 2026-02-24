@@ -312,10 +312,22 @@ static const char *StringOfHex(int value, bool uppercase)
     do
     {
         unsigned int digit = u % 16u;
-        char a             = uppercase ? 'A' : 'a';
-        result[i]          = (digit < 10u) ? (digit + '0') : (digit - 10u + (unsigned int)a);
+        unsigned int base;
+
+        if (digit < 10u)
+        {
+            base      = (unsigned int)'0';
+            result[i] = (char)(base + digit);
+        }
+        else
+        {
+            base      = uppercase ? (unsigned int)'A' : (unsigned int)'a';
+            result[i] = (char)(base + (digit - 10u));
+        }
+
         i++;
         u /= 16u;
+
     } while (u > 0u);
 
     // Add the "0x" prefix
