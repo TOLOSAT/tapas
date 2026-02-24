@@ -57,7 +57,7 @@ void PrintSystemInfo(void)
 
     ConsolePrint("===============================================\n");
     ConsolePrint("Welcome on %s\n", PROGRAM_NAME);
-    ConsolePrint("System : %s v%d.%d.%d\n", SYSTEM_NAME, MAJOR, MINOR, PATCH);
+    ConsolePrint("System : %s v%u.%u.%u\n", SYSTEM_NAME, MAJOR, MINOR, PATCH);
     ConsolePrint("Built on %s at %s, for target %s\n", __DATE__, __TIME__, BOARD);
 
     if (ReadContext(&context) == RET_SUCCESSFUL)
@@ -76,10 +76,10 @@ void PrintSystemInfo(void)
         {
             ConsolePrint("  State : Unknown\n");
         }
-        ConsolePrint("  Safe software ID : %d\n", context.safe_software_id);
-        ConsolePrint("  Nominal software ID : %d\n", context.nominal_software_id);
-        ConsolePrint("  Boot count : %ld\n", context.boot);
-        ConsolePrint("  Critical error count : %ld\n", context.critical_error);
+        ConsolePrint("  Safe software ID : %u\n", context.safe_software_id);
+        ConsolePrint("  Nominal software ID : %u\n", context.nominal_software_id);
+        ConsolePrint("  Boot count : %lu\n", context.boot);
+        ConsolePrint("  Critical error count : %lu\n", context.critical_error);
 
         ConsolePrint("  CFSR : %lx\n", context.cfsr);
         ConsolePrint("  HFSR : %lx\n", context.hfsr);

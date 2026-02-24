@@ -110,8 +110,9 @@ extern ATTR_CHECK_FORMAT void ConsolePrint(const char *fmt, ...)
     // Print only if the console is initialised
     if (console_status == CONSOLE_INITIALISED)
     {
-        // uint32_t line_index = 0u;
-        // uint32_t i          = 0u;
+        // Declare two iterators: i to access fmt and j to acces the varargs
+        uint32_t i = 0;
+        uint32_t j = 0;
 
         // First lock the console
         ConsoleLock();
@@ -126,67 +127,69 @@ extern ATTR_CHECK_FORMAT void ConsolePrint(const char *fmt, ...)
         const uint32_t *argp = (const uint32_t *)(&fmt + 1);
 
         // Parse the format string
-        while (*fmt)
+        while (fmt[i] != '\0')
         {
-            if (*fmt == '%')
+            if (fmt[i] == '%')
             {
                 // If format is %l_ then print a long number
-                if (*(fmt + 1) == 'l')
+                if (fmt[i + 1] == 'l')
                 {
-                    fmt++;
+                    i++;
                 }
 
                 // In case it is a format, match the char after %
-                switch (*(fmt + 1))
+                switch (fmt[i + 1])
                 {
                     // If format is %u then print an usigned int
                     case 'u' :
-                        ConsolePrintString(StringOfInt(*argp++, false));
+                        ConsolePrintString(StringOfInt(argp[j], false));
+                        j++;
                         break;
                     // If format is %d or %i then print a signed int
                     case 'd' :
                     case 'i' :
-                        ConsolePrintString(StringOfInt(*argp++, true));
+                        ConsolePrintString(StringOfInt(argp[j], true));
+                        j++;
                         break;
                     // If format is %x then print a lowercase hex number
                     case 'x' :
-                        ConsolePrintString(StringOfHex(*argp++, false));
+                        ConsolePrintString(StringOfHex(argp[j], false));
+                        j++;
                         break;
                     // If format is %X then print an uppercase hex number
                     case 'X' :
-                        ConsolePrintString(StringOfHex(*argp++, true));
+                        ConsolePrintString(StringOfHex(argp[j], true));
+                        j++;
                         break;
                     // If format is %o then print an octal number
                     case 'o' :
-                        ConsolePrintString(StringOfOctal(*argp++));
+                        ConsolePrintString(StringOfOctal(argp[j]));
+                        j++;
                         break;
                     // If format is %s then print a string
                     case 's' :
-                        ConsolePrintString((const char *)*argp++); // cppcheck-suppress misra-c2012-11.4; Required to get variadic args
+                        ConsolePrintString((const char *)argp[j]); // cppcheck-suppress misra-c2012-11.4; Required to get variadic args
+                        j++;
                         break;
                     // If format is %c then print a char
                     case 'c' :
-                        ConsolePrintChar((char)*argp++);
+                        ConsolePrintChar((char)argp[j]);
+                        j++;
                         break;
                     // Else it is not a valid format so just print the char
                     default :
-                        ConsolePrintChar(*(fmt + 1));
+                        ConsolePrintChar(fmt[i + 1]);
                         break;
                 }
-                fmt += 2;
+                i++;
             }
             else
             {
                 // Else the current string position is not a format so we just print the format string content
-                ConsolePrintChar(*fmt++);
+                ConsolePrintChar(fmt[i]);
             }
+            i++;
         }
-
-        // // Check if the last character is not '\n'
-        // if ((i > 0u) && (msg[i - 1u] != '\n'))
-        // {
-        //     ConsolePrintChar('\n'); // Add a newline if not already present
-        // }
 
         // Synchronise console
         ConsoleSync();
@@ -307,10 +310,11 @@ static const char *StringOfHex(int value, bool uppercase)
     // Get the hex digits (in reverse order)
     do
     {
-        unsigned int digit  = u % 16u;
-        char a              = uppercase ? 'A' : 'a';
-        result[i++]         = (digit < 10u) ? (digit + (unsigned int)'0') : (digit - 10u + (unsigned int)a);
-        u                  /= 16u;
+        unsigned int digit = u % 16u;
+        char a             = uppercase ? 'A' : 'a';
+        result[i]          = (digit < 10u) ? (digit + '0') : (digit - 10u + a);
+        i++;
+        u /= 16u;
     } while (u > 0u);
 
     // Add the "0x" prefix
