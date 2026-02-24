@@ -312,17 +312,19 @@ static const char *StringOfHex(int value, bool uppercase)
     do
     {
         unsigned int digit = u % 16u;
-        unsigned int base;
+        unsigned int base  = 0u;
 
         if (digit < 10u)
         {
             base      = (unsigned int)'0';
-            result[i] = (char)(base + digit);
+            result[i] = (char)(base + digit); // cppcheck-suppress misra-c2012-10.8; Here it's not breaking the code behaviour, in case there is a
+                                              // problem the print with just print an erroneor character.
         }
         else
         {
             base      = uppercase ? (unsigned int)'A' : (unsigned int)'a';
-            result[i] = (char)(base + (digit - 10u));
+            result[i] = (char)(base + (digit - 10u)); // cppcheck-suppress misra-c2012-10.8; Here it's not breaking the code behaviour, in case there
+                                                      // is a problem the print with just print an erroneor character.
         }
 
         i++;
