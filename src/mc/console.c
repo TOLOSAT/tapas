@@ -124,7 +124,7 @@ extern ATTR_CHECK_FORMAT void ConsolePrint(const char *fmt, ...)
         ConsolePrintString(StringOfTimestamp());
 
         // Get the first arg after fmt from the function stack
-        const uint32_t *argp = (const uint32_t *)(&fmt + 1);
+        const uint32_t *argp = (const uint32_t *)(&fmt + 1); // cppcheck-suppress misra-c2012-18.4; Required to get variadic args
 
         // Parse the format string
         while (fmt[i] != '\0')
@@ -132,13 +132,13 @@ extern ATTR_CHECK_FORMAT void ConsolePrint(const char *fmt, ...)
             if (fmt[i] == '%')
             {
                 // If format is %l_ then print a long number
-                if (fmt[i + 1] == 'l')
+                if (fmt[i + 1u] == 'l')
                 {
                     i++;
                 }
 
                 // In case it is a format, match the char after %
-                switch (fmt[i + 1])
+                switch (fmt[i + 1u])
                 {
                     // If format is %u then print an usigned int
                     case 'u' :
@@ -168,7 +168,8 @@ extern ATTR_CHECK_FORMAT void ConsolePrint(const char *fmt, ...)
                         break;
                     // If format is %s then print a string
                     case 's' :
-                        ConsolePrintString((const char *)argp[j]); // cppcheck-suppress misra-c2012-11.4; Required to get variadic args
+                        ConsolePrintString((const char *)argp[j]); // cppcheck-suppress misra-c2012-11.4; Required to print the variadic arg as a
+                                                                   // string
                         j++;
                         break;
                     // If format is %c then print a char
@@ -178,7 +179,7 @@ extern ATTR_CHECK_FORMAT void ConsolePrint(const char *fmt, ...)
                         break;
                     // Else it is not a valid format so just print the char
                     default :
-                        ConsolePrintChar(fmt[i + 1]);
+                        ConsolePrintChar(fmt[i + 1u]);
                         break;
                 }
                 i++;
@@ -312,7 +313,7 @@ static const char *StringOfHex(int value, bool uppercase)
     {
         unsigned int digit = u % 16u;
         char a             = uppercase ? 'A' : 'a';
-        result[i]          = (digit < 10u) ? (digit + '0') : (digit - 10u + a);
+        result[i]          = (digit < 10u) ? (digit + '0') : (digit - 10u + (unsigned int)a);
         i++;
         u /= 16u;
     } while (u > 0u);
@@ -554,10 +555,13 @@ static void CheckConsoleSize(void)
  */
 static void ConsolePrintString(const char *str)
 {
+    uint32_t i = 0;
+
     // Calls ConsolePrintChar for each char of the string until the null terminator is reached
-    while (*str != '\0')
+    while (str[i] != '\0')
     {
-        ConsolePrintChar(*str++);
+        ConsolePrintChar(str[i]);
+        i++;
     }
 }
 
@@ -640,10 +644,13 @@ static void CheckConsoleSize(void)
  */
 static void ConsolePrintString(const char *str)
 {
+    uint32_t i = 0;
+
     // Calls ConsolePrintChar for each char of the string until the null terminator is reached
-    while (*str != '\0')
+    while (str[i] != '\0')
     {
-        ConsolePrintChar(*str++);
+        ConsolePrintChar(str[i]);
+        i++;
     }
 }
 
@@ -706,10 +713,13 @@ static void CheckConsoleSize(void)
  */
 static void ConsolePrintString(const char *str)
 {
+    uint32_t i = 0;
+
     // Calls ConsolePrintChar for each char of the string until the null terminator is reached
-    while (*str != '\0')
+    while (str[i] != '\0')
     {
-        ConsolePrintChar(*str++);
+        ConsolePrintChar(str[i]);
+        i++;
     }
 }
 
@@ -780,10 +790,13 @@ static void CheckConsoleSize(void)
  */
 static void ConsolePrintString(const char *str)
 {
+    uint32_t i = 0;
+
     // Calls ConsolePrintChar for each char of the string until the null terminator is reached
-    while (*str != '\0')
+    while (str[i] != '\0')
     {
-        ConsolePrintChar(*str++);
+        ConsolePrintChar(str[i]);
+        i++;
     }
 }
 
