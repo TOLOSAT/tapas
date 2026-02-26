@@ -396,10 +396,9 @@ returnCode_t PeripheralIoctl(peripheralNo_t peripheral, uint32_t cmd, void *data
                 PeripheralUnlockRX(peripheral);
             }
         }
-        // TODO: make the ioctl cmd generic
-        else if (cmd == IOCTL_UART_GET_RX_COUNTER)
+        else if (cmd == IOCTL_PERIPHERAL_GET_RX_COUNT)
         {
-            // Check RX IOCTL
+            // Get RX count IOCTL
             switch (type)
             {
                 case PERIPHERAL_UART :
@@ -415,7 +414,7 @@ returnCode_t PeripheralIoctl(peripheralNo_t peripheral, uint32_t cmd, void *data
                     return_value = OwIoctl((owInst_t *)PERIPHERAL_DESC(peripheral).p_inst, cmd, data, data_size);
                     break;
                 case PERIPHERAL_GPIO :
-                    // Check RX not available for this peripherals
+                    // Get RX count IOCTL not available for this peripherals
                     return_value = RET_INVALID_PARAM;
                     break;
                 default :

@@ -121,11 +121,11 @@
 #define IOCTL_PERIPHERAL_STOP_RX      305u /**< Peripheral IOCTL stop reception */
 #define IOCTL_PERIPHERAL_STOP_TX      306u /**< Peripheral IOCTL stop transmission */
 #define IOCTL_PERIPHERAL_STOP_RXTX    307u /**< Peripheral IOCTL stop reception and transmission */
+#define IOCTL_PERIPHERAL_GET_RX_COUNT 308u /**< Peripheral IOCTL get remaining DMA transfer count for RX */
 #define IOCTL_GPIO_TOGGLE             310u /**< GPIO IOCTL toggle GPIO */
 #define IOCTL_I2C_SET_SLAVE_ADDR      311u /**< I2C IO CTL set slave adress */
 #define IOCTL_SPI_SET_TX_MSG          312u /**< SPI IO CTL set transmit message (when doing a read) */
 #define IOCTL_OW_INIT_CONNECTION      313u /**< OW IO CTL init connection */
-#define IOCTL_UART_GET_RX_COUNTER     314u /**< UART IOCTL get remaining DMA transfer count for RX */
 
 #define IOCTL_MEMORY_GET_STATUS       400u /**< Memory IOCTL command for getting memory status */
 #define IOCTL_MEMORY_SYNC             401u /**< Memory IOCTL command for completing pending write process */
