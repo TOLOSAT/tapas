@@ -208,7 +208,6 @@ returnCode_t BufferIoctl(bufferNo_t buffer, uint32_t cmd, void *data, uint32_t d
                     return_value = RET_INVALID_PARAM;
                 }
                 break;
-
             default :
                 return_value = RET_INVALID_PARAM;
                 break;

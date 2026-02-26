@@ -396,6 +396,32 @@ returnCode_t PeripheralIoctl(peripheralNo_t peripheral, uint32_t cmd, void *data
                 PeripheralUnlockRX(peripheral);
             }
         }
+        else if (cmd == IOCTL_PERIPHERAL_GET_RX_COUNT)
+        {
+            // Get RX count IOCTL
+            switch (type)
+            {
+                case PERIPHERAL_UART :
+                    return_value = UartIoctl((uartInst_t *)PERIPHERAL_DESC(peripheral).p_inst, cmd, data, data_size);
+                    break;
+                case PERIPHERAL_I2C :
+                    return_value = I2cIoctl((i2cInst_t *)PERIPHERAL_DESC(peripheral).p_inst, cmd, data, data_size);
+                    break;
+                case PERIPHERAL_SPI :
+                    return_value = SpiIoctl((spiInst_t *)PERIPHERAL_DESC(peripheral).p_inst, cmd, data, data_size);
+                    break;
+                case PERIPHERAL_OW :
+                    return_value = OwIoctl((owInst_t *)PERIPHERAL_DESC(peripheral).p_inst, cmd, data, data_size);
+                    break;
+                case PERIPHERAL_GPIO :
+                    // Get RX count IOCTL not available for this peripherals
+                    return_value = RET_INVALID_PARAM;
+                    break;
+                default :
+                    KernelPanic();
+                    break;
+            }
+        }
         else if (cmd == IOCTL_PERIPHERAL_CHECK_TX)
         {
             // Check TX IOCTL

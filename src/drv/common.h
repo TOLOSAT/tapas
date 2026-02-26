@@ -84,6 +84,7 @@ typedef struct
     DMADirection_t direction; /**< @brief DMA direction (memory to periph, periph to memory or memory to memory) */
     IRQNo_t irq_no;           /**< @brief DMA interrupt */
     IRQPrio_t irq_prio;       /**< @brief DMA interrupt priority */
+    bool is_circular;         /**< @brief DMA mode (if true then circular mode else normal mode) */
 } DMAConf_t;
 
 /** @brief IO port redefinition type */
