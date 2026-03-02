@@ -53,7 +53,7 @@ A Linux-based environment is required (Ubuntu 22.04 recommended). Docker usage i
 
 **Dependencies:**
 - build-essential
-- cppcheck (v2.7 or newer)
+- cppcheck (v2.7)
 - kconfig-frontends
 - doxygen
 - gcc-arm-none-eabi (v10.3.1)

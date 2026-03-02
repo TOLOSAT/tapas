@@ -16,7 +16,7 @@ KERNEL_DIR  = $(WORKSPACE)/kernel
 BUILD_DIR   = $(WORKSPACE)/build
 endif
 
-KERNEL_HEADERS   		= $(KERNEL_DIR)/includes
+KERNEL_HEADERS   		= $(KERNEL_DIR)/inc
 BSP_DIR          		= $(KERNEL_DIR)/bsp/$(BOARD)-BSP
 THIRD_PARTIES_DIR		= $(KERNEL_DIR)/third-parties
 CONFIGS_DIR      		= $(KERNEL_DIR)/configs
