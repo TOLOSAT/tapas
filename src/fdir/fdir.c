@@ -67,12 +67,15 @@ void InitFDIR(void)
  * @param[in]   retcode     Return code of a function.
  * @return      Nothing
  */
-void CheckError(returnCode_t retcode)
+void CheckError(returnCode_t retcode, severityLevel_t severity)
 {
     if (retcode == RET_ERROR)
     {
         // Indicates an error occured and system goes into error handler
         ConsolePrint("System : KO\n");
+
+        // Call event reporting callback
+        ReportEvent(severity);
 
         // Go to error handler
         ErrorHandler();
