@@ -31,6 +31,17 @@
 /***************************** Types Definitions *****************************/
 
 /**
+ * @brief System-wide severity levels for FDIR and event reporting.
+ * @note These levels are mapped to PUS5 (Service 5) event severities.
+ */
+typedef enum {
+    SEVERITY_INFORMATIVE = 0u, /**< Informative event (No action).       */
+    SEVERITY_LOW         = 1u, /**< Low severity (Warning log).          */
+    SEVERITY_MEDIUM      = 2u, /**< Medium severity (Recovery action).   */
+    SEVERITY_HIGH        = 3u, /**< High severity (Kernel Panic/Reset).  */
+} severityLevel_t;
+
+/**
  * @brief General debug information captured during an error.
  */
 typedef struct
