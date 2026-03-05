@@ -31,14 +31,14 @@
 /***************************** Types Definitions *****************************/
 
 /**
- * @brief System-wide severity levels for FDIR and event reporting accordinf to ECSS-E-ST-70-41C.
+ * @brief System-wide severity levels for FDIR and event reporting according to ECSS-E-ST-70-41C.
  * @note These levels are mapped to PUS5 event severities.
  */
 typedef enum {
-    SEVERITY_INFORMATIVE = 0u, /**< Informative event (No action).       */
-    SEVERITY_LOW         = 1u, /**< Low severity (Warning log).          */
-    SEVERITY_MEDIUM      = 2u, /**< Medium severity (Recovery action).   */
-    SEVERITY_HIGH        = 3u, /**< High severity (Kernel Panic/Reset).  */
+    SEVERITY_INFORMATIVE = 0u, /**< Informative event.       */
+    SEVERITY_LOW         = 1u, /**< Low severity.          */
+    SEVERITY_MEDIUM      = 2u, /**< Medium severity.   */
+    SEVERITY_HIGH        = 3u, /**< High severity.  */
 } severityLevel_t;
 
 /**
