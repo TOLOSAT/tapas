@@ -55,7 +55,7 @@ typedef struct
 /*************************** Variables Declarations **************************/
 
 extern void InitFDIR(void);
-extern void CheckError(returnCode_t retcode);
+extern void CheckError(returnCode_t retcode, severityLevel_t severity);
 extern void ErrorHandler(void);
 extern void KernelPanic(void);
 extern void SystemReset(void);
