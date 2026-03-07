@@ -46,44 +46,25 @@
 
 /**
  * @def     BIG_ENDIAN_ARRAY_TO_UINT16(array)
- * @brief   Preprocessor function that convert big-endian 2 bytes array into uint16 variable
+ * @brief   Preprocessor function that converts a big-endian 2-byte array into a uint16_t value
  */
-#define BIG_ENDIAN_ARRAY_TO_UINT16(array, half_word) \
-    do                                               \
-    {                                                \
-        (half_word)  = ((uint16_t)(array)[0] << 8);  \
-        (half_word) |= ((uint16_t)(array)[1]);       \
-    } while (0)
+#define BIG_ENDIAN_ARRAY_TO_UINT16(array) ((uint16_t)((((uint16_t)(array)[0]) << 8u) | ((uint16_t)(array)[1])))
 
 /**
  * @def     BIG_ENDIAN_ARRAY_TO_UINT32(array)
- * @brief   Preprocessor function that convert big-endian 4 bytes array into uint32 variable
+ * @brief   Preprocessor function that converts a big-endian 4-byte array into a uint32_t value
  */
-#define BIG_ENDIAN_ARRAY_TO_UINT32(array, word) \
-    do                                          \
-    {                                           \
-        (word)  = ((uint32_t)(array)[0] << 24); \
-        (word) |= ((uint32_t)(array)[1] << 16); \
-        (word) |= ((uint32_t)(array)[2] << 8);  \
-        (word) |= ((uint32_t)(array)[3]);       \
-    } while (0)
+#define BIG_ENDIAN_ARRAY_TO_UINT32(array) \
+    ((uint32_t)((((uint32_t)(array)[0]) << 24u) | (((uint32_t)(array)[1]) << 16u) | (((uint32_t)(array)[2]) << 8u) | ((uint32_t)(array)[3])))
 
 /**
- * @def     BIG_ENDIAN_ARRAY_TO_UINT64(array, double_word)
- * @brief   Preprocessor function that converts a big-endian 8-byte array into a uint64_t variable
+ * @def     BIG_ENDIAN_ARRAY_TO_UINT64(array)
+ * @brief   Preprocessor function that converts a big-endian 8-byte array into a uint64_t value
  */
-#define BIG_ENDIAN_ARRAY_TO_UINT64(array, double_word) \
-    do                                                 \
-    {                                                  \
-        (double_word)  = ((uint64_t)(array)[0] << 56); \
-        (double_word) |= ((uint64_t)(array)[1] << 48); \
-        (double_word) |= ((uint64_t)(array)[2] << 40); \
-        (double_word) |= ((uint64_t)(array)[3] << 32); \
-        (double_word) |= ((uint64_t)(array)[4] << 24); \
-        (double_word) |= ((uint64_t)(array)[5] << 16); \
-        (double_word) |= ((uint64_t)(array)[6] << 8);  \
-        (double_word) |= ((uint64_t)(array)[7]);       \
-    } while (0)
+#define BIG_ENDIAN_ARRAY_TO_UINT64(array)                                                                             \
+    ((uint64_t)((((uint64_t)(array)[0]) << 56u) | (((uint64_t)(array)[1]) << 48u) | (((uint64_t)(array)[2]) << 40u)   \
+                | (((uint64_t)(array)[3]) << 32u) | (((uint64_t)(array)[4]) << 24u) | (((uint64_t)(array)[5]) << 16u) \
+                | (((uint64_t)(array)[6]) << 8u) | ((uint64_t)(array)[7])))
 
 /**
  * @def     UINT16_TO_BIG_ENDIAN_ARRAY(half_word, array)
