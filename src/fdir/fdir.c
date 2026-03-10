@@ -65,6 +65,7 @@ void InitFDIR(void)
  * @fn          CheckError(returnCode_t retcode)
  * @brief       This function check if an error occured and execute the sanction
  * @param[in]   retcode     Return code of a function.
+ * @param[in]   severity    Severity level of the event 
  * @return      Nothing
  */
 void CheckError(returnCode_t retcode, severityLevel_t severity)
@@ -74,8 +75,11 @@ void CheckError(returnCode_t retcode, severityLevel_t severity)
         // Indicates an error occured and system goes into error handler
         ConsolePrint("System : KO\n");
 
-        // Call event reporting callback
-        ReportEvent(severity);
+        // Call event reporting callback if the pointer is configured
+        if (p_ReportEvent != NULL)
+        {
+            p_ReportEvent(severity);
+        }
 
         // Go to error handler
         ErrorHandler();
@@ -354,3 +358,5 @@ void ATTR_EXCEPTION UsageFault_Handler(void)
     // Reboot the system
     SystemReset();
 }
+
+__attribute__((weak)) reportEventCallback_t p_ReportEvent = NULL;
