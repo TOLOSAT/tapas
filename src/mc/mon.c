@@ -98,7 +98,7 @@ void SYSMONMain(void)
     while (1)
     {
         // Update the system usage
-        CheckError(UpdateSystemUsage());
+        CheckError(UpdateSystemUsage(), SEVERITY_INFORMATIVE);
 
         // Indicates that the system status is OK
         ConsolePrint("System : OK\n");
