@@ -24,48 +24,48 @@ SECTIONS
     /* Par of the kernel code go into the .tcm_text section, which is faster. */
     .tcm_text :
     {
-        . = ALIGN(4);
+        . = ALIGN(8);
         __tcm_text_start__ = .;
         KEEP(*(.isr_vector))
-        . = ALIGN(4);
+        . = ALIGN(8);
         __kernel_tcm_text_start__ = .;
         *(.text.Default_Handler)
         *(.text.Reset_Handler)
         *(.text.SystemInit)
         *(.text.SystemClock_Config)
         *libkernel*.a:*(.text .text.*)
-        . = ALIGN(4);
+        . = ALIGN(8);
         __kernel_tcm_text_end__ = .;
-        . = ALIGN(4);
+        . = ALIGN(8);
         __tcm_text_end__ = .;
     } >ITCM_RAM
 
     /* ARM exception handling indexes goes after TCM text memory */
     .ARM.exidx : {
-        . = ALIGN(4);
+        . = ALIGN(8);
         __exidx_start = .;
         *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-        . = ALIGN(4);
+        . = ALIGN(8);
         __exidx_end = .;
     } >ITCM_RAM
 
     /* Part of the kernel read only data go into the .tcm_rodata section, which is faster. */
     .tcm_rodata :
     {
-        . = ALIGN(4);
+        . = ALIGN(8);
         __tcm_rodata_start__ = .;
         __kernel_tcm_rodata_start__ = .;
         *libkernel*.a:*(.rodata .rodata.*)
-        . = ALIGN(4);
+        . = ALIGN(8);
         __kernel_tcm_rodata_end__ = .;
-        . = ALIGN(4);
+        . = ALIGN(8);
         __tcm_rodata_end__ = .;
     } >DTCM_RAM
 
     /* ARM exception handling tables goes after tcm rodata memory */
     .ARM.extab :
     {
-        . = ALIGN(4);
+        . = ALIGN(8);
         __extab_start = .;
         *(.ARM.extab* .gnu.linkonce.armextab.*)
         . = ALIGN(0x4000); /* Align on 16KB for MPU RO region */
@@ -75,15 +75,15 @@ SECTIONS
     /* Part of the kernel data go into the .tcm_data section, which is faster. */
     .tcm_data :
     {
-        . = ALIGN(4);
+        . = ALIGN(8);
         __tcm_data_start__ = .;
         __kernel_tcm_data_start__ = .;
         *(.data.SystemCoreClock)
         *(.data.SystemD2Clock)
         *libkernel*.a:*(.data .data.*)
-        . = ALIGN(4);
+        . = ALIGN(8);
         __kernel_tcm_data_end__ = .;
-        . = ALIGN(4);
+        . = ALIGN(8);
         __tcm_data_end__ = .;
     } >DTCM_RAM
 
@@ -91,12 +91,12 @@ SECTIONS
     .tcm_bss (NOLOAD) :
     {
         __tcm_bss_start__ = .;
-        . = ALIGN(4);
+        . = ALIGN(8);
         __kernel_tcm_bss_start__ = .;
         *libkernel*.a:*(.bss .bss.*)
-        . = ALIGN(4);
+        . = ALIGN(8);
         __kernel_tcm_bss_end__ = .;
-        . = ALIGN(4);
+        . = ALIGN(8);
         __tcm_bss_end__ = .;
     } >DTCM_RAM
 
@@ -111,7 +111,7 @@ SECTIONS
     /* The program goes into the .text section */
     .protected_text :
     {
-        . = ALIGN(4);
+        . = ALIGN(8);
         __kernel_text_start__ = .;
         *libfreertos*.a:*(.text .text.*)
         *libfatfs*.a:*(.text .text.*)
@@ -123,7 +123,7 @@ SECTIONS
     /* Constant data goes into .rodata section */
     .protected_rodata :
     {
-        . = ALIGN(4);
+        . = ALIGN(8);
         __kernel_rodata_start__ = .;
         *libfreertos*.a:*(.rodata .rodata.*)
         *libfatfs*.a:*(.rodata .rodata.*)
@@ -135,76 +135,76 @@ SECTIONS
     /* Initialized data go into the .data section */
     .protected_data :
     {
-        . = ALIGN(4);
+        . = ALIGN(8);
         __kernel_data_start__ = .;
         *libfreertos*.a:*(.data .data.*)
         *libfatfs*.a:*(.data .data.*)
         *libhal*.a:*(.data .data.*)
-        . = ALIGN(4);
+        . = ALIGN(8);
         __kernel_data_end__ = .;
     } >AXI_SRAM1
 
     /* Uninitialised data goes into .bss section */
     .protected_bss (NOLOAD):
     {
-        . = ALIGN(4);
+        . = ALIGN(8);
         __kernel_bss_start__ = .;
         *libfreertos*.a:*(.bss .bss.*)
         *libfatfs*.a:*(.bss .bss.*)
         *libhal*.a:*(.bss .bss.*)
-        . = ALIGN(4);
+        . = ALIGN(8);
         __kernel_bss_end__ = .;
     } >AXI_SRAM1
 
     /* The program goes into the .text section */
     .text :
     {
-        . = ALIGN(4);
+        . = ALIGN(8);
         __text_start__ = .;
         __syscalls_start__ = .;
         *(.syscalls)
-        . = ALIGN(4);
+        . = ALIGN(8);
         __syscalls_end__ = .;
         *(.text)
         *(.text*)
-        . = ALIGN(4);
+        . = ALIGN(8);
         __text_end__ = .;
     } >AXI_SRAM2
 
     /* Constant data goes into .rodata section */
     .rodata :
     {
-        . = ALIGN(4);
+        . = ALIGN(8);
         __rodata_start__ = .;
         *(.config)
         *(.rodata)
         *(.rodata*)
-        . = ALIGN(4);
+        . = ALIGN(8);
         __rodata_end__ = .;
     } >AXI_SRAM2
 
     /* Initialized data go into the .data section */
     .data :
     {
-        . = ALIGN(4);
+        . = ALIGN(8);
         __data_start__ = .;
         *(.data)
         *(.data*)
-        . = ALIGN(4);
+        . = ALIGN(8);
         __data_end__ = .;
     } >AXI_SRAM2
 
     /* Uninitialised data goes into .bss section */
     .bss (NOLOAD):
     {
-        . = ALIGN(4);
+        . = ALIGN(8);
         __bss_start__ = .;
         *(.bss)
         *(.bss*)
         *(COMMON)
-        . = ALIGN(4);
+        . = ALIGN(8);
         *(.task_stacks)
-        . = ALIGN(4);
+        . = ALIGN(8);
         __bss_end__ = .;
     } >AXI_SRAM2
 
