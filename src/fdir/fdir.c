@@ -65,7 +65,7 @@ void InitFDIR(void)
  * @fn          CheckError(returnCode_t retcode)
  * @brief       This function check if an error occured and execute the sanction
  * @param[in]   retcode     Return code of a function.
- * @param[in]   severity    Severity level of the event 
+ * @param[in]   severity    Severity level of the event
  * @return      Nothing
  */
 void CheckError(returnCode_t retcode, severityLevel_t severity)

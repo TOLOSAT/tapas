@@ -319,12 +319,12 @@ typedef struct
  * @brief System-wide severity levels for FDIR and event reporting according to ECSS-E-ST-70-41C.
  * @note These levels are mapped to PUS5 event severities.
  */
-typedef enum 
+typedef enum
 {
-    SEVERITY_INFORMATIVE = 0u,  /**< Informative event. */
-    SEVERITY_LOW         = 1u,  /**< Low severity.      */
-    SEVERITY_MEDIUM      = 2u,  /**< Medium severity.   */
-    SEVERITY_HIGH        = 3u,  /**< High severity.     */
+    SEVERITY_INFORMATIVE = 0u, /**< Informative event. */
+    SEVERITY_LOW         = 1u, /**< Low severity.      */
+    SEVERITY_MEDIUM      = 2u, /**< Medium severity.   */
+    SEVERITY_HIGH        = 3u, /**< High severity.     */
 } severityLevel_t;
 
 #endif /* KERNEL_TYPES_H */

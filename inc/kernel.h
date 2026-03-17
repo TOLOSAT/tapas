@@ -56,7 +56,7 @@
 
 /*************************** Functions Declarations **************************/
 
-extern void CheckError(returnCode_t retcode);
+extern void CheckError(returnCode_t retcode, severityLevel_t severity);
 extern void Sleep(tick_t tick);
 extern void SleepPeriodic(void);
 extern tick_t GetTick(void);

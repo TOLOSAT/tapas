@@ -26,7 +26,7 @@
 
 /*************************** Functions Declarations **************************/
 
-extern void sys_CheckError(returnCode_t retcode);
+extern void sys_CheckError(returnCode_t retcode, severityLevel_t severity);
 extern void sys_Sleep(tick_t tick);
 extern void sys_SleepPeriodic(void);
 extern tick_t sys_GetTick(void);
@@ -95,10 +95,11 @@ const uint32_t syscall_vector[NB_SYSCALLS] = {
  * @fn      sys_CheckError(returnCode_t retcode)
  * @brief   Syscall declaration for CheckError
  */
-void ATTR_SYSCALL sys_CheckError(returnCode_t retcode)
+void ATTR_SYSCALL sys_CheckError(returnCode_t retcode, severityLevel_t severity)
 {
     // Ignore unused parameters
     (void)(retcode);
+    (void)(severity);
 
     // Call SVC exception
     __asm volatile(" .extern CheckError                \n" // Declare kernel function
