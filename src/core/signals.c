@@ -71,7 +71,7 @@ returnCode_t SendSignal(taskNo_t task, signalMask_t mask)
 
 /**
  * @fn          WaitSignal(signalMask_t mask)
- * @brief       This function wait for specifics signals.
+ * @brief       This function waits until one of the specified signals is received.
  * @param[in]   mask    Mask defining which signal type(s) will be waited for
  * @retval      #RET_INVALID_PARAM if mask is null
  * @retval      #RET_SUCCESSFUL else
@@ -84,11 +84,27 @@ returnCode_t WaitSignal(signalMask_t mask)
     // Check parameter(s)
     if ((mask != 0u))
     {
-        test_value = xTaskNotifyWait(0u, mask, NULL, portMAX_DELAY);
-        if (test_value != pdPASS)
+        signalMask_t received_signals = 0u;
+
+        // Wait until one of the specified signals is received.
+        do
         {
-            KernelPanic();
+            // Read currently latched signals without clearing them.
+            received_signals = (signalMask_t)ulTaskNotifyValueClear(NULL, 0u);
+            if ((received_signals & mask) == 0u)
+            {
+                // Wait until one of the specified signals is received.
+                test_value = xTaskNotifyWait(0u, 0u, &received_signals, portMAX_DELAY);
+                if (test_value != pdPASS)
+                {
+                    KernelPanic();
+                }
+            }
         }
+        while ((received_signals & mask) == 0u);
+
+        // Clear only the consumed signals and keep the others pending.
+        (void)ulTaskNotifyValueClear(NULL, (received_signals & mask));
     }
     else
     {
