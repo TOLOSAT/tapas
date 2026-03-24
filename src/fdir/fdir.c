@@ -82,7 +82,10 @@ void CheckError(returnCode_t retcode, severityLevel_t severity)
         }
 
         // Go to error handler
-        ErrorHandler();
+        if (severity >= SEVERITY_MEDIUM)
+        {
+            ErrorHandler();
+        }
     }
     else
     {

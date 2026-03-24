@@ -30,9 +30,6 @@
 
 /***************************** Types Definitions *****************************/
 
-/** @brief Event CallBack type definition */
-typedef void (*reportEventCallback_t)(severityLevel_t severity);
-
 /**
  * @brief General debug information captured during an error.
  */

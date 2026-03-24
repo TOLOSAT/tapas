@@ -321,11 +321,14 @@ typedef struct
  */
 typedef enum
 {
-    SEVERITY_INFORMATIVE = 0u, /**< Informative event. */
-    SEVERITY_LOW         = 1u, /**< Low severity.      */
-    SEVERITY_MEDIUM      = 2u, /**< Medium severity.   */
-    SEVERITY_HIGH        = 3u, /**< High severity.     */
+    SEVERITY_INFORMATIVE = 1u, /**< Informative event. */
+    SEVERITY_LOW         = 2u, /**< Low severity.      */
+    SEVERITY_MEDIUM      = 3u, /**< Medium severity.   */
+    SEVERITY_HIGH        = 4u, /**< High severity.     */
 } severityLevel_t;
+
+/** @brief Event CallBack type definition */
+typedef void (*reportEventCallback_t)(severityLevel_t severity);
 
 #endif /* KERNEL_TYPES_H */
 
