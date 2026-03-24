@@ -56,6 +56,9 @@
 
 #define CALL_STACK_MAX_SIZE           20u /**< Call stack maximum size */
 
+#define REBOOT_ORIGIN_KERNEL          0u /**< Reboot origin is a kernel reboot */
+#define REBOOT_ORIGIN_USER            1u /**< Reboot origin is a watchdog reboot */
+
 /************************************/
 /********** SYSTEM DEVICES **********/
 /************************************/

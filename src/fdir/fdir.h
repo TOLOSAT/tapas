@@ -42,6 +42,7 @@ typedef struct
     uint32_t cfsr;               /**< Configurable Fault Status Register. */
     uint32_t hfsr;               /**< Hard Fault Status Register.         */
     callStack_t call_stack;      /**< Captured call stack.                */
+    uint32_t reboot_origin;      /**< Indicates the reboot origin.        */
 } debugInfo_t;
 
 /*************************** Variables Declarations **************************/

@@ -107,11 +107,14 @@ void ErrorHandler(void)
     // Warn that there is an error
     LEDErrorOn();
 
-    // Infinite Loop
-    while (1)
-    {
-        // Do Nothing
-    }
+    // Set reboot origin to user reboot
+    debug_info.reboot_origin = REBOOT_ORIGIN_USER;
+
+    // Update the context
+    UpdateContext();
+
+    // Reboot the system
+    SystemReset();
 }
 
 /**
@@ -135,6 +138,9 @@ void KernelPanic(void)
 
     // Unwind the stack to etablish a stacktrace
     UnwindStack(last_stack_context, &debug_info.call_stack);
+
+    // Set reboot origin to kernel reboot
+    debug_info.reboot_origin = REBOOT_ORIGIN_KERNEL;
 
     // Update the context
     UpdateContext();
@@ -263,10 +269,11 @@ static void UpdateContext(void)
         // Update the context
         context.state = SOFTWARE_STATE_SAFE;
         context.critical_error++;
-        context.cfsr       = debug_info.cfsr;
-        context.hfsr       = debug_info.hfsr;
-        context.registers  = *(debug_info.registers);
-        context.call_stack = debug_info.call_stack;
+        context.cfsr          = debug_info.cfsr;
+        context.hfsr          = debug_info.hfsr;
+        context.registers     = *(debug_info.registers);
+        context.call_stack    = debug_info.call_stack;
+        context.reboot_origin = debug_info.reboot_origin;
 
         // Write the updated context
         (void)WriteContext(&context);

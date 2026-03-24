@@ -297,17 +297,18 @@ typedef uint8_t softwareId_t;
  */
 typedef struct
 {
-    softwareVersion_t version;        /**< @brief Software version */
-    softwareState_t state;            /**< @brief Software state */
-    softwareId_t safe_software_id;    /**< @brief Safe Software ID */
-    softwareId_t nominal_software_id; /**< @brief Nominal Software ID */
+    softwareVersion_t version;        /**< @brief Software version                                       */
+    softwareState_t state;            /**< @brief Software state                                         */
+    softwareId_t safe_software_id;    /**< @brief Safe Software ID                                       */
+    softwareId_t nominal_software_id; /**< @brief Nominal Software ID                                    */
     uint8_t bnco;                     /**< @brief Padding field named after the best burger in Toulouse. */
-    uint32_t boot;                    /**< @brief Boot count */
-    uint32_t critical_error;          /**< @brief Critical error count */
-    uint32_t cfsr;                    /**< @brief Configurable Fault Status Register. */
-    uint32_t hfsr;                    /**< @brief Hard Fault Status Register.         */
-    savedRegisters_t registers;       /**< @brief Saved registers */
-    callStack_t call_stack;           /**< @brief Call stack */
+    uint32_t boot;                    /**< @brief Boot count                                             */
+    uint32_t critical_error;          /**< @brief Critical error count                                   */
+    uint32_t cfsr;                    /**< @brief Configurable Fault Status Register.                    */
+    uint32_t hfsr;                    /**< @brief Hard Fault Status Register.                            */
+    savedRegisters_t registers;       /**< @brief Saved registers                                        */
+    callStack_t call_stack;           /**< @brief Call stack                                             */
+    uint32_t reboot_origin;           /**< @brief Indicates the reboot origin.                           */
 } ATTR_PACKED context_t;
 
 /*************************************/
