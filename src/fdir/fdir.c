@@ -62,7 +62,7 @@ void InitFDIR(void)
 }
 
 /**
- * @fn          CheckError(returnCode_t retcode)
+ * @fn          CheckError(returnCode_t retcode, severityLevel_t severity)
  * @brief       This function check if an error occured and execute the sanction
  * @param[in]   retcode     Return code of a function.
  * @param[in]   severity    Severity level of the event
@@ -369,4 +369,7 @@ void ATTR_EXCEPTION UsageFault_Handler(void)
     SystemReset();
 }
 
+/**
+ * @brief Callback pointer for event reporting, to be configured by the application.
+ */
 __attribute__((weak)) reportEventCallback_t p_ReportEvent = NULL;

@@ -92,7 +92,7 @@ const uint32_t syscall_vector[NB_SYSCALLS] = {
 /************************** System Calls Definitions *************************/
 
 /**
- * @fn      sys_CheckError(returnCode_t retcode)
+ * @fn      sys_CheckError(returnCode_t retcode, severityLevel_t severity)
  * @brief   Syscall declaration for CheckError
  */
 void ATTR_SYSCALL sys_CheckError(returnCode_t retcode, severityLevel_t severity)
