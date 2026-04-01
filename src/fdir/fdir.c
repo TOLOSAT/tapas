@@ -81,7 +81,7 @@ void CheckError(returnCode_t retcode, severityLevel_t severity)
             p_ReportEvent(severity);
         }
 
-        // Go to error handler
+        // Go to error handler if severity is above medium
         if (severity >= SEVERITY_MEDIUM)
         {
             ErrorHandler();
