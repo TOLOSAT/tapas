@@ -62,20 +62,30 @@ void InitFDIR(void)
 }
 
 /**
- * @fn          CheckError(returnCode_t retcode)
+ * @fn          CheckError(returnCode_t retcode, severityLevel_t severity)
  * @brief       This function check if an error occured and execute the sanction
  * @param[in]   retcode     Return code of a function.
+ * @param[in]   severity    Severity level of the event
  * @return      Nothing
  */
-void CheckError(returnCode_t retcode)
+void CheckError(returnCode_t retcode, severityLevel_t severity)
 {
     if (retcode == RET_ERROR)
     {
         // Indicates an error occured and system goes into error handler
         ConsolePrint("System : KO\n");
 
-        // Go to error handler
-        ErrorHandler();
+        // Call event reporting callback if the pointer is configured
+        if (p_ReportEvent != NULL)
+        {
+            p_ReportEvent(severity);
+        }
+
+        // Go to error handler if severity is above medium
+        if (severity >= SEVERITY_MEDIUM)
+        {
+            ErrorHandler();
+        }
     }
     else
     {
@@ -100,11 +110,14 @@ void ErrorHandler(void)
     // Warn that there is an error
     LEDErrorOn();
 
-    // Infinite Loop
-    while (1)
-    {
-        // Do Nothing
-    }
+    // Set reboot origin to user reboot
+    debug_info.reboot_origin = REBOOT_ORIGIN_USER;
+
+    // Update the context
+    UpdateContext();
+
+    // Reboot the system
+    SystemReset();
 }
 
 /**
@@ -128,6 +141,9 @@ void KernelPanic(void)
 
     // Unwind the stack to etablish a stacktrace
     UnwindStack(last_stack_context, &debug_info.call_stack);
+
+    // Set reboot origin to kernel reboot
+    debug_info.reboot_origin = REBOOT_ORIGIN_KERNEL;
 
     // Update the context
     UpdateContext();
@@ -256,10 +272,11 @@ static void UpdateContext(void)
         // Update the context
         context.state = SOFTWARE_STATE_SAFE;
         context.critical_error++;
-        context.cfsr       = debug_info.cfsr;
-        context.hfsr       = debug_info.hfsr;
-        context.registers  = *(debug_info.registers);
-        context.call_stack = debug_info.call_stack;
+        context.cfsr          = debug_info.cfsr;
+        context.hfsr          = debug_info.hfsr;
+        context.registers     = *(debug_info.registers);
+        context.call_stack    = debug_info.call_stack;
+        context.reboot_origin = debug_info.reboot_origin;
 
         // Write the updated context
         (void)WriteContext(&context);
@@ -351,3 +368,8 @@ void ATTR_EXCEPTION UsageFault_Handler(void)
     // Reboot the system
     SystemReset();
 }
+
+/**
+ * @brief Callback pointer for event reporting, to be configured by the application.
+ */
+__attribute__((weak)) reportEventCallback_t p_ReportEvent = NULL;

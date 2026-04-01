@@ -50,7 +50,7 @@ void SYSWDGMain(void)
 {
     // Initialise watchdog
 #if defined(CONFIG_WDG)
-    CheckError(InitWatchDog(2u * (uint32_t)CONFIG_SYSWDG_PERIOD_MS));
+    CheckError(InitWatchDog(2u * (uint32_t)CONFIG_SYSWDG_PERIOD_MS), SEVERITY_MEDIUM);
 #endif
 
     // Initialisation

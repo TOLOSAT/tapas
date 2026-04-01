@@ -100,8 +100,7 @@ returnCode_t WaitSignal(signalMask_t mask)
                     KernelPanic();
                 }
             }
-        }
-        while ((received_signals & mask) == 0u);
+        } while ((received_signals & mask) == 0u);
 
         // Clear only the consumed signals and keep the others pending.
         (void)ulTaskNotifyValueClear(NULL, (received_signals & mask));
