@@ -35,13 +35,11 @@ FATFS_INCFLAGS	=	$(addprefix -I,$(FATFS_INCDIRS))
 ##############################################
 
 .PHONY : fatfs fatfs-start fatfs-end fatfs-clean
-fatfs : fatfs-start $(FATFS_LIB) fatfs-end
+fatfs : fatfs-end
+fatfs-end : $(FATFS_LIB)
+$(FATFS_OBJS) : | pre-build fatfs-start
 
-# Include dependencies
--include $(FATFS_OBJS:.o=.d)
-
-# Build header
-fatfs-start :
+define FATFS_START_VERBOSE
 	@echo "$(BOLD)=============================$(RESET)"
 	@echo "$(BOLD)===         FATFS         ===$(RESET)"
 	@echo "$(BOLD)=============================$(RESET)"
@@ -51,6 +49,19 @@ fatfs-start :
 	@echo "$(YELLOW)Include Paths:$(RESET)"
 	@$(foreach dir,$(patsubst $(WORKSPACE)/%,%,$(FATFS_INCDIRS)),echo "  - $(dir)";)
 	@echo "$(BLUE)Start building...$(RESET)"
+endef
+
+define FATFS_END_VERBOSE
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
+	@echo ""
+endef
+
+# Include dependencies
+-include $(FATFS_OBJS:.o=.d)
+
+# Build header
+fatfs-start :
+	$(if $(PARALLEL_BUILD),$(QUIET_RECIPE),$(FATFS_START_VERBOSE))
 
 # Building recipes
 $(FATFS_OBJDIR)/%.o : $(FATFS_SRCDIR)/%.c
@@ -66,8 +77,7 @@ $(FATFS_LIB) : $(FATFS_OBJS)
 
 # Build footer
 fatfs-end :
-	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
-	@echo ""
+	$(if $(PARALLEL_BUILD),$(QUIET_RECIPE),$(FATFS_END_VERBOSE))
 
 # Clean recipe
 fatfs-clean :

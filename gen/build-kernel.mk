@@ -49,13 +49,11 @@ KERNEL_INCFLAGS = $(addprefix -I,$(KERNEL_INCDIRS))
 ##############################################
 
 .PHONY : kernel kernel-start kernel-end kernel-clean
-kernel : pre-build kernel-start $(KERNEL_LIB) kernel-end
+kernel : kernel-end
+kernel-end : $(KERNEL_LIB)
+$(KERNEL_OBJS) : | pre-build kernel-start
 
-# Include dependencies
--include $(KERNEL_OBJS:.o=.d)
-
-# Build header
-kernel-start :
+define KERNEL_START_VERBOSE
 	@echo "$(BOLD)=============================$(RESET)"
 	@echo "$(BOLD)===         KERNEL        ===$(RESET)"
 	@echo "$(BOLD)=============================$(RESET)"
@@ -66,6 +64,19 @@ kernel-start :
 	@echo "$(YELLOW)Include Paths:$(RESET)"
 	@$(foreach dir,$(patsubst $(WORKSPACE)/%,%,$(KERNEL_INCDIRS)),echo "  - $(dir)";)
 	@echo "$(BLUE)Start building...$(RESET)"
+endef
+
+define KERNEL_END_VERBOSE
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
+	@echo ""
+endef
+
+# Include dependencies
+-include $(KERNEL_OBJS:.o=.d)
+
+# Build header
+kernel-start :
+	$(if $(PARALLEL_BUILD),$(QUIET_RECIPE),$(KERNEL_START_VERBOSE))
 
 # Building recipes
 $(KERNEL_OBJDIR)/%.o : $(KERNEL_DIR)/%.c
@@ -91,8 +102,7 @@ $(KERNEL_LIB) : $(KERNEL_OBJS)
 
 # Build footer
 kernel-end :
-	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
-	@echo ""
+	$(if $(PARALLEL_BUILD),$(QUIET_RECIPE),$(KERNEL_END_VERBOSE))
 
 # Clean recipe
 kernel-clean :

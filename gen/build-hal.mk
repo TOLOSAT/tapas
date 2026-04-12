@@ -36,13 +36,11 @@ HAL_INCFLAGS	=	$(addprefix -I,$(HAL_INCDIRS))
 ##############################################
 
 .PHONY : hal hal-start hal-end hal-clean
-hal : hal-start $(HAL_LIB) hal-end
+hal : hal-end
+hal-end : $(HAL_LIB)
+$(HAL_OBJS) : | pre-build hal-start
 
-# Include dependencies
--include $(HAL_OBJS:.o=.d)
-
-# Build header
-hal-start :
+define HAL_START_VERBOSE
 	@echo "$(BOLD)=============================$(RESET)"
 	@echo "$(BOLD)===          HAL          ===$(RESET)"
 	@echo "$(BOLD)=============================$(RESET)"
@@ -52,6 +50,19 @@ hal-start :
 	@echo "$(YELLOW)Include Paths:$(RESET)"
 	@$(foreach dir,$(patsubst $(WORKSPACE)/%,%,$(HAL_INCDIRS)),echo "  - $(dir)";)
 	@echo "$(BLUE)Start building...$(RESET)"
+endef
+
+define HAL_END_VERBOSE
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
+	@echo ""
+endef
+
+# Include dependencies
+-include $(HAL_OBJS:.o=.d)
+
+# Build header
+hal-start :
+	$(if $(PARALLEL_BUILD),$(QUIET_RECIPE),$(HAL_START_VERBOSE))
 
 # Building recipes
 $(HAL_OBJDIR)/%.o : $(HAL_SRCDIR)/%.c
@@ -67,8 +78,7 @@ $(HAL_LIB) : $(HAL_OBJS)
 
 # Build footer
 hal-end :
-	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
-	@echo ""
+	$(if $(PARALLEL_BUILD),$(QUIET_RECIPE),$(HAL_END_VERBOSE))
 
 # Clean recipe
 hal-clean :

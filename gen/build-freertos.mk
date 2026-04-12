@@ -38,13 +38,11 @@ FREERTOS_INCFLAGS	=	$(addprefix -I,$(FREERTOS_INCDIRS))
 ##############################################
 
 .PHONY : freertos freertos-start freertos-end freertos-clean
-freertos : freertos-start $(FREERTOS_LIB) freertos-end
+freertos : freertos-end
+freertos-end : $(FREERTOS_LIB)
+$(FREERTOS_OBJS) : | pre-build freertos-start
 
-# Include dependencies
--include $(FREERTOS_OBJS:.o=.d)
-
-# Build header
-freertos-start :
+define FREERTOS_START_VERBOSE
 	@echo "$(BOLD)=============================$(RESET)"
 	@echo "$(BOLD)===        FREERTOS       ===$(RESET)"
 	@echo "$(BOLD)=============================$(RESET)"
@@ -54,6 +52,19 @@ freertos-start :
 	@echo "$(YELLOW)Include Paths:$(RESET)"
 	@$(foreach dir,$(patsubst $(WORKSPACE)/%,%,$(FREERTOS_INCDIRS)),echo "  - $(dir)";)
 	@echo "$(BLUE)Start building...$(RESET)"
+endef
+
+define FREERTOS_END_VERBOSE
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
+	@echo ""
+endef
+
+# Include dependencies
+-include $(FREERTOS_OBJS:.o=.d)
+
+# Build header
+freertos-start :
+	$(if $(PARALLEL_BUILD),$(QUIET_RECIPE),$(FREERTOS_START_VERBOSE))
 
 # Building recipes
 $(FREERTOS_OBJDIR)/%.o : $(FREERTOS_SRCDIR)/%.c
@@ -69,8 +80,7 @@ $(FREERTOS_LIB) : $(FREERTOS_OBJS)
 
 # Build footer
 freertos-end :
-	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
-	@echo ""
+	$(if $(PARALLEL_BUILD),$(QUIET_RECIPE),$(FREERTOS_END_VERBOSE))
 
 # Clean recipe
 freertos-clean :

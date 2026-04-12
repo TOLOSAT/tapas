@@ -22,15 +22,26 @@ BSP_CONF_SRCS	= $(PRE_BUILD_DIR)/peripherals_conf.c \
 ##############################################
 
 .PHONY : pre-build pre-build-start autoconf conf-files pre-build-end
-pre-build : pre-build-start autoconf conf-files pre-build-end
+pre-build : pre-build-end
+pre-build-end : autoconf conf-files
+autoconf conf-files : | pre-build-start
 
-# Pre-build header
-pre-build-start :
+define KERNEL_PRE_BUILD_START_VERBOSE
 	@echo "$(BOLD)=============================$(RESET)"
 	@echo "$(BOLD)===    KERNEL PRE BUILD   ===$(RESET)"
 	@echo "$(BOLD)=============================$(RESET)"
 	@echo "$(YELLOW)Files to pre-build:$(RESET) $(words $(AUTOCONF_SRC) $(BSP_CONF_SRCS))"
 	@echo "$(BLUE)Start pre-building...$(RESET)"
+endef
+
+define KERNEL_PRE_BUILD_END_VERBOSE
+	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
+	@echo ""
+endef
+
+# Pre-build header
+pre-build-start :
+	$(if $(PARALLEL_BUILD),$(QUIET_RECIPE),$(KERNEL_PRE_BUILD_START_VERBOSE))
 
 # Autoconf recipes
 autoconf : $(AUTOCONF_SRC)
@@ -53,8 +64,7 @@ $(PRE_BUILD_DIR)/bsp-conf.stamp : $(BSP_JSON)
 
 # Pre-build footer
 pre-build-end :
-	@echo "$(BOLD)$(GREEN)Done.$(RESET)"
-	@echo ""
+	$(if $(PARALLEL_BUILD),$(QUIET_RECIPE),$(KERNEL_PRE_BUILD_END_VERBOSE))
 
 # Pre-build clean recipes
 pre-build-clean :
