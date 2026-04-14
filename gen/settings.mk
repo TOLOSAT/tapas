@@ -98,6 +98,14 @@ PARALLEL_BUILD = $(strip \
 	$(filter -j%,$(MAKEFLAGS)))
 QUIET_RECIPE = @true
 
+# Detect builds launched with GNU make parallel jobs.
+PARALLEL_BUILD = $(strip \
+	$(findstring --jobserver-auth,$(MAKEFLAGS)) \
+	$(findstring --jobserver-fds,$(MAKEFLAGS)) \
+	$(filter -j,$(MAKEFLAGS)) \
+	$(filter -j%,$(MAKEFLAGS)))
+QUIET_RECIPE = @true
+
 # Select FreeRTOS port
 ifeq ($(CONFIG_ARCH),"cortex-m4")
 ifeq ($(CONFIG_HAS_FPU),y)
