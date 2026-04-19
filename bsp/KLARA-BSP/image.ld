@@ -8,8 +8,7 @@ MEMORY
     DTCM_RAM    (rw)  : ORIGIN = 0x20000000, LENGTH = 128K
     AXI_SRAM1   (rwx) : ORIGIN = 0x24000000, LENGTH = 256K
     AXI_SRAM2   (rwx) : ORIGIN = 0x24040000, LENGTH = 256K
-    SRAM1       (rwx) : ORIGIN = 0x30000000, LENGTH = 128K
-    SRAM2       (rwx) : ORIGIN = 0x30020000, LENGTH = 128K
+    SRAM12       (rwx) : ORIGIN = 0x30000000, LENGTH = 256K /* Use SRAM1 and SRAM2 as a continuous memory space */
     SRAM3       (rwx) : ORIGIN = 0x30040000, LENGTH = 32K
 }
 
@@ -217,6 +216,15 @@ SECTIONS
         . = . + __Min_Heap_Size__;
         . = ALIGN(8);
     } >AXI_SRAM2
+
+    .nandbuff :
+    {
+        . = ALIGN(4);
+        __nandbuff_start__ = .;
+        *(.nandbuff)
+        . = ALIGN(4);
+        __nandbuff_end__ = .;
+    } >SRAM12
 
     /* The dma buffers goes into .dmabuff to avoid saturating the AXI SRAM. */
     .dmabuff :

@@ -10,12 +10,16 @@
 
 /******************************* Include Files *******************************/
 
+#include <string.h>
+
 #include "drv/memories.h"
 #include "drv/memories/drv_nand.h"
 #include "core/irq.h"
 #include "fdir/fdir.h"
 
 /***************************** Macros Definitions ****************************/
+
+#define NAND_MAX_BLOCK_SIZE_BYTES 262144u /**< NAND block maximum size used for write buffering (correspond to 64 pages of 4096 bytes) */
 
 /*************************** Functions Declarations **************************/
 
@@ -122,10 +126,10 @@ returnCode_t NandOpen(nandInst_t *nand_inst, const nandConf_t *const nand_conf)
 /**
  * @fn          NandWrite(nandInst_t *nand_inst, memorySector_t sector, data_t data, length_t length)
  * @brief       Function that writes onto an NAND memory
- * @param[in]   nand_inst     Instance that contains NAND parameters and NAND Handler
+ * @param[in]   nand_inst   Instance that contains NAND parameters and NAND Handler
  * @param[in]   sector      Sector numero from wich data will be read
  * @param[out]  data        Pointer from which data will be copied
- * @param[in]   length      Number of block that will be read
+ * @param[in]   length      Number of sector that will be read
  * @retval      #RET_SUCCESSFUL if data has been written successfully
  * @retval      #RET_INVALID_PARAM if one pointer is null
  * @retval      #RET_TIMEOUT if nand timed out before sending message
@@ -135,14 +139,79 @@ returnCode_t NandWrite(nandInst_t *nand_inst, memorySector_t sector, data_t data
 {
     returnCode_t return_value = RET_SUCCESSFUL;
 
+    // NAND Write Buffer
+    static uint8_t __attribute__((section(".nandbuff"))) nand_write_buffer[NAND_MAX_BLOCK_SIZE_BYTES] = { 0 };
+
     // Check parameter(s)
-    if ((nand_inst != NULL) && (length != 0u) && (data != NULL))
+    if ((nand_inst != NULL) && (nand_inst->p_conf != NULL) && (length != 0u) && (data != NULL))
     {
-        NAND_AddressTypeDef nand_addr = NAND_LinearToAddress(nand_inst, sector);
-        HAL_StatusTypeDef test_hal    = HAL_NAND_Write_Page_8b(&nand_inst->handle_struct, &nand_addr, data, length);
-        if (test_hal != HAL_OK)
+        const uint32_t page_size  = nand_inst->p_conf->page_size;
+        const uint32_t block_size = nand_inst->p_conf->block_size;
+
+        // Check bounds
+        if ((page_size != 0u) && (block_size != 0u) && (block_size <= (NAND_MAX_BLOCK_SIZE_BYTES / page_size)))
         {
-            KernelPanic();
+            const uint32_t sector_count = nand_inst->p_conf->nb_plane * nand_inst->p_conf->plane_size * block_size;
+
+            if (((uint32_t)sector < sector_count) && (length <= (sector_count - (uint32_t)sector)))
+            {
+                uint32_t first_page_offset = sector % block_size;
+                uint32_t number_blocks     = (first_page_offset + length + block_size - 1u) / block_size;
+                uint32_t written_pages     = 0u;
+
+                // For each block
+                for (uint32_t i = 0u; i < number_blocks; i++)
+                {
+                    uint32_t current_sector = (uint32_t)sector + written_pages;
+                    uint32_t offset         = current_sector % block_size;
+                    uint32_t size           = block_size - offset;
+
+                    if (size > (length - written_pages))
+                    {
+                        size = length - written_pages;
+                    }
+
+                    NAND_AddressTypeDef block_addr = NAND_LinearToAddress(nand_inst, current_sector - offset);
+
+                    // Get the content of the block to the write buffer
+                    HAL_StatusTypeDef test_hal = HAL_NAND_Read_Page_8b(&nand_inst->handle_struct, &block_addr, nand_write_buffer, block_size);
+                    if (test_hal == HAL_OK)
+                    {
+                        // Copy the new data into the write buffer
+                        (void)memcpy(&nand_write_buffer[offset * page_size], &data[written_pages * page_size], (size_t)size * page_size);
+
+                        // Erase the block
+                        test_hal = HAL_NAND_Erase_Block(&nand_inst->handle_struct, &block_addr);
+                        if (test_hal == HAL_OK)
+                        {
+                            // Write back the block with new content
+                            test_hal = HAL_NAND_Write_Page_8b(&nand_inst->handle_struct, &block_addr, nand_write_buffer, block_size);
+                            if (test_hal != HAL_OK)
+                            {
+                                KernelPanic();
+                            }
+                        }
+                        else
+                        {
+                            KernelPanic();
+                        }
+                    }
+                    else
+                    {
+                        KernelPanic();
+                    }
+
+                    written_pages += size;
+                }
+            }
+            else
+            {
+                return_value = RET_INVALID_PARAM;
+            }
+        }
+        else
+        {
+            return_value = RET_INVALID_PARAM;
         }
     }
     else
@@ -159,7 +228,7 @@ returnCode_t NandWrite(nandInst_t *nand_inst, memorySector_t sector, data_t data
  * @param[in]   nand_inst     Instance that contains NAND parameters and NAND Handler
  * @param[in]   sector      Sector numero from wich data will be read
  * @param[out]  data        Pointer to where data will be copied
- * @param[in]   length      Number of block that will be read
+ * @param[in]   length      Number of sector that will be read
  * @retval      #RET_SUCCESSFUL if data has been read successfully
  * @retval      #RET_INVALID_PARAM if one pointer is null
  * @retval      #RET_TIMEOUT if nand timed out before sending message
