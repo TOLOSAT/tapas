@@ -89,11 +89,6 @@ else
 LOAD_MEMORY = flash
 endif
 
-# Test Selection
-ifneq ($(CONFIG_TEST_NAME),)
-TEST_NAME = $(subst ",,$(CONFIG_TEST_NAME))
-APPLICATIONS_DIR = $(TESTS_DIR)/$(TEST_NAME)
-endif
 
 # Detect builds launched with GNU make parallel jobs.
 PARALLEL_BUILD = $(strip \
