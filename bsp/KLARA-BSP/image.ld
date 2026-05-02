@@ -217,6 +217,7 @@ SECTIONS
         . = ALIGN(8);
     } >AXI_SRAM2
 
+    /* This area is used by the nand driver to cache NAND memory blocks */
     .nandbuff :
     {
         . = ALIGN(4);
