@@ -225,6 +225,16 @@ returnCode_t UartIoctl(uartInst_t *uart_inst, uint32_t cmd, void *data, uint32_t
             case IOCTL_PERIPHERAL_STOP_RX :
                 return_value = UartAbortRX(uart_inst);
                 break;
+            case IOCTL_PERIPHERAL_GET_RX_COUNT :
+                if ((data_size == sizeof(length_t)) && (data != NULL))
+                {
+                    *(length_t *)data = uart_inst->handle_struct.rx_data_count;
+                }
+                else
+                {
+                    return_value = RET_INVALID_PARAM;
+                }
+                break;
             default :
                 return_value = RET_INVALID_PARAM;
                 break;
@@ -415,7 +425,8 @@ static void UartRxGenericIRQHandler(void *param)
     cmsdk_UartRxIRQHandler(&uart_inst->handle_struct);
 
     // Check if something has changed
-    if ((uart_inst->handle_struct.rxstate != rx_status) && (uart_inst->handle_struct.rxstate == HAL_UART_STATE_READY))
+    if (((uart_inst->handle_struct.rxstate != rx_status) && (uart_inst->handle_struct.rxstate == HAL_UART_STATE_READY))
+        || uart_inst->p_conf->is_circular_buffer)
     {
         // RX completed
         if (uart_inst->callback_rx_completed != NULL)
