@@ -148,28 +148,26 @@ returnCode_t NandWrite(nandInst_t *nand_inst, memorySector_t sector, data_t data
     // Check parameter(s)
     if ((nand_inst != NULL) && (nand_inst->p_conf != NULL) && (length != 0u) && (data != NULL))
     {
-        const uint32_t page_size  = nand_inst->p_conf->page_size;
-        const uint32_t block_size = nand_inst->p_conf->block_size;
-
         // Check bounds
-        if ((page_size != 0u) && (block_size != 0u) && (block_size <= (NAND_MAX_BLOCK_SIZE_BYTES / page_size)))
+        if ((nand_inst->p_conf->page_size != 0u) && (nand_inst->p_conf->block_size != 0u)
+            && (nand_inst->p_conf->block_size <= (NAND_MAX_BLOCK_SIZE_BYTES / nand_inst->p_conf->page_size)))
         {
-            const uint32_t sector_count = nand_inst->p_conf->nb_plane * nand_inst->p_conf->plane_size * block_size;
+            const uint32_t sector_count = nand_inst->p_conf->nb_block * nand_inst->p_conf->block_size;
 
             if (((uint32_t)sector < sector_count) && (length <= (sector_count - (uint32_t)sector)))
             {
-                uint32_t first_page_offset = sector % block_size;
-                uint32_t number_blocks     = (first_page_offset + length + block_size - 1u) / block_size;
+                uint32_t first_page_offset = sector % nand_inst->p_conf->block_size;
+                uint32_t number_blocks     = (first_page_offset + length + nand_inst->p_conf->block_size - 1u) / nand_inst->p_conf->block_size;
                 uint32_t written_pages     = 0u;
 
                 // For each block
                 for (uint32_t i = 0u; i < number_blocks; i++)
                 {
                     uint32_t current_sector     = (uint32_t)sector + written_pages;
-                    uint32_t offset             = current_sector % block_size;
-                    uint32_t size               = block_size - offset;
-                    uint32_t current_block      = current_sector / block_size;
-                    uint32_t block_start_sector = current_block * block_size;
+                    uint32_t offset             = current_sector % nand_inst->p_conf->block_size;
+                    uint32_t size               = nand_inst->p_conf->block_size - offset;
+                    uint32_t current_block      = current_sector / nand_inst->p_conf->block_size;
+                    uint32_t block_start_sector = current_block * nand_inst->p_conf->block_size;
                     HAL_StatusTypeDef test_hal  = HAL_OK;
 
                     if (size > (length - written_pages))
@@ -183,7 +181,7 @@ returnCode_t NandWrite(nandInst_t *nand_inst, memorySector_t sector, data_t data
                     if (nand_write_buffer_block != current_block)
                     {
                         // Get the content of the block to the write buffer
-                        test_hal = HAL_NAND_Read_Page_8b(&nand_inst->handle_struct, &block_addr, nand_write_buffer, block_size);
+                        test_hal = HAL_NAND_Read_Page_8b(&nand_inst->handle_struct, &block_addr, nand_write_buffer, nand_inst->p_conf->block_size);
                     }
 
                     // If everything is OK, we can write to the NAND
@@ -193,14 +191,16 @@ returnCode_t NandWrite(nandInst_t *nand_inst, memorySector_t sector, data_t data
                         nand_write_buffer_block = current_block;
 
                         // Copy the new data into the write buffer
-                        (void)memcpy(&nand_write_buffer[offset * page_size], &data[written_pages * page_size], (size_t)size * page_size);
+                        (void)memcpy(&nand_write_buffer[offset * nand_inst->p_conf->page_size], &data[written_pages * nand_inst->p_conf->page_size],
+                                     (size_t)size * nand_inst->p_conf->page_size);
 
                         // Erase the block
                         test_hal = HAL_NAND_Erase_Block(&nand_inst->handle_struct, &block_addr);
                         if (test_hal == HAL_OK)
                         {
                             // Write back the block with new content
-                            test_hal = HAL_NAND_Write_Page_8b(&nand_inst->handle_struct, &block_addr, nand_write_buffer, block_size);
+                            test_hal =
+                                HAL_NAND_Write_Page_8b(&nand_inst->handle_struct, &block_addr, nand_write_buffer, nand_inst->p_conf->block_size);
                             if (test_hal != HAL_OK)
                             {
                                 KernelPanic();
@@ -315,8 +315,7 @@ returnCode_t NandIoctl(nandInst_t *nand_inst, uint32_t cmd, void *data, uint32_t
             case IOCTL_MEMORY_GET_SECTOR_COUNT :
                 if (data_size == sizeof(memorySectorCount_t))
                 {
-                    *(memorySectorCount_t *)data =
-                        (uint32_t)(nand_inst->p_conf->nb_plane * nand_inst->p_conf->plane_size * nand_inst->p_conf->block_size);
+                    *(memorySectorCount_t *)data = (uint32_t)(nand_inst->p_conf->nb_block * nand_inst->p_conf->block_size);
                 }
                 else
                 {
