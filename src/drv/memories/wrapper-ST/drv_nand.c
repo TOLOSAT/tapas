@@ -19,8 +19,8 @@
 
 /***************************** Macros Definitions ****************************/
 
-#define NAND_MAX_BLOCK_SIZE_BYTES 262144u /**< NAND block maximum size used for write buffering (correspond to 64 pages of 4096 bytes) */
-#define NAND_INVALID_BLOCK_NUMBER ((uint32_t)-1)
+#define NAND_MAX_BLOCK_SIZE_BYTES 262144u        /**< NAND block maximum size used for write buffering (correspond to 64 pages of 4096 bytes) */
+#define NAND_INVALID_BLOCK_NUMBER ((uint32_t)-1) /**< NAND Invalid block id (used to default the value of nand_write_buffer_block) */
 
 /*************************** Functions Declarations **************************/
 
