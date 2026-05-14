@@ -98,6 +98,8 @@ returnCode_t QspiMramOpen(qspimramInst_t *qspimram_inst, const qspimramConf_t *c
                     {
                         // Reset MRAM
                         return_value = QspiMramSetupSoftReset(qspimram_inst);
+                        // Then wait 1 ms to be sure MRAM is in a stable state
+                        HAL_Delay(1u);
                         if ((return_value == RET_SUCCESSFUL) && (qspimram_conf->qpi == true))
                         {
                             // Setup QSPI mode
@@ -269,6 +271,7 @@ returnCode_t QspiMramRead(qspimramInst_t *qspimram_inst, memorySector_t sector, 
                 qspi_command.AlternateByteMode   = qspimram_inst->p_conf->qpi ? QSPI_ALTERNATE_BYTES_4_LINES : QSPI_ALTERNATE_BYTES_1_LINE;
                 qspi_command.AlternateBytes      = 0xFF;
                 qspi_command.AlternateBytesSize  = QSPI_ALTERNATE_BYTES_8_BITS;
+                qspi_command.DummyCycles         = QSPIMRAM_READ_DUMMY_CLOCK_CYCLES;
                 qspi_command.DataMode            = qspimram_inst->p_conf->qpi ? QSPI_DATA_4_LINES : QSPI_DATA_1_LINE;
                 qspi_command.NbData              = QSPIMRAM_VIRTUAL_SECTOR_SIZE;
 
