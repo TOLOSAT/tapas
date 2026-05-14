@@ -89,6 +89,8 @@ returnCode_t NandOpen(nandInst_t *nand_inst, const nandConf_t *const nand_conf)
                     test_hal = HAL_NAND_Reset(&nand_inst->handle_struct);
                     if (test_hal == HAL_OK)
                     {
+                        // Then wait 1 ms to be sure NAND is in a stable state
+                        HAL_Delay(1u);
                         // Finaly get ID
                         test_hal = HAL_NAND_Read_ID(&nand_inst->handle_struct, &nand_inst->id);
                         if (test_hal != HAL_OK)
