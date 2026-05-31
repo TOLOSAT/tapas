@@ -53,6 +53,7 @@ typedef struct
     DMAConf_t dma_rx;           /**< @brief UART DMA configuration for TX */
     IOConf_t io_tx;             /**< @brief UART IO configuration for TX */
     IOConf_t io_rx;             /**< @brief UART IO configuration for RX */
+    bool is_circular_buffer;    /**< @brief Flag to know if circular buffer mode is enabled or not */
 } uartConf_t;
 
 /**

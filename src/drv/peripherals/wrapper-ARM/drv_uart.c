@@ -20,6 +20,7 @@ static void UartTxGenericIRQHandler(void *param);
 static returnCode_t UartSetupIRQs(uartInst_t *uart_inst, const uartConf_t *uart_conf);
 static returnCode_t UartCheckRX(uartInst_t *uart_inst);
 static returnCode_t UartCheckTX(uartInst_t *uart_inst);
+static returnCode_t UartAbortRX(uartInst_t *uart_inst);
 
 /*************************** Variables Definitions ***************************/
 
@@ -41,8 +42,9 @@ returnCode_t UartOpen(uartInst_t *uart_inst, const uartConf_t *const uart_conf)
     if ((uart_inst != NULL) && (uart_conf->baudrate != 0u))
     {
         // Setup UART
-        uart_inst->handle_struct.instance  = uart_conf->periph;
-        uart_inst->handle_struct.baud_rate = uart_conf->baudrate;
+        uart_inst->handle_struct.instance    = uart_conf->periph;
+        uart_inst->handle_struct.baud_rate   = uart_conf->baudrate;
+        uart_inst->handle_struct.buffer_mode = uart_conf->is_circular_buffer ? HAL_UART_BUFFER_CIRCULAR : HAL_UART_BUFFER_NORMAL;
 
         // Init UART
         HAL_StatusTypeDef status = cmsdk_UartInit(&uart_inst->handle_struct);
@@ -220,6 +222,19 @@ returnCode_t UartIoctl(uartInst_t *uart_inst, uint32_t cmd, void *data, uint32_t
             case IOCTL_PERIPHERAL_CHECK_TX :
                 return_value = UartCheckTX(uart_inst);
                 break;
+            case IOCTL_PERIPHERAL_STOP_RX :
+                return_value = UartAbortRX(uart_inst);
+                break;
+            case IOCTL_PERIPHERAL_GET_RX_COUNT :
+                if ((data_size == sizeof(length_t)) && (data != NULL))
+                {
+                    *(length_t *)data = uart_inst->handle_struct.rx_data_count;
+                }
+                else
+                {
+                    return_value = RET_INVALID_PARAM;
+                }
+                break;
             default :
                 return_value = RET_INVALID_PARAM;
                 break;
@@ -367,6 +382,31 @@ static returnCode_t UartCheckTX(uartInst_t *uart_inst)
     return return_value;
 }
 
+static returnCode_t UartAbortRX(uartInst_t *uart_inst)
+{
+    returnCode_t return_value = RET_SUCCESSFUL;
+
+    // Check parameter(s)
+    if (uart_inst != NULL)
+    {
+        HAL_StatusTypeDef status = cmsdk_UartRxAbort(&uart_inst->handle_struct);
+        if (status == HAL_OK)
+        {
+            return_value = RET_SUCCESSFUL;
+        }
+        else
+        {
+            return_value = RET_ERROR;
+        }
+    }
+    else
+    {
+        return_value = RET_INVALID_PARAM;
+    }
+
+    return return_value;
+}
+
 /*************************** IRQ Handler Definition **************************/
 
 /**
@@ -385,7 +425,8 @@ static void UartRxGenericIRQHandler(void *param)
     cmsdk_UartRxIRQHandler(&uart_inst->handle_struct);
 
     // Check if something has changed
-    if ((uart_inst->handle_struct.rxstate != rx_status) && (uart_inst->handle_struct.rxstate == HAL_UART_STATE_READY))
+    if (((uart_inst->handle_struct.rxstate != rx_status) && (uart_inst->handle_struct.rxstate == HAL_UART_STATE_READY))
+        || uart_inst->p_conf->is_circular_buffer)
     {
         // RX completed
         if (uart_inst->callback_rx_completed != NULL)
