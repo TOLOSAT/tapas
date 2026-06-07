@@ -19,12 +19,12 @@
 
 /***************************** Macros Definitions ****************************/
 
-#define NAND_MAX_BLOCK_SIZE_BYTES 262144u        /**< NAND block maximum size used for write buffering (correspond to 64 pages of 4096 bytes) */
-#define NAND_INVALID_BLOCK_NUMBER ((uint32_t)-1) /**< NAND Invalid block id (used to default the value of nand_write_buffer_block) */
-#define NAND_CMD_SET_FEATURE       ((uint8_t)0xEFu)
-#define NAND_CMD_GET_FEATURE       ((uint8_t)0xEEu)
-#define NAND_FEATURE_ARRAY_OP_MODE ((uint8_t)0x90u)
-#define NAND_FEATURE_ECC_ENABLE    ((uint8_t)0x08u)
+#define NAND_MAX_BLOCK_SIZE_BYTES  262144u          /**< NAND block maximum size used for write buffering (correspond to 64 pages of 4096 bytes) */
+#define NAND_INVALID_BLOCK_NUMBER  ((uint32_t)-1)   /**< NAND Invalid block id (used to default the value of nand_write_buffer_block) */
+#define NAND_CMD_SET_FEATURE       ((uint8_t)0xEFu) /**< NAND SET FEATURE command */
+#define NAND_CMD_GET_FEATURE       ((uint8_t)0xEEu) /**< NAND GET FEATURE command */
+#define NAND_FEATURE_ARRAY_OP_MODE ((uint8_t)0x90u) /**< NAND Feature 'array operation mode' */
+#define NAND_FEATURE_ECC_ENABLE    ((uint8_t)0x08u) /**< NAND Feature 'array operation mode' ECC enable bit */
 
 /*************************** Functions Declarations **************************/
 
@@ -96,10 +96,11 @@ returnCode_t NandOpen(nandInst_t *nand_inst, const nandConf_t *const nand_conf)
                     {
                         // Then wait 1 ms to be sure NAND is in a stable state
                         HAL_Delay(1u);
-                        // Finaly get ID
+                        // Then get ID
                         test_hal = HAL_NAND_Read_ID(&nand_inst->handle_struct, &nand_inst->id);
                         if (test_hal == HAL_OK)
                         {
+                            // Finally enable internal ECC
                             return_value = NandEnableECC(nand_inst);
                         }
                         else
@@ -584,8 +585,6 @@ static returnCode_t NandSetupIOs(nandInst_t *nand_inst, const nandConf_t *const 
     return return_value;
 }
 
-
-
 /**
  * @fn              NandEnableECC(nandInst_t *nand_inst)
  * @brief           Enables internal NAND ECC
@@ -606,8 +605,7 @@ static returnCode_t NandEnableECC(nandInst_t *nand_inst)
         if (hnand->State == HAL_NAND_STATE_READY)
         {
             uint32_t deviceaddress = NAND_DEVICE;
-            uint32_t feature_data   = 0x00u;
-            uint32_t tickstart      = 0u;
+            uint32_t tickstart;
 
             // Update the NAND controller state
             hnand->State = HAL_NAND_STATE_BUSY;
@@ -618,6 +616,7 @@ static returnCode_t NandEnableECC(nandInst_t *nand_inst)
             *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = NAND_FEATURE_ARRAY_OP_MODE;
             __DSB();
 
+            // Wait until the NAND isn't busy anymore
             tickstart = HAL_GetTick();
             while ((HAL_NAND_Read_Status(hnand) != NAND_READY) && ((HAL_GetTick() - tickstart) < NAND_WRITE_TIMEOUT))
             {
@@ -631,6 +630,9 @@ static returnCode_t NandEnableECC(nandInst_t *nand_inst)
             }
             else
             {
+                uint32_t feature_data;
+
+                // Get the feature data
                 *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
                 __DSB();
                 feature_data = *(__IO uint32_t *)deviceaddress;
@@ -652,6 +654,7 @@ static returnCode_t NandEnableECC(nandInst_t *nand_inst)
                 *(__IO uint8_t *)deviceaddress = ADDR_4TH_CYCLE(feature_data);
                 __DSB();
 
+                // Wait until the NAND isn't busy anymore
                 tickstart = HAL_GetTick();
                 while ((HAL_NAND_Read_Status(hnand) != NAND_READY) && ((HAL_GetTick() - tickstart) < NAND_WRITE_TIMEOUT))
                 {
@@ -672,13 +675,12 @@ static returnCode_t NandEnableECC(nandInst_t *nand_inst)
         }
         else if (hnand->State == HAL_NAND_STATE_BUSY)
         {
-            return RET_NOT_AVAILABLE;
+            return_value = RET_NOT_AVAILABLE;
         }
         else
         {
             KernelPanic();
         }
-
     }
     else
     {
