@@ -21,6 +21,10 @@
 
 #define NAND_MAX_BLOCK_SIZE_BYTES 262144u        /**< NAND block maximum size used for write buffering (correspond to 64 pages of 4096 bytes) */
 #define NAND_INVALID_BLOCK_NUMBER ((uint32_t)-1) /**< NAND Invalid block id (used to default the value of nand_write_buffer_block) */
+#define NAND_CMD_SET_FEATURE       ((uint8_t)0xEFu)
+#define NAND_CMD_GET_FEATURE       ((uint8_t)0xEEu)
+#define NAND_FEATURE_ARRAY_OP_MODE ((uint8_t)0x90u)
+#define NAND_FEATURE_ECC_ENABLE    ((uint8_t)0x08u)
 
 /*************************** Functions Declarations **************************/
 
@@ -28,6 +32,7 @@ static NAND_AddressTypeDef NandLinearToAddress(nandInst_t *nand_inst, uint32_t l
 static returnCode_t NandInitClock(nandInst_t *nand_inst, const nandConf_t *const nand_conf);
 static returnCode_t NandDeInitClock(nandInst_t *nand_inst);
 static returnCode_t NandSetupIOs(nandInst_t *nand_inst, const nandConf_t *const nand_conf);
+static returnCode_t NandEnableECC(nandInst_t *nand_inst);
 
 /*************************** Variables Definitions ***************************/
 
@@ -93,7 +98,11 @@ returnCode_t NandOpen(nandInst_t *nand_inst, const nandConf_t *const nand_conf)
                         HAL_Delay(1u);
                         // Finaly get ID
                         test_hal = HAL_NAND_Read_ID(&nand_inst->handle_struct, &nand_inst->id);
-                        if (test_hal != HAL_OK)
+                        if (test_hal == HAL_OK)
+                        {
+                            return_value = NandEnableECC(nand_inst);
+                        }
+                        else
                         {
                             KernelPanic();
                         }
@@ -566,6 +575,110 @@ static returnCode_t NandSetupIOs(nandInst_t *nand_inst, const nandConf_t *const 
         {
             return_value = SetupIO(&nand_conf->io_d7);
         }
+    }
+    else
+    {
+        return_value = RET_INVALID_PARAM;
+    }
+
+    return return_value;
+}
+
+
+
+/**
+ * @fn              NandEnableECC(nandInst_t *nand_inst)
+ * @brief           Enables internal NAND ECC
+ * @param[in,out]   nand_inst   Instance that contains NAND handlers
+ * @retval          #RET_INVALID_PARAM if nand_inst is a NULL pointer
+ * @retval          #RET_NOT_AVAILABLE when NAND controller is busy
+ * @retval          #RET_TIMEOUT if NAND controller timed out
+ * @retval          #RET_SUCCESSFUL else
+ */
+static returnCode_t NandEnableECC(nandInst_t *nand_inst)
+{
+    returnCode_t return_value = RET_SUCCESSFUL;
+
+    // Check parameter(s)
+    if (nand_inst != NULL)
+    {
+        NAND_HandleTypeDef *hnand = &nand_inst->handle_struct;
+        if (hnand->State == HAL_NAND_STATE_READY)
+        {
+            uint32_t deviceaddress = NAND_DEVICE;
+            uint32_t feature_data   = 0x00u;
+            uint32_t tickstart      = 0u;
+
+            // Update the NAND controller state
+            hnand->State = HAL_NAND_STATE_BUSY;
+
+            // First read feature 'Array Operation Mode' (0x90)
+            *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_GET_FEATURE;
+            __DSB();
+            *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = NAND_FEATURE_ARRAY_OP_MODE;
+            __DSB();
+
+            tickstart = HAL_GetTick();
+            while ((HAL_NAND_Read_Status(hnand) != NAND_READY) && ((HAL_GetTick() - tickstart) < NAND_WRITE_TIMEOUT))
+            {
+                // Wait until GET FEATURES tFEAT is complete.
+            }
+
+            if ((HAL_GetTick() - tickstart) >= NAND_WRITE_TIMEOUT)
+            {
+                hnand->State = HAL_NAND_STATE_ERROR;
+                return_value = RET_TIMEOUT;
+            }
+            else
+            {
+                *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
+                __DSB();
+                feature_data = *(__IO uint32_t *)deviceaddress;
+
+                // Enable ECC
+                feature_data |= NAND_FEATURE_ECC_ENABLE;
+
+                // Then write back feature 'Array Operation Mode' (0x90)
+                *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_SET_FEATURE;
+                __DSB();
+                *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = NAND_FEATURE_ARRAY_OP_MODE;
+                __DSB();
+                *(__IO uint8_t *)deviceaddress = ADDR_1ST_CYCLE(feature_data);
+                __DSB();
+                *(__IO uint8_t *)deviceaddress = ADDR_2ND_CYCLE(feature_data);
+                __DSB();
+                *(__IO uint8_t *)deviceaddress = ADDR_3RD_CYCLE(feature_data);
+                __DSB();
+                *(__IO uint8_t *)deviceaddress = ADDR_4TH_CYCLE(feature_data);
+                __DSB();
+
+                tickstart = HAL_GetTick();
+                while ((HAL_NAND_Read_Status(hnand) != NAND_READY) && ((HAL_GetTick() - tickstart) < NAND_WRITE_TIMEOUT))
+                {
+                    // Wait until SET FEATURES tFEAT is complete.
+                }
+
+                if ((HAL_GetTick() - tickstart) >= NAND_WRITE_TIMEOUT)
+                {
+                    hnand->State = HAL_NAND_STATE_ERROR;
+                    return_value = RET_TIMEOUT;
+                }
+                else
+                {
+                    // Update the NAND controller state
+                    hnand->State = HAL_NAND_STATE_READY;
+                }
+            }
+        }
+        else if (hnand->State == HAL_NAND_STATE_BUSY)
+        {
+            return RET_NOT_AVAILABLE;
+        }
+        else
+        {
+            KernelPanic();
+        }
+
     }
     else
     {
