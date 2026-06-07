@@ -6,7 +6,7 @@
  * @copyright Copyright (c) TOLOSAT 2026
  */
 
-#if !defined(STM32F411xE)
+#if defined(STM32H7)
 
 /******************************* Include Files *******************************/
 
@@ -24,10 +24,10 @@
 
 /*************************** Functions Declarations **************************/
 
+static NAND_AddressTypeDef NandLinearToAddress(nandInst_t *nand_inst, uint32_t linear_address);
 static returnCode_t NandInitClock(nandInst_t *nand_inst, const nandConf_t *const nand_conf);
 static returnCode_t NandDeInitClock(nandInst_t *nand_inst);
 static returnCode_t NandSetupIOs(nandInst_t *nand_inst, const nandConf_t *const nand_conf);
-static NAND_AddressTypeDef NAND_LinearToAddress(nandInst_t *nand_inst, uint32_t linear_address);
 
 /*************************** Variables Definitions ***************************/
 
@@ -177,7 +177,7 @@ returnCode_t NandWrite(nandInst_t *nand_inst, memorySector_t sector, data_t data
                         size = length - written_pages;
                     }
 
-                    NAND_AddressTypeDef block_addr = NAND_LinearToAddress(nand_inst, block_start_sector);
+                    NAND_AddressTypeDef block_addr = NandLinearToAddress(nand_inst, block_start_sector);
 
                     // Verify if the buffer to write in is not the current block in RAM
                     if (nand_write_buffer_block != current_block)
@@ -258,7 +258,7 @@ returnCode_t NandRead(nandInst_t *nand_inst, memorySector_t sector, data_t data,
     // Check parameter(s)
     if ((nand_inst != NULL) && (length != 0u) && (data != NULL))
     {
-        NAND_AddressTypeDef nand_addr = NAND_LinearToAddress(nand_inst, sector);
+        NAND_AddressTypeDef nand_addr = NandLinearToAddress(nand_inst, sector);
         HAL_StatusTypeDef test_hal    = HAL_NAND_Read_Page_8b(&nand_inst->handle_struct, &nand_addr, data, length);
         if (test_hal != HAL_OK)
         {
@@ -388,7 +388,7 @@ returnCode_t NandClose(nandInst_t *nand_inst)
  * @param[in]  linear_address  Linear address in number of pages
  * @return     NAND_AddressTypeDef structure with Page, Block, Plane
  */
-static NAND_AddressTypeDef NAND_LinearToAddress(nandInst_t *nand_inst, uint32_t linear_address)
+static NAND_AddressTypeDef NandLinearToAddress(nandInst_t *nand_inst, uint32_t linear_address)
 {
     NAND_AddressTypeDef addr;
 
@@ -575,4 +575,4 @@ static returnCode_t NandSetupIOs(nandInst_t *nand_inst, const nandConf_t *const 
     return return_value;
 }
 
-#endif /* !STM32F4 */
+#endif /* STM32H7 */
