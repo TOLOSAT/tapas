@@ -1,12 +1,12 @@
 /**
- * @file    drv_nand.h
+ * @file    drv_nand.c
  * @author  Merlin Kooshmanian
  * @brief   Source file for NAND memory using FMC
  *
  * @copyright Copyright (c) TOLOSAT 2026
  */
 
-#if defined(STM32H7)
+#if !defined(STM32F411xE)
 
 /******************************* Include Files *******************************/
 
@@ -318,8 +318,7 @@ returnCode_t NandRead(nandInst_t *nand_inst, memorySector_t sector, data_t data,
             page++;
 
             // Decode ECC status
-            if ((return_value == RET_SUCCESSFUL) &&
-                (ecc_status == NAND_ECC_UNCORRECTABLE))
+            if ((return_value == RET_SUCCESSFUL) && (ecc_status == NAND_ECC_UNCORRECTABLE))
             {
                 return_value = RET_ERROR; // TO DO : implement a proper FTL
             }
@@ -709,8 +708,6 @@ static returnCode_t NandGetFeature(nandInst_t *nand_inst, uint8_t feature_addres
     if ((nand_inst != NULL) && (feature_data != NULL))
     {
         NAND_HandleTypeDef *hnand = &nand_inst->handle_struct;
-        uint32_t tickstart;
-        uint32_t nand_status;
 
         if (hnand->State == HAL_NAND_STATE_READY)
         {
@@ -718,15 +715,20 @@ static returnCode_t NandGetFeature(nandInst_t *nand_inst, uint8_t feature_addres
             hnand->State = HAL_NAND_STATE_BUSY;
 
             // Enter GET FEATURES mode
-            *(__IO uint8_t *)((uint32_t)(NAND_DEVICE | CMD_AREA)) = NAND_CMD_GET_FEATURE;
+            *(__IO uint8_t *)((uint32_t)(NAND_DEVICE | CMD_AREA)) = NAND_CMD_GET_FEATURE; // cppcheck-suppress misra-c2012-11.4; Exception: FMC NAND
+                                                                                          // command area is accessed through memory-mapped I/O
+
             __DSB();
 
             // Select feature address
-            *(__IO uint8_t *)((uint32_t)(NAND_DEVICE | ADDR_AREA)) = feature_address;
+            *(__IO uint8_t *)((uint32_t)(NAND_DEVICE | ADDR_AREA)) = feature_address; // cppcheck-suppress misra-c2012-11.4; Exception: FMC NAND
+                                                                                      // command area is accessed through memory-mapped I/O
+
             __DSB();
 
             // Wait until the NAND isn't busy anymore
-            tickstart = HAL_GetTick();
+            uint32_t nand_status;
+            uint32_t tickstart = HAL_GetTick();
             do
             {
                 nand_status = HAL_NAND_Read_Status(hnand);
@@ -740,7 +742,9 @@ static returnCode_t NandGetFeature(nandInst_t *nand_inst, uint8_t feature_addres
             if (return_value == RET_SUCCESSFUL)
             {
                 // Get the feature data
-                *(__IO uint8_t *)((uint32_t)(NAND_DEVICE | CMD_AREA)) = NAND_CMD_AREA_A;
+                *(__IO uint8_t *)((uint32_t)(NAND_DEVICE | CMD_AREA)) = NAND_CMD_AREA_A; // cppcheck-suppress misra-c2012-11.4; Exception: FMC NAND
+                                                                                         // command area is accessed through memory-mapped I/O
+
                 __DSB();
                 feature_data->p1 = *(__IO uint8_t *)NAND_DEVICE;
                 feature_data->p2 = *(__IO uint8_t *)NAND_DEVICE;
@@ -792,8 +796,6 @@ static returnCode_t NandSetFeature(nandInst_t *nand_inst, uint8_t feature_addres
     if ((nand_inst != NULL) && (feature_data != NULL))
     {
         NAND_HandleTypeDef *hnand = &nand_inst->handle_struct;
-        uint32_t tickstart;
-        uint32_t nand_status;
 
         if (hnand->State == HAL_NAND_STATE_READY)
         {
@@ -801,11 +803,14 @@ static returnCode_t NandSetFeature(nandInst_t *nand_inst, uint8_t feature_addres
             hnand->State = HAL_NAND_STATE_BUSY;
 
             // Enter SET FEATURES mode
-            *(__IO uint8_t *)((uint32_t)(NAND_DEVICE | CMD_AREA)) = NAND_CMD_SET_FEATURE;
+            *(__IO uint8_t *)((uint32_t)(NAND_DEVICE | CMD_AREA)) = NAND_CMD_SET_FEATURE; // cppcheck-suppress misra-c2012-11.4; Exception: FMC NAND
+                                                                                          // command area is accessed through memory-mapped I/O
+
             __DSB();
 
             // Select feature address
-            *(__IO uint8_t *)((uint32_t)(NAND_DEVICE | ADDR_AREA)) = feature_address;
+            *(__IO uint8_t *)((uint32_t)(NAND_DEVICE | ADDR_AREA)) = feature_address; // cppcheck-suppress misra-c2012-11.4; Exception: FMC NAND
+                                                                                      // command area is accessed through memory-mapped I/O
             __DSB();
 
             // Wait tADL before writing the first feature parameter (70 ns minimum)
@@ -822,7 +827,8 @@ static returnCode_t NandSetFeature(nandInst_t *nand_inst, uint8_t feature_addres
             __DSB();
 
             // Wait until the NAND isn't busy anymore
-            tickstart = HAL_GetTick();
+            uint32_t nand_status;
+            uint32_t tickstart = HAL_GetTick();
             do
             {
                 nand_status = HAL_NAND_Read_Status(hnand);
@@ -970,14 +976,16 @@ static returnCode_t NandReadStatus(nandInst_t *nand_inst, uint8_t *status)
             hnand->State = HAL_NAND_STATE_BUSY;
 
             // Enter GET FEATURES mode
-            *(__IO uint8_t *)((uint32_t)(NAND_DEVICE | CMD_AREA)) = NAND_CMD_STATUS;
+            *(__IO uint8_t *)((uint32_t)(NAND_DEVICE | CMD_AREA)) = NAND_CMD_STATUS; // cppcheck-suppress misra-c2012-11.4; Exception: FMC NAND
+                                                                                     // command area is accessed through memory-mapped I/O
             __DSB();
 
             // Get Status
             *status = *(__IO uint8_t *)NAND_DEVICE;
 
             // Return to read mode
-            *(__IO uint8_t *)((uint32_t)(NAND_DEVICE | CMD_AREA)) = NAND_CMD_AREA_A;
+            *(__IO uint8_t *)((uint32_t)(NAND_DEVICE | CMD_AREA)) = NAND_CMD_AREA_A; // cppcheck-suppress misra-c2012-11.4; Exception: FMC NAND
+                                                                                     // command area is accessed through memory-mapped I/O
             __DSB();
 
             // Reset NAND state
@@ -1000,4 +1008,4 @@ static returnCode_t NandReadStatus(nandInst_t *nand_inst, uint8_t *status)
     return return_value;
 }
 
-#endif /* STM32H7 */
+#endif /* !STM32F411xE */
