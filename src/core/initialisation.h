@@ -32,6 +32,10 @@
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn      init(void)
+ * @brief   Function that initialise tools and HAL
+ */
 extern void init(void);
 
 #endif /* INITIALISATION_H */

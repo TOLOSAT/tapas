@@ -20,9 +20,7 @@
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      InitHal(void)
- * @brief   Function that init the choosen HAL and sysclock
- * @return  Nothing
+ * @copydoc InitHal
  */
 void InitHal(void)
 {

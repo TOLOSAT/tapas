@@ -119,10 +119,64 @@ typedef struct
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn              OwOpen(owInst_t *ow_inst, const owConf_t *constow_conf)
+ * @brief           Function that initialises an One Wire peripheral
+ * @param[in,out]   ow_inst   Instance that contains OW handlers
+ * @param[in]       ow_conf   Configuration that contains OW parameters
+ * @retval          #RET_INVALID_PARAM if ow_inst is a null pointer
+ * @retval          #RET_INVALID_PARAM if driving_mode is DMA
+ * @retval          #RET_SUCCESSFUL else
+ */
 extern returnCode_t OwOpen(owInst_t *ow_inst, const owConf_t *const ow_conf);
+
+/**
+ * @fn          OwWrite(owInst_t *ow_inst, data_t data, length_t length)
+ * @brief       Function that writes a message onto One Wire
+ * @param[in]   ow_inst Instance that contains One Wire parameters handlers
+ * @param[in]   data    Message to write
+ * @param[in]   length  Number of byte to write
+ * @retval      #RET_INVALID_PARAM if there is a null pointer or length is zero
+ * @retval      #RET_TIMEOUT if the transaction timeouted before completion
+ * @retval      #RET_NOT_AVAILABLE if no device is answering
+ * @retval      #RET_NOT_AVAILABLE if the ow is already busy
+ * @retval      #RET_SUCCESSFUL else
+ */
 extern returnCode_t OwWrite(owInst_t *ow_inst, data_t data, length_t length);
+
+/**
+ * @fn          OwRead(owInst_t *ow_inst, data_t data, length_t length)
+ * @brief       Function that reads a message onto One Wire
+ * @param[in]   ow_inst Instance that contains One Wire parameters handlers
+ * @param[out]  data    Message read
+ * @param[in]   length  Number of byte to read
+ * @retval      #RET_INVALID_PARAM if there is a null pointer or length is zero
+ * @retval      #RET_TIMEOUT if the transaction timeouted before completion
+ * @retval      #RET_NOT_AVAILABLE if no device is answering
+ * @retval      #RET_NOT_AVAILABLE if the ow is already busy
+ * @retval      #RET_SUCCESSFUL else
+ */
 extern returnCode_t OwRead(owInst_t *ow_inst, data_t data, length_t length);
+
+/**
+ * @fn              OwIoctl(owInst_t *ow_inst, uint32_t cmd, void *data, uint32_t data_size)
+ * @brief           One Wire IO control function (currently used to init One Wire connection)
+ * @param[in]       ow_inst     Instance that contains One Wire parameters handlers
+ * @param[in]       cmd         IO Control command
+ * @param[in,out]   data        IO Control command
+ * @param[in]       data_size   IO Control data size
+ * @retval          #RET_INVALID_PARAM if ow_inst is a null pointer
+ * @retval          #RET_SUCCESSFUL else
+ */
 extern returnCode_t OwIoctl(owInst_t *ow_inst, uint32_t cmd, void *data, uint32_t data_size);
+
+/**
+ * @fn              OwClose(owInst_t *ow_inst)
+ * @brief           Function that uninitialises an One Wire peripheral
+ * @param[in,out]   ow_inst Instance that contains One Wire parameters handlers
+ * @retval          #RET_INVALID_PARAM if ow_inst is a null pointer
+ * @retval          #RET_SUCCESSFUL else
+ */
 extern returnCode_t OwClose(owInst_t *ow_inst);
 
 #endif /* DRV_OW_H */

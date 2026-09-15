@@ -20,8 +20,7 @@
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn     InitCache(void)
- * @brief  Function that initialises cache memories if available
+ * @copydoc InitCache
  */
 void InitCache(void)
 {

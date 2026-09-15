@@ -34,10 +34,7 @@ static IWDG_HandleTypeDef wdg_inst = { 0 };
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      InitWatchDog(uint32_t timeout_ms)
- * @brief   Initialises the watchdog
- * @retval  #RET_INVALID_PARAM if timeout value is superior to WDG_MAX_TIMEOUT_MS
- * @retval  #RET_SUCCESSFUL else
+ * @copydoc InitWatchDog
  */
 returnCode_t InitWatchDog(uint32_t timeout_ms)
 {
@@ -68,9 +65,7 @@ returnCode_t InitWatchDog(uint32_t timeout_ms)
 }
 
 /**
- * @fn    PetWatchDog()
- * @brief  Reloads the watchdog
- * @return Nothing
+ * @copydoc PetWatchDog
  */
 void PetWatchDog(void)
 {

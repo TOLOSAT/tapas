@@ -22,9 +22,7 @@
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      main(void)
- * @brief   Flight Software Main is the entrypoint of the code
- * @return  0
+ * @copydoc main
  */
 int main(void)
 {

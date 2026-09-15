@@ -27,8 +27,7 @@
 /*************************** Variables Definitions ***************************/
 
 /**
- * @var     g_system_info
- * @brief   Constante struct containing system information
+ * @copydoc g_system_info
  */
 const sytemInfo_t g_system_info = {
     .name       = SYSTEM_NAME,
@@ -39,17 +38,14 @@ const sytemInfo_t g_system_info = {
 };
 
 /**
- * @var     g_program_name
- * @brief   Constant that holds program name
+ * @copydoc g_program_name
  */
 const char *g_program_name = PROGRAM_NAME;
 
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      PrintSystemInfo(void)
- * @brief   Function that prints all the system information onto the console
- * @return  Nothing
+ * @copydoc PrintSystemInfo
  */
 void PrintSystemInfo(void)
 {

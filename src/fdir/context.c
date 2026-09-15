@@ -34,10 +34,7 @@ static uint8_t context_buff[MAX_SECTOR_SIZE] = { 0 }; // TO DO : to protect corr
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn          InitContext(void)
- * @brief       Initialise the context of the kernel
- * @retval      #RET_INVALID_PARAM if an error occurs in the context memory driver
- * @retval      #RET_SUCCESSFUL else
+ * @copydoc InitContext
  */
 void InitContext(void)
 {
@@ -105,11 +102,7 @@ void InitContext(void)
 }
 
 /**
- * @fn          ReadContext(context_t *context)
- * @brief       Read the context of the kernel using the context memory driver
- * @param[out]  context Pointer to the context structure
- * @retval      #RET_INVALID_PARAM if an error occurs in the context memory driver
- * @retval      #RET_SUCCESSFUL else
+ * @copydoc ReadContext
  */
 returnCode_t ReadContext(context_t *context)
 {
@@ -181,11 +174,7 @@ returnCode_t ReadContext(context_t *context)
 }
 
 /**
- * @fn          WriteContext(context_t *context)
- * @brief       Save the context of the kernel using the context memory driver
- * @param[in]   context Context structure
- * @retval      #RET_INVALID_PARAM if an error occurs in the context memory driver
- * @retval      #RET_SUCCESSFUL else
+ * @copydoc WriteContext
  */
 returnCode_t WriteContext(context_t *context)
 {
@@ -261,10 +250,7 @@ returnCode_t WriteContext(context_t *context)
 }
 
 /**
- * @fn          EraseContext(void)
- * @brief       Erase the context of the kernel using the context memory driver
- * @retval      #RET_INVALID_PARAM if an error occurs in the context memory driver
- * @retval      #RET_SUCCESSFUL else
+ * @copydoc EraseContext
  */
 returnCode_t EraseContext(void)
 {

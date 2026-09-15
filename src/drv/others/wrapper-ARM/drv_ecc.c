@@ -19,9 +19,7 @@
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      InitEcc(void)
- * @brief   This function init ECC
- * @return  Nothing
+ * @copydoc InitEcc
  */
 void InitEcc(void)
 {

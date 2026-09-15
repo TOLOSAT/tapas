@@ -18,17 +18,14 @@
 /*************************** Variables Definitions ***************************/
 
 /**
- * @var     g_mutexes_desc_table
- * @brief   Configuration table where all mutexes descriptors are stored
+ * @copydoc g_mutexes_desc_table
  */
 mutexDesc_t g_mutexes_desc_table[CONFIG_MAX_NB_MUTEXES] = { 0 };
 
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      CreateMutexes(void)
- * @brief   Function that creates all mutexes
- * @return  Nothing
+ * @copydoc CreateMutexes
  */
 void CreateMutexes(void)
 {
@@ -50,11 +47,7 @@ void CreateMutexes(void)
 }
 
 /**
- * @fn          AcquireMutex(mutexNo_t mutex)
- * @brief       Function that acquires the mutex.
- * @param[in]   mutex   Mutex reference number
- * @retval      #RET_INVALID_PARAM if mutex ref does not exist
- * @retval      #RET_SUCCESSFUL else
+ * @copydoc AcquireMutex
  */
 returnCode_t AcquireMutex(mutexNo_t mutex)
 {
@@ -79,11 +72,7 @@ returnCode_t AcquireMutex(mutexNo_t mutex)
 }
 
 /**
- * @fn          ReleaseMutex(mutexNo_t mutex)
- * @brief       Function that releases the mutex.
- * @param[in]   mutex   Mutex reference number
- * @retval      #RET_INVALID_PARAM if mutex ref does not exist
- * @retval      #RET_SUCCESSFUL else
+ * @copydoc ReleaseMutex
  */
 returnCode_t ReleaseMutex(mutexNo_t mutex)
 {

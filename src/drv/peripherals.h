@@ -139,10 +139,51 @@ extern peripheralDesc_t g_peripherals_desc_table[CONFIG_MAX_NB_PERIPHERALS];
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn      InitPeripherals(void)
+ * @brief   Function that initialises the peripherals
+ * @return  Nothing
+ */
 extern void InitPeripherals(void);
+
+/**
+ * @fn      extern void CreatePeripheralsMutexes(void)
+ * @brief   Function that allows to postpone mutex initilisation when other mutexes will be initialised.
+ */
 extern void CreatePeripheralsMutexes(void);
+
+/**
+ * @fn          PeripheralWrite(peripheralNo_t peripheral, data_t data, length_t length)
+ * @brief       Function that writes data to a peripheral
+ * @param[in]   peripheral  Peripheral numero
+ * @param[in]   data        Data that will be sent to the device
+ * @param[in]   length      Length of the data
+ * @retval      #RET_INVALID_PARAM if data is a null pointer or peripheral is not valid
+ * @retval      #RET_SUCCESSFUL else
+ */
 extern returnCode_t PeripheralWrite(peripheralNo_t peripheral, data_t data, length_t length);
+
+/**
+ * @fn          PeripheralRead(peripheralNo_t peripheral, data_t data, length_t length)
+ * @brief       Function that reads data to a peripheral
+ * @param[in]   peripheral  Peripheral numero
+ * @param[out]  data        Data that will be received to the peripheral
+ * @param[in]   length      Length of the data
+ * @retval      #RET_INVALID_PARAM if data is a null pointer or peripheral is not valid
+ * @retval      #RET_SUCCESSFUL else
+ */
 extern returnCode_t PeripheralRead(peripheralNo_t peripheral, data_t data, length_t length);
+
+/**
+ * @fn              PeripheralIoctl(peripheralNo_t peripheral, uint32_t cmd, void *data, uint32_t data_size)
+ * @brief           Function that allows specific control over the peripheral
+ * @param[in]       peripheral  Peripheral numero
+ * @param[in]       cmd         IO control command
+ * @param[in,out]   data        Data related to the command (if any), can be input or output
+ * @param[in]       data_size   Data length (if any)
+ * @retval          #RET_INVALID_PARAM if peripheral is not valid
+ * @retval          #RET_SUCCESSFUL else
+ */
 extern returnCode_t PeripheralIoctl(peripheralNo_t peripheral, uint32_t cmd, void *data, uint32_t data_size);
 
 #endif /* PERIPHERALS_H */

@@ -20,9 +20,7 @@
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      InitHal(void)
- * @brief   Function that init the choosen HAL and sysclock
- * @return  Nothing
+ * @copydoc InitHal
  */
 void InitHal(void)
 {
@@ -51,11 +49,7 @@ void InitHal(void)
 }
 
 /**
- * @fn          SetupIO(const IOConf_t *const io_conf)
- * @brief       Initialize a single IO according to the configuration.
- * @param[in]   io_conf  GPIO configuration (port/pin/mode/pull/speed/alternate)
- * @retval      #RET_SUCCESSFUL on success
- * @retval      #RET_INVALID_PARAM if the port is invalid
+ * @copydoc SetupIO
  */
 returnCode_t SetupIO(const IOConf_t *const io_conf)
 {
@@ -143,13 +137,7 @@ returnCode_t SetupIO(const IOConf_t *const io_conf)
 }
 
 /**
- * @fn              SetUpDMA(DMAHandleStruct_t *dma_handle, const DMAConf_t *const dma_conf)
- * @brief           Function that setup DMA if it exists
- * @param[in,out]   dma_handle   Instance that contains DMA handlers
- * @param[in]       dma_conf     Configuration that contains DMA parameters
- * @retval          #RET_INVALID_PARAM if there is a null pointer or is not a DMA
- * @retval          #RET_ERROR if DMA initialisation failed
- * @retval          #RET_SUCCESSFUL else
+ * @copydoc SetUpDMA
  */
 returnCode_t SetUpDMA(DMAHandleStruct_t *dma_handle, const DMAConf_t *const dma_conf)
 {

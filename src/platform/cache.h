@@ -32,6 +32,10 @@
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn     InitCache(void)
+ * @brief  Function that initialises cache memories if available
+ */
 extern void InitCache(void);
 
 #endif /* CACHE_H */

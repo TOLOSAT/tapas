@@ -94,10 +94,67 @@ typedef struct
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn              NandOpen(nandInst_t *nand_inst, const nandConf_t *const nand_conf)
+ * @brief           Function that initialise a NAND memory
+ * @param[in,out]   nand_inst   Instance that contains NAND handlers
+ * @param[in]       nand_conf   Configuration that contains NAND parameters
+ * @retval          #RET_SUCCESSFUL if creation succeed
+ * @retval          #RET_INVALID_PARAM if a pointer is null
+ * @retval          #RET_NOT_AVAILABLE if the NAND controller is busy while enabling internal ECC
+ * @retval          #RET_TIMEOUT if the NAND controller times out while enabling internal ECC
+ * @retval          #RET_ERROR if internal ECC could not be enabled
+ */
 extern returnCode_t NandOpen(nandInst_t *nand_inst, const nandConf_t *const nand_conf);
+
+/**
+ * @fn          NandWrite(nandInst_t *nand_inst, memorySector_t sector, data_t data, length_t length)
+ * @brief       Function that writes onto an NAND memory
+ * @param[in]   nand_inst   Instance that contains NAND parameters and NAND Handler
+ * @param[in]   sector      Sector numero from wich data will be read
+ * @param[out]  data        Pointer from which data will be copied
+ * @param[in]   length      Number of sector that will be read
+ * @retval      #RET_SUCCESSFUL if data has been written successfully
+ * @retval      #RET_INVALID_PARAM if one pointer is null
+ * @retval      #RET_TIMEOUT if nand timed out before sending message
+ * @retval      #RET_NOT_AVAILABLE if nand is still sending previous message
+ */
 extern returnCode_t NandWrite(nandInst_t *nand_inst, memorySector_t sector, data_t data, length_t length);
+
+/**
+ * @fn          NandRead(nandInst_t *nand_inst, memorySector_t sector, data_t data, length_t length)
+ * @brief       Function that read onto an NAND memory
+ * @param[in]   nand_inst     Instance that contains NAND parameters and NAND Handler
+ * @param[in]   sector      Sector numero from wich data will be read
+ * @param[out]  data        Pointer to where data will be copied
+ * @param[in]   length      Number of sector that will be read
+ * @retval      #RET_SUCCESSFUL if data has been read successfully
+ * @retval      #RET_INVALID_PARAM if one pointer is null
+ * @retval      #RET_TIMEOUT if nand timed out before sending message
+ * @retval      #RET_NOT_AVAILABLE if nand is still sending previous message
+ */
 extern returnCode_t NandRead(nandInst_t *nand_inst, memorySector_t sector, data_t data, length_t length);
+
+/**
+ * @fn              NandIoctl(nandInst_t *nand_inst, uint32_t cmd, void *data, uint32_t data_size);
+ * @brief           Function that adds advanced control to the driver
+ * @param[in,out]   nand_inst     Instance that contains NAND handlers
+ * @param[in]       cmd         IO Control command
+ * @param[in,out]   data        IO Control command
+ * @param[in]       data_size   IO Control data size
+ * @retval          #RET_INVALID_PARAM if instance is a null pointer
+ * @retval          #RET_NOT_AVAILABLE if action cannot be performed because driver is busy
+ * @retval          #RET_SUCCESSFUL else
+ */
 extern returnCode_t NandIoctl(nandInst_t *nand_inst, uint32_t cmd, void *data, uint32_t data_size);
+
+/**
+ * @fn              NandClose(nandInst_t *nand_inst)
+ * @brief           Function that desinit the NAND connection
+ * @param[in,out]   nand_inst   Instance that contains NAND handlers
+ * @retval          #RET_SUCCESSFUL if changing parameters succeed
+ * @retval          #RET_INVALID_PARAM if instance is a null pointer
+ */
 extern returnCode_t NandClose(nandInst_t *nand_inst);
 
 #endif /* DRV_NAND_H */

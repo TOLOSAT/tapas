@@ -30,6 +30,11 @@
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn      main(void)
+ * @brief   Flight Software Main is the entrypoint of the code
+ * @return  0
+ */
 extern int main(void);
 
 #endif /* MAIN_H */

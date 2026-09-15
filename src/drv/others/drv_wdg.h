@@ -32,7 +32,19 @@
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn      InitWatchDog(uint32_t timeout_ms)
+ * @brief   Initialises the watchdog
+ * @retval  #RET_INVALID_PARAM if timeout value is superior to WDG_MAX_TIMEOUT_MS
+ * @retval  #RET_SUCCESSFUL else
+ */
 returnCode_t InitWatchDog(uint32_t timeout_ms);
+
+/**
+ * @fn    PetWatchDog()
+ * @brief  Reloads the watchdog
+ * @return Nothing
+ */
 void PetWatchDog(void);
 
 #endif /* DRV_WDG_H */

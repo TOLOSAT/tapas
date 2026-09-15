@@ -57,7 +57,7 @@ extern void sys_SVCExit(void);
 /*************************** Variables Definitions ***************************/
 
 /**
- * @brief Syscall Vector Table
+ * @copydoc syscall_vector
  */
 const uint32_t syscall_vector[NB_SYSCALLS] = {
     (uint32_t)ErrorHandler,    // RESERVED DO NOT USE
@@ -92,8 +92,7 @@ const uint32_t syscall_vector[NB_SYSCALLS] = {
 /************************** System Calls Definitions *************************/
 
 /**
- * @fn      sys_CheckError(returnCode_t retcode, severityLevel_t severity)
- * @brief   Syscall declaration for CheckError
+ * @copydoc sys_CheckError
  */
 void ATTR_SYSCALL sys_CheckError(returnCode_t retcode, severityLevel_t severity)
 {
@@ -120,8 +119,7 @@ void ATTR_SYSCALL sys_CheckError(returnCode_t retcode, severityLevel_t severity)
 }
 
 /**
- * @fn      sys_Sleep(tick_t tick)
- * @brief   Syscall declaration for Sleep
+ * @copydoc sys_Sleep
  */
 void ATTR_SYSCALL sys_Sleep(tick_t tick)
 {
@@ -147,8 +145,7 @@ void ATTR_SYSCALL sys_Sleep(tick_t tick)
 }
 
 /**
- * @fn      sys_SleepPeriodic(void)
- * @brief   Syscall declaration for SleepPeriodic
+ * @copydoc sys_SleepPeriodic
  */
 void ATTR_SYSCALL sys_SleepPeriodic(void)
 {
@@ -171,8 +168,7 @@ void ATTR_SYSCALL sys_SleepPeriodic(void)
 }
 
 /**
- * @fn      sys_GetTick(void)
- * @brief   Syscall declaration for GetTick
+ * @copydoc sys_GetTick
  */
 tick_t ATTR_SYSCALL sys_GetTick(void)
 {
@@ -195,8 +191,7 @@ tick_t ATTR_SYSCALL sys_GetTick(void)
 }
 
 /**
- * @fn      sys_GetTime(void)
- * @brief   Syscall declaration for GetTime
+ * @copydoc sys_GetTime
  */
 time_t ATTR_SYSCALL sys_GetTime(void)
 {
@@ -219,8 +214,7 @@ time_t ATTR_SYSCALL sys_GetTime(void)
 }
 
 /**
- * @fn      sys_SetTime(time_t time)
- * @brief   Syscall declaration for SetTime
+ * @copydoc sys_SetTime
  */
 returnCode_t ATTR_SYSCALL sys_SetTime(time_t time)
 {
@@ -246,8 +240,7 @@ returnCode_t ATTR_SYSCALL sys_SetTime(time_t time)
 }
 
 /**
- * @fn      sys_GetTickFreq(void)
- * @brief   Syscall declaration for GetTickFreq
+ * @copydoc sys_GetTickFreq
  */
 uint32_t ATTR_SYSCALL sys_GetTickFreq(void)
 {
@@ -270,8 +263,7 @@ uint32_t ATTR_SYSCALL sys_GetTickFreq(void)
 }
 
 /**
- * @fn      sys_DeviceOpen(deviceNo_t *device, deviceType_t type, uint32_t resource)
- * @brief   Syscall declaration for DeviceOpen
+ * @copydoc sys_DeviceOpen
  */
 returnCode_t ATTR_SYSCALL sys_DeviceOpen(deviceNo_t *device, deviceType_t type, uint32_t resource)
 {
@@ -299,8 +291,7 @@ returnCode_t ATTR_SYSCALL sys_DeviceOpen(deviceNo_t *device, deviceType_t type, 
 }
 
 /**
- * @fn      sys_DeviceWrite(deviceNo_t device, data_t data, length_t length)
- * @brief   Syscall declaration for DeviceWrite
+ * @copydoc sys_DeviceWrite
  */
 returnCode_t ATTR_SYSCALL sys_DeviceWrite(deviceNo_t device, data_t data, length_t length)
 {
@@ -328,8 +319,7 @@ returnCode_t ATTR_SYSCALL sys_DeviceWrite(deviceNo_t device, data_t data, length
 }
 
 /**
- * @fn      sys_DeviceRead(deviceNo_t device, data_t data, length_t length)
- * @brief   Syscall declaration for DeviceRead
+ * @copydoc sys_DeviceRead
  */
 returnCode_t ATTR_SYSCALL sys_DeviceRead(deviceNo_t device, data_t data, length_t length)
 {
@@ -357,8 +347,7 @@ returnCode_t ATTR_SYSCALL sys_DeviceRead(deviceNo_t device, data_t data, length_
 }
 
 /**
- * @fn      sys_DeviceIoctl(deviceNo_t device, uint32_t cmd, void *data, uint32_t data_size)
- * @brief   Syscall declaration for DeviceIoctl
+ * @copydoc sys_DeviceIoctl
  */
 returnCode_t ATTR_SYSCALL sys_DeviceIoctl(deviceNo_t device, uint32_t cmd, void *data, uint32_t data_size)
 {
@@ -387,8 +376,7 @@ returnCode_t ATTR_SYSCALL sys_DeviceIoctl(deviceNo_t device, uint32_t cmd, void 
 }
 
 /**
- * @fn      sys_DeviceClose(deviceNo_t device)
- * @brief   Syscall declaration for DeviceClose
+ * @copydoc sys_DeviceClose
  */
 returnCode_t ATTR_SYSCALL sys_DeviceClose(deviceNo_t device)
 {
@@ -414,8 +402,7 @@ returnCode_t ATTR_SYSCALL sys_DeviceClose(deviceNo_t device)
 }
 
 /**
- * @fn      sys_GetCurrentTask(void)
- * @brief   Syscall declaration for GetCurrentTask
+ * @copydoc sys_GetCurrentTask
  */
 taskNo_t ATTR_SYSCALL sys_GetCurrentTask(void)
 {
@@ -438,8 +425,7 @@ taskNo_t ATTR_SYSCALL sys_GetCurrentTask(void)
 }
 
 /**
- * @fn      sys_SuspendTask(taskNo_t task)
- * @brief   Syscall declaration for SuspendTask
+ * @copydoc sys_SuspendTask
  */
 returnCode_t ATTR_SYSCALL sys_SuspendTask(taskNo_t task)
 {
@@ -465,8 +451,7 @@ returnCode_t ATTR_SYSCALL sys_SuspendTask(taskNo_t task)
 }
 
 /**
- * @fn      sys_ResumeTask(taskNo_t task)
- * @brief   Syscall declaration for ResumeTask
+ * @copydoc sys_ResumeTask
  */
 returnCode_t ATTR_SYSCALL sys_ResumeTask(taskNo_t task)
 {
@@ -492,8 +477,7 @@ returnCode_t ATTR_SYSCALL sys_ResumeTask(taskNo_t task)
 }
 
 /**
- * @fn      sys_GetTaskPriority(taskNo_t task, taskPriority_t *priority)
- * @brief   Syscall declaration for GetTaskPriority
+ * @copydoc sys_GetTaskPriority
  */
 returnCode_t ATTR_SYSCALL sys_GetTaskPriority(taskNo_t task, taskPriority_t *priority)
 {
@@ -520,8 +504,7 @@ returnCode_t ATTR_SYSCALL sys_GetTaskPriority(taskNo_t task, taskPriority_t *pri
 }
 
 /**
- * @fn      sys_SetTaskPriority(taskNo_t task, taskPriority_t priority)
- * @brief   Syscall declaration for SetTaskPriority
+ * @copydoc sys_SetTaskPriority
  */
 returnCode_t ATTR_SYSCALL sys_SetTaskPriority(taskNo_t task, taskPriority_t priority)
 {
@@ -548,8 +531,7 @@ returnCode_t ATTR_SYSCALL sys_SetTaskPriority(taskNo_t task, taskPriority_t prio
 }
 
 /**
- * @fn      sys_AcquireMutex(mutexNo_t mutex)
- * @brief   Syscall declaration for AcquireMutex
+ * @copydoc sys_AcquireMutex
  */
 returnCode_t ATTR_SYSCALL sys_AcquireMutex(mutexNo_t mutex)
 {
@@ -575,8 +557,7 @@ returnCode_t ATTR_SYSCALL sys_AcquireMutex(mutexNo_t mutex)
 }
 
 /**
- * @fn      sys_ReleaseMutex(mutexNo_t mutex)
- * @brief   Syscall declaration for ReleaseMutex
+ * @copydoc sys_ReleaseMutex
  */
 returnCode_t ATTR_SYSCALL sys_ReleaseMutex(mutexNo_t mutex)
 {
@@ -602,8 +583,7 @@ returnCode_t ATTR_SYSCALL sys_ReleaseMutex(mutexNo_t mutex)
 }
 
 /**
- * @fn      sys_SendSignal(taskNo_t task, signalMask_t mask)
- * @brief   Syscall declaration for SendSignal
+ * @copydoc sys_SendSignal
  */
 returnCode_t ATTR_SYSCALL sys_SendSignal(taskNo_t task, signalMask_t mask)
 {
@@ -630,8 +610,7 @@ returnCode_t ATTR_SYSCALL sys_SendSignal(taskNo_t task, signalMask_t mask)
 }
 
 /**
- * @fn      sys_WaitSignal(signalMask_t mask)
- * @brief   Syscall declaration for WaitSignal
+ * @copydoc sys_WaitSignal
  */
 returnCode_t ATTR_SYSCALL sys_WaitSignal(signalMask_t mask)
 {
@@ -657,8 +636,7 @@ returnCode_t ATTR_SYSCALL sys_WaitSignal(signalMask_t mask)
 }
 
 /**
- * @fn      sys_StartTimer(timerNo_t timer)
- * @brief   Syscall declaration for StartTimer
+ * @copydoc sys_StartTimer
  */
 returnCode_t ATTR_SYSCALL sys_StartTimer(timerNo_t timer)
 {
@@ -683,8 +661,7 @@ returnCode_t ATTR_SYSCALL sys_StartTimer(timerNo_t timer)
 }
 
 /**
- * @fn      sys_PauseTimer(timerNo_t timer)
- * @brief   Syscall declaration for PauseTimer
+ * @copydoc sys_PauseTimer
  */
 returnCode_t ATTR_SYSCALL sys_PauseTimer(timerNo_t timer)
 {
@@ -709,8 +686,7 @@ returnCode_t ATTR_SYSCALL sys_PauseTimer(timerNo_t timer)
 }
 
 /**
- * @fn      sys_ResumeTimer(timerNo_t timer)
- * @brief   Syscall declaration for ResumeTimer
+ * @copydoc sys_ResumeTimer
  */
 returnCode_t ATTR_SYSCALL sys_ResumeTimer(timerNo_t timer)
 {
@@ -735,8 +711,7 @@ returnCode_t ATTR_SYSCALL sys_ResumeTimer(timerNo_t timer)
 }
 
 /**
- * @fn      sys_SetTimer(timerNo_t timer, tick_t period, timerMode_t mode)
- * @brief   Syscall declaration for SetTimer
+ * @copydoc sys_SetTimer
  */
 returnCode_t ATTR_SYSCALL sys_SetTimer(timerNo_t timer, tick_t period, timerMode_t mode)
 {
@@ -763,8 +738,7 @@ returnCode_t ATTR_SYSCALL sys_SetTimer(timerNo_t timer, tick_t period, timerMode
 }
 
 /**
- * @fn      sys_ConsolePrint(const char *fmt, ...)
- * @brief   Syscall declaration for ConsolePrint
+ * @copydoc sys_ConsolePrint
  */
 void ATTR_SYSCALL ATTR_CHECK_FORMAT sys_ConsolePrint(const char *fmt, ...)
 {

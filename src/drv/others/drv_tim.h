@@ -37,8 +37,19 @@ typedef TIM_TypeDef timerPeriph_t;
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @brief Monitoring Timer Initialization Function
+ */
 extern returnCode_t InitMonitoringTimer(void);
+
+/**
+ * @brief This function start Monitoring Timer
+ */
 extern void StartMonitoringTimer(void);
+
+/**
+ * @brief This function get the current value of the monitoring tick
+ */
 extern uint64_t GetMonitoringTick(void);
 
 #endif /* DRV_TIM_H */

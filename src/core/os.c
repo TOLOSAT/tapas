@@ -49,9 +49,7 @@ extern void PendSV_Handler(void);
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      StartOS(void)
- * @brief   Function that starts the OS
- * @return  Nothing
+ * @copydoc StartOS
  */
 void StartOS(void)
 {

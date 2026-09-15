@@ -76,10 +76,64 @@ typedef struct
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn              SpiSdOpen(spisdInst_t *spisd_inst, const spisdConf_t *const spisd_conf)
+ * @brief           Function that initialise a SPISD memory
+ * @param[in,out]   spisd_inst   Instance that contains SPISD handlers
+ * @param[in]       spisd_conf   Configuration that contains SPISD parameters
+ * @retval          #RET_SUCCESSFUL if creation succeed
+ * @retval          #RET_INVALID_PARAM if a pointer is null
+ */
 extern returnCode_t SpiSdOpen(spisdInst_t *spisd_inst, const spisdConf_t *const spisd_conf);
+
+/**
+ * @fn          SpiSdWrite(spisdInst_t *spisd_inst, memorySector_t sector, data_t data, length_t length)
+ * @brief       Function that writes onto an SPISD memory
+ * @param[in]   spisd_inst     Instance that contains SPISD parameters and SPISD Handler
+ * @param[in]   sector      Sector numero from wich data will be read
+ * @param[out]  data        Pointer from which data will be copied
+ * @param[in]   length      Number of block that will be read
+ * @retval      #RET_SUCCESSFUL if data has been written successfully
+ * @retval      #RET_INVALID_PARAM if one pointer is null
+ * @retval      #RET_TIMEOUT if spisd timed out before sending message
+ * @retval      #RET_NOT_AVAILABLE if spisd is still sending previous message
+ */
 extern returnCode_t SpiSdWrite(spisdInst_t *spisd_inst, memorySector_t sector, data_t data, length_t length);
+
+/**
+ * @fn          SpiSdRead(spisdInst_t *spisd_inst, memorySector_t sector, data_t data, length_t length)
+ * @brief       Function that read onto an SPISD memory
+ * @param[in]   spisd_inst     Instance that contains SPISD parameters and SPISD Handler
+ * @param[in]   sector      Sector numero from wich data will be read
+ * @param[out]  data        Pointer to where data will be copied
+ * @param[in]   length      Number of block that will be read
+ * @retval      #RET_SUCCESSFUL if data has been read successfully
+ * @retval      #RET_INVALID_PARAM if one pointer is null
+ * @retval      #RET_TIMEOUT if spisd timed out before sending message
+ * @retval      #RET_NOT_AVAILABLE if spisd is still sending previous message
+ */
 extern returnCode_t SpiSdRead(spisdInst_t *spisd_inst, memorySector_t sector, data_t data, length_t length);
+
+/**
+ * @fn              SpiSdIoctl(spisdInst_t *spisd_inst, uint32_t cmd, void *data, uint32_t data_size);
+ * @brief           Function that adds advanced control to the driver
+ * @param[in,out]   spisd_inst     Instance that contains SPISD handlers
+ * @param[in]       cmd         IO Control command
+ * @param[in,out]   data        IO Control command
+ * @param[in]       data_size   IO Control data size
+ * @retval          #RET_INVALID_PARAM if instance is a null pointer
+ * @retval          #RET_NOT_AVAILABLE if action cannot be performed because driver is busy
+ * @retval          #RET_SUCCESSFUL else
+ */
 extern returnCode_t SpiSdIoctl(spisdInst_t *spisd_inst, uint32_t cmd, void *data, uint32_t data_size);
+
+/**
+ * @fn              SpiSdClose(spisdInst_t *spisd_inst)
+ * @brief           Function that desinit the SPISD connection
+ * @param[in,out]   spisd_inst   Instance that contains SPISD handlers
+ * @retval          #RET_SUCCESSFUL if changing parameters succeed
+ * @retval          #RET_INVALID_PARAM if instance is a null pointer
+ */
 extern returnCode_t SpiSdClose(spisdInst_t *spisd_inst);
 
 #endif /* DRV_SPISD_H */

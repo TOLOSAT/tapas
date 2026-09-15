@@ -24,17 +24,14 @@ static void GenericTimerCallback(timerHandle_t handle);
 /*************************** Variables Definitions ***************************/
 
 /**
- * @var     g_timers_desc_table
- * @brief   Configuration table where all timers' descriptors are stored
+ * @copydoc g_timers_desc_table
  */
 timerDesc_t g_timers_desc_table[CONFIG_MAX_NB_TIMERS] = { 0 };
 
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn          CreateTimers(void)
- * @brief       Function that send a message in a buffer
- * @return      Nothing
+ * @copydoc CreateTimers
  */
 void CreateTimers(void)
 {
@@ -64,11 +61,7 @@ void CreateTimers(void)
     }
 }
 /**
- * @fn          StartTimer(timerNo_t timer)
- * @brief       Function that starts a timer
- * @param[in]   timer  The ID of the timer to start
- * @retval      #RET_INVALID_PARAM if the timer is not a valid timer.
- * @retval      #RET_SUCCESSFUL if the timer failed to start
+ * @copydoc StartTimer
  */
 returnCode_t StartTimer(timerNo_t timer)
 {
@@ -92,13 +85,7 @@ returnCode_t StartTimer(timerNo_t timer)
     return return_value;
 }
 /**
- * @fn          PauseTimer(timerNo_t timer)
- * @brief       Function that pauses a timer
- * @param[in]   timer  The ID of the timer to pause
- * @retval      #RET_INVALID_PARAM if the timer is not a valid timer.
- * @retval      #RET_SUCCESSFUL if the timer failed to pause
- *
- * This function does not support timeout.
+ * @copydoc PauseTimer
  */
 returnCode_t PauseTimer(timerNo_t timer)
 {
@@ -127,12 +114,7 @@ returnCode_t PauseTimer(timerNo_t timer)
     return return_value;
 }
 /**
- * @fn          ResumeTimer(timerNo_t timer)
- * @brief       Function that resumes a timer
- * @param[in]   timer  The ID of the timer to resume
- * @retval      #RET_INVALID_PARAM if the timer is not a valid timer.
- * @retval      #RET_INVALID_PARAM if the timer is in periodic mode.
- * @retval      #RET_SUCCESSFUL else
+ * @copydoc ResumeTimer
  */
 returnCode_t ResumeTimer(timerNo_t timer)
 {
@@ -176,15 +158,7 @@ returnCode_t ResumeTimer(timerNo_t timer)
     return return_value;
 }
 /**
- * @fn          SetTimer(timerNo_t timer, tick_t period, timerMode_t mode)
- * @brief       Function that sets the parameters of a timer
- * @param[in]   timer  The ID of the timer
- * @param[in]   period  The new timer period
- * @param[in]   mode  The new timer mode
- * @retval      #RET_INVALID_PARAM if the timer is not a valid timer.
- * @retval      #RET_INVALID_PARAM if the period is zero.
- * @retval      #RET_INVALID_PARAM if the mode is neither TIMER_ONESHOT nor TIMER_PERIODIC.
- * @retval      #RET_SUCCESSFUL if the timer failed to set its period
+ * @copydoc SetTimer
  */
 returnCode_t SetTimer(timerNo_t timer, tick_t period, timerMode_t mode)
 {

@@ -74,12 +74,7 @@ static inline uint32_t QspiNorCalcFlashSize(const qspinorConf_t *const qspinor_c
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn              QspiNorOpen(qspinorInst_t *qspinor_inst, const qspinorConf_t *const qspinor_conf)
- * @brief           Function that initialise a QSPI NOR memory
- * @param[in,out]   qspinor_inst   Instance that contains QSPI NOR handlers
- * @param[in]       qspinor_conf   Configuration that contains QSPI NOR parameters
- * @retval          #RET_SUCCESSFUL if creation succeed
- * @retval          #RET_INVALID_PARAM if a pointer is null
+ * @copydoc QspiNorOpen
  */
 returnCode_t QspiNorOpen(qspinorInst_t *qspinor_inst, const qspinorConf_t *const qspinor_conf)
 {
@@ -155,16 +150,7 @@ returnCode_t QspiNorOpen(qspinorInst_t *qspinor_inst, const qspinorConf_t *const
 }
 
 /**
- * @fn          QspiNorWrite(qspinorInst_t *qspinor_inst, memorySector_t sector, data_t data, length_t length)
- * @brief       Function that writes onto an QSPI NOR memory
- * @param[in]   qspinor_inst     Instance that contains QSPI NOR parameters and QSPI NOR Handler
- * @param[in]   sector      Sector numero from wich data will be read
- * @param[out]  data        Pointer from which data will be copied
- * @param[in]   length      Number of sector that will be read
- * @retval      #RET_SUCCESSFUL if data has been written successfully
- * @retval      #RET_INVALID_PARAM if one pointer is null
- * @retval      #RET_TIMEOUT if qspinor timed out before sending message
- * @retval      #RET_NOT_AVAILABLE if qspinor is still sending previous message
+ * @copydoc QspiNorWrite
  */
 returnCode_t QspiNorWrite(qspinorInst_t *qspinor_inst, memorySector_t sector, data_t data, length_t length)
 {
@@ -219,16 +205,7 @@ returnCode_t QspiNorWrite(qspinorInst_t *qspinor_inst, memorySector_t sector, da
 }
 
 /**
- * @fn          QspiNorRead(qspinorInst_t *qspinor_inst, memorySector_t sector, data_t data, length_t length)
- * @brief       Function that read onto an QSPI NOR memory
- * @param[in]   qspinor_inst     Instance that contains QSPI NOR parameters and QSPI NOR Handler
- * @param[in]   sector      Sector numero from wich data will be read
- * @param[out]  data        Pointer to where data will be copied
- * @param[in]   length      Number of sector that will be read
- * @retval      #RET_SUCCESSFUL if data has been read successfully
- * @retval      #RET_INVALID_PARAM if one pointer is null
- * @retval      #RET_TIMEOUT if qspinor timed out before sending message
- * @retval      #RET_NOT_AVAILABLE if qspinor is still sending previous message
+ * @copydoc QspiNorRead
  */
 returnCode_t QspiNorRead(qspinorInst_t *qspinor_inst, memorySector_t sector, data_t data, length_t length)
 {
@@ -277,15 +254,7 @@ returnCode_t QspiNorRead(qspinorInst_t *qspinor_inst, memorySector_t sector, dat
 }
 
 /**
- * @fn              QspiNorIoctl(qspinorInst_t *qspinor_inst, uint32_t cmd, void *data, uint32_t data_size);
- * @brief           Function that adds advanced control to the driver
- * @param[in,out]   qspinor_inst    Instance that contains QSPI NOR handlers
- * @param[in]       cmd             IO Control command
- * @param[in,out]   data            IO Control command
- * @param[in]       data_size       IO Control data size
- * @retval          #RET_INVALID_PARAM if instance is a null pointer
- * @retval          #RET_NOT_AVAILABLE if action cannot be performed because driver is busy
- * @retval          #RET_SUCCESSFUL else
+ * @copydoc QspiNorIoctl
  */
 returnCode_t QspiNorIoctl(qspinorInst_t *qspinor_inst, uint32_t cmd, void *data, uint32_t data_size)
 {
@@ -360,11 +329,7 @@ returnCode_t QspiNorIoctl(qspinorInst_t *qspinor_inst, uint32_t cmd, void *data,
 }
 
 /**
- * @fn              QspiNorClose(qspinorInst_t *qspinor_inst)
- * @brief           Function that desinit the QSPI NOR connection
- * @param[in,out]   qspinor_inst   Instance that contains QSPI NOR handlers
- * @retval          #RET_SUCCESSFUL if changing parameters succeed
- * @retval          #RET_INVALID_PARAM if instance is a null pointer
+ * @copydoc QspiNorClose
  */
 returnCode_t QspiNorClose(qspinorInst_t *qspinor_inst)
 {

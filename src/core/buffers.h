@@ -71,14 +71,64 @@ typedef struct
 
 /*************************** Variables Declarations **************************/
 
+/**
+ * @var     g_buffers_conf_table
+ * @brief   Table where all buffers' configuration are stored
+ */
 extern const bufferConf_t g_buffers_conf_table[CONFIG_MAX_NB_BUFFERS];
+
+/**
+ * @var     g_buffers_desc_table
+ * @brief   Table where all buffers' descriptors are stored
+ */
 extern bufferDesc_t g_buffers_desc_table[CONFIG_MAX_NB_BUFFERS];
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn      CreateBuffers(void)
+ * @brief   Function that creates buffers
+ * @return  Nothing
+ */
 extern void CreateBuffers(void);
+
+/**
+ * @fn          BufferWrite(bufferNo_t buffer, data_t data, length_t length)
+ * @brief       Function that send a message in a buffer
+ * @param[in]   buffer  Reference of the buffer (in BUFFERS_ENUM)
+ * @param[in]   data    Message that will be written in the buffer
+ * @param[in]   length  Size of the message that will be written in the buffer
+ * @retval      #RET_SUCCESSFUL if writing in the buffer is successful
+ * @retval      #RET_INVALID_PARAM if buffer does not exist or the current task is not the sender
+ *
+ * This function does not support waits.
+ */
 extern returnCode_t BufferWrite(bufferNo_t buffer, data_t data, length_t length);
+
+/**
+ * @fn          BufferRead(bufferNo_t buffer, data_t data, length_t length)
+ * @brief       Function that read a message in a buffer
+ * @param[in]   buffer  Reference of the buffer (in BUFFERS_ENUM)
+ * @param[out]  data    Message that will be read in the buffer
+ * @param[in]   length  Size of the message that will be read in the buffer
+ * @retval      #RET_SUCCESSFUL if reading in the buffer is successful
+ * @retval      #RET_INVALID_PARAM if buffer does not exist or the current task is not the receiver
+ * @retval      #RET_NOT_AVAILABLE if there is no message in the buffer currently
+ *
+ * This function does not support waits.
+ */
 extern returnCode_t BufferRead(bufferNo_t buffer, data_t data, length_t length);
+
+/**
+ * @fn              BufferIoctl(bufferNo_t buffer, uint32_t cmd, void *data, uint32_t data_size)
+ * @brief           Function that allows specific control over the buffer
+ * @param[in]       buffer      Buffer numero
+ * @param[in]       cmd         IO control command
+ * @param[in,out]   data        Data related to the command (if any), can be input or output
+ * @param[in]       data_size   Data length (if any)
+ * @retval          #RET_INVALID_PARAM if buffer is not valid
+ * @retval          #RET_SUCCESSFUL else
+ */
 extern returnCode_t BufferIoctl(bufferNo_t buffer, uint32_t cmd, void *data, uint32_t data_size);
 
 #endif /* BUFFERS_H */

@@ -38,8 +38,7 @@
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      init(void)
- * @brief   Function that initialise tools and HAL
+ * @copydoc init
  */
 void init(void)
 {

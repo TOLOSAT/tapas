@@ -19,13 +19,7 @@
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn              SpiOpen(spiInst_t *spi_inst, const spiConf_t *const spi_conf)
- * @brief           Function that initialise a SPI connection
- * @param[in,out]   spi_inst   Instance that contains SPI handlers
- * @param[in]       spi_conf   Configuration that contains SPI parameters
- * @retval          #RET_SUCCESSFUL always
- *
- * @warning         SPI is not available on CMSDK
+ * @copydoc SpiOpen
  */
 returnCode_t SpiOpen(spiInst_t *spi_inst, const spiConf_t *const spi_conf)
 {
@@ -35,14 +29,7 @@ returnCode_t SpiOpen(spiInst_t *spi_inst, const spiConf_t *const spi_conf)
 }
 
 /**
- * @fn          SpiWrite(spiInst_t *spi_inst, data_t data, length_t length)
- * @brief       Function that write over a SPI connection
- * @param[in]   spi_inst    Instance that contains SPI parameters and SPI Handler
- * @param[in]   data        Message we want to send
- * @param[in]   length      Size of the message we want to sent
- * @retval      #RET_SUCCESSFUL always
- *
- * @warning     SPI is not available on CMSDK
+ * @copydoc SpiWrite
  */
 returnCode_t SpiWrite(spiInst_t *spi_inst, data_t data, length_t length)
 {
@@ -53,15 +40,7 @@ returnCode_t SpiWrite(spiInst_t *spi_inst, data_t data, length_t length)
 }
 
 /**
- * @fn          SpiRead(spiInst_t *spi_inst, data_t data, length_t length)
- * @brief       Function that read over SPI connection
- * @param[in]   spi_inst        Instance that contains SPI parameters and SPI Handler
- * @param[in]   slave_addr      Adress of the slave to which the message will be requested
- * @param[out]  data            Message we want to receive
- * @param[in]   length          Size of the message we want to receive
- * @retval      #RET_SUCCESSFUL always
- *
- * @warning     SPI is not available on CMSDK
+ * @copydoc SpiRead
  */
 returnCode_t SpiRead(spiInst_t *spi_inst, data_t data, length_t length)
 {
@@ -72,15 +51,7 @@ returnCode_t SpiRead(spiInst_t *spi_inst, data_t data, length_t length)
 }
 
 /**
- * @fn              SpiIoctl(spiInst_t *spi_inst, uint32_t cmd, void *data, uint32_t data_size)
- * @brief           Function that adds advanced control to the driver
- * @param[in,out]   spi_inst    Instance that contains SPI parameters and SPI Handler
- * @param[in]       cmd         IO Control command
- * @param[in,out]   data        IO Control command
- * @param[in]       data_size   IO Control data size
- * @retval          #RET_SUCCESSFUL always
- *
- * @warning         SPI is not available on CMSDK
+ * @copydoc SpiIoctl
  */
 returnCode_t SpiIoctl(spiInst_t *spi_inst, uint32_t cmd, void *data, uint32_t data_size)
 {
@@ -92,12 +63,7 @@ returnCode_t SpiIoctl(spiInst_t *spi_inst, uint32_t cmd, void *data, uint32_t da
 }
 
 /**
- * @fn              SpiClose(spiInst_t *spi_inst)
- * @brief           Function that desinit the SPI connection and puts defaults parameters
- * @param[in,out]   spi_inst    Instance that contains SPI parameters and SPI Handler
- * @retval          #RET_SUCCESSFUL always
- *
- * @warning         SPI is not available on CMSDK
+ * @copydoc SpiClose
  */
 returnCode_t SpiClose(spiInst_t *spi_inst)
 {

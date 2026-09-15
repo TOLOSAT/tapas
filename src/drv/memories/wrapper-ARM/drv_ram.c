@@ -28,12 +28,7 @@
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn              RamOpen(ramInst_t *ram_inst, const ramConf_t *const ram_conf)
- * @brief           Function that initialise a RAM memory
- * @param[in,out]   ram_inst   Instance that contains RAM handlers
- * @param[in]       ram_conf   Configuration that contains RAM parameters
- * @retval          #RET_SUCCESSFUL if creation succeed
- * @retval          #RET_INVALID_PARAM if a pointer is null
+ * @copydoc RamOpen
  */
 returnCode_t RamOpen(ramInst_t *ram_inst, const ramConf_t *const ram_conf)
 {
@@ -65,14 +60,7 @@ returnCode_t RamOpen(ramInst_t *ram_inst, const ramConf_t *const ram_conf)
 }
 
 /**
- * @fn          RamWrite(ramInst_t *ram_inst, memorySector_t sector, data_t data, length_t length)
- * @brief       Function that writes onto a RAM memory
- * @param[in]   ram_inst    Instance that contains RAM parameters and RAM Handler
- * @param[in]   sector      Sector number from which data will be written
- * @param[in]   data        Pointer from which data will be copied
- * @param[in]   length      Number of sectors that will be written
- * @retval      #RET_SUCCESSFUL if data has been written successfully
- * @retval      #RET_INVALID_PARAM if one pointer is null or parameters are out of range
+ * @copydoc RamWrite
  */
 returnCode_t RamWrite(ramInst_t *ram_inst, memorySector_t sector, data_t data, length_t length)
 {
@@ -107,14 +95,7 @@ returnCode_t RamWrite(ramInst_t *ram_inst, memorySector_t sector, data_t data, l
 }
 
 /**
- * @fn          RamRead(ramInst_t *ram_inst, memorySector_t sector, data_t data, length_t length)
- * @brief       Function that read onto an RAM memory
- * @param[in]   ram_inst    Instance that contains RAM parameters and RAM Handler
- * @param[in]   sector      Sector numero from wich data will be read
- * @param[out]  data        Pointer to where data will be copied
- * @param[in]   length      Number of block that will be read
- * @retval      #RET_SUCCESSFUL if data has been written successfully
- * @retval      #RET_INVALID_PARAM if one pointer is null or parameters are out of range
+ * @copydoc RamRead
  */
 returnCode_t RamRead(ramInst_t *ram_inst, memorySector_t sector, data_t data, length_t length)
 {
@@ -149,15 +130,7 @@ returnCode_t RamRead(ramInst_t *ram_inst, memorySector_t sector, data_t data, le
 }
 
 /**
- * @fn              RamIoctl(ramInst_t *ram_inst, uint32_t cmd, void *data, uint32_t data_size);
- * @brief           Function that adds advanced control to the driver
- * @param[in,out]   ram_inst    Instance that contains RAM handlers
- * @param[in]       cmd         IO Control command
- * @param[in,out]   data        IO Control command
- * @param[in]       data_size   IO Control data size
- * @retval          #RET_INVALID_PARAM if instance is a null pointer
- * @retval          #RET_NOT_AVAILABLE if action cannot be performed because driver is busy
- * @retval          #RET_SUCCESSFUL else
+ * @copydoc RamIoctl
  */
 returnCode_t RamIoctl(ramInst_t *ram_inst, uint32_t cmd, void *data, uint32_t data_size)
 {
@@ -225,11 +198,7 @@ returnCode_t RamIoctl(ramInst_t *ram_inst, uint32_t cmd, void *data, uint32_t da
 }
 
 /**
- * @fn              RamClose(ramInst_t *ram_inst)
- * @brief           Function that desinit the RAM connection
- * @param[in,out]   ram_inst   Instance that contains RAM handlers
- * @retval          #RET_SUCCESSFUL if changing parameters succeed
- * @retval          #RET_INVALID_PARAM if instance is a null pointer
+ * @copydoc RamClose
  */
 returnCode_t RamClose(ramInst_t *ram_inst)
 {

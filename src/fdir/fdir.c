@@ -50,8 +50,7 @@ static stackContext_t last_stack_context = { 0 };
 /*************************** Functions Definitions ***************************/
 
 /**
- *  @fn     InitFDIR(void)
- *  @brief  Function that initialises the FDIR
+ * @copydoc InitFDIR
  */
 void InitFDIR(void)
 {
@@ -62,11 +61,7 @@ void InitFDIR(void)
 }
 
 /**
- * @fn          CheckError(returnCode_t retcode, severityLevel_t severity)
- * @brief       This function check if an error occured and execute the sanction
- * @param[in]   retcode     Return code of a function.
- * @param[in]   severity    Severity level of the event
- * @return      Nothing
+ * @copydoc CheckError
  */
 void CheckError(returnCode_t retcode, severityLevel_t severity)
 {
@@ -94,13 +89,7 @@ void CheckError(returnCode_t retcode, severityLevel_t severity)
 }
 
 /**
- * @fn      ErrorHandler(void)
- * @brief   This function is executed in case of error occurrence.
- * @warning Real FDIR has to be done.
- *
- * Normally this function has to save some context (what happened before error).
- * But currently no real fdir has been done. For debugging purposes, Error handler
- * is just a while loop that hangs processor indefinitly.
+ * @copydoc ErrorHandler
  */
 void ErrorHandler(void)
 {
@@ -121,11 +110,7 @@ void ErrorHandler(void)
 }
 
 /**
- * @fn KernelPanic(void)
- * @brief This function is executed in case of error occurrence in kernel space.
- * @warning WIP, not fully implemented now.
- *
- * This function saves the registers and proceeds a StackTrace
+ * @copydoc KernelPanic
  */
 void KernelPanic(void)
 {
@@ -153,8 +138,7 @@ void KernelPanic(void)
 }
 
 /**
- * @fn      SystemReset(void)
- * @brief   Reset the whole system
+ * @copydoc SystemReset
  */
 void SystemReset(void)
 {

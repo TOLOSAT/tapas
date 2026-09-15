@@ -87,7 +87,7 @@ HAL_StatusTypeDef HAL_InitTick(void)
 /******************* Monitoring Timer Functions Definitions ******************/
 
 /**
- * @brief Monitoring Timer Initialization Function
+ * @copydoc InitMonitoringTimer
  */
 returnCode_t InitMonitoringTimer(void)
 {
@@ -111,7 +111,7 @@ returnCode_t InitMonitoringTimer(void)
 }
 
 /**
- * @brief This function start Monitoring Timer
+ * @copydoc StartMonitoringTimer
  */
 void StartMonitoringTimer(void)
 {
@@ -119,7 +119,7 @@ void StartMonitoringTimer(void)
 }
 
 /**
- * @brief This function get the current value of the monitoring tick
+ * @copydoc GetMonitoringTick
  */
 uint64_t GetMonitoringTick(void)
 {

@@ -46,8 +46,7 @@ static void HAL_FMC_MspDeInit(void);
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      SystemClock_Config
- * @brief   System Clock Configuration
+ * @copydoc SystemClock_Config
  */
 returnCode_t SystemClock_Config(void)
 {
@@ -103,9 +102,7 @@ returnCode_t SystemClock_Config(void)
 }
 
 /**
- * @fn      BSPLateInit(void)
- * @brief   This function will initialise some BSP specifique peripherals
- * @return  Nothing
+ * @copydoc BSPLateInit
  */
 void BSPLateInit(void)
 {

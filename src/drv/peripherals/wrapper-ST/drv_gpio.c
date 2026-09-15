@@ -23,14 +23,7 @@ static returnCode_t GpioSetupIRQs(gpioInst_t *gpio_inst, const gpioConf_t *const
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn              GpioOpen(gpioInst_t *gpio_inst, const gpioConf_t const* gpio_conf)
- * @brief           Function that initialise a GPIO
- * @param[in,out]   gpio_inst   Instance that contains GPIO handlers
- * @param[in]       gpio_conf   Configuration that contains GPIO parameters
- * @retval          #RET_SUCCESSFUL if creation succeed
- * @retval          #RET_INVALID_PARAM if GPIO port is not available for this board, pin = 0 or one pointer is null
- *
- * Attention : GPIO_PIN_0 != 0, GPIO_PIN_0=0x0001 (cf drv_gpio.h)
+ * @copydoc GpioOpen
  */
 returnCode_t GpioOpen(gpioInst_t *gpio_inst, const gpioConf_t *const gpio_conf)
 {
@@ -118,12 +111,7 @@ returnCode_t GpioOpen(gpioInst_t *gpio_inst, const gpioConf_t *const gpio_conf)
 }
 
 /**
- * @fn          GpioWrite(gpioInst_t *gpio_inst, gpioValue_t value)
- * @brief       Function that writes into a GPIO pin
- * @param[in]   gpio_inst   Instance that contains GPIOs parameters
- * @param[in]   value       Value we want to write on the pin
- * @retval      #RET_SUCCESSFUL if write succeed
- * @retval      #RET_INVALID_PARAM if GPIO is not an output or instance is a null pointer
+ * @copydoc GpioWrite
  */
 returnCode_t GpioWrite(gpioInst_t *gpio_inst, gpioValue_t value)
 {
@@ -143,14 +131,7 @@ returnCode_t GpioWrite(gpioInst_t *gpio_inst, gpioValue_t value)
 }
 
 /**
- * @fn          GpioRead(gpioInst_t *gpio_inst, gpioValue_t *value)
- * @brief       Function that reads into a GPIO pin
- * @param[in]   gpio_inst   Instance that contains GPIOs parameters
- * @param[out]  value       Value we want to write on the pin
- * @retval      #RET_SUCCESSFUL if write succeed
- * @retval      #RET_INVALID_PARAM if GPIO is not an output or instance is a null pointer
- *
- * Only works in INPUT mode without interrupt
+ * @copydoc GpioRead
  */
 returnCode_t GpioRead(gpioInst_t *gpio_inst, gpioValue_t *value)
 {
@@ -170,15 +151,7 @@ returnCode_t GpioRead(gpioInst_t *gpio_inst, gpioValue_t *value)
 }
 
 /**
- * @fn              GpioIoctl(gpioInst_t *gpio_inst, uint32_t cmd, void *data, uint32_t data_size)
- * @brief           Function that adds advanced control to the driver
- * @param[in,out]   gpio_inst   Instance that contains GPIOs parameters
- * @param[in]       cmd         IO Control command
- * @param[in,out]   data        IO Control command
- * @param[in]       data_size   IO Control data size
- * @retval          #RET_INVALID_PARAM if instance is a null pointer
- * @retval          #RET_NOT_AVAILABLE if action cannot be performed because driver is busy
- * @retval          #RET_SUCCESSFUL else
+ * @copydoc GpioIoctl
  */
 returnCode_t GpioIoctl(gpioInst_t *gpio_inst, uint32_t cmd, void *data, uint32_t data_size)
 {
@@ -210,11 +183,7 @@ returnCode_t GpioIoctl(gpioInst_t *gpio_inst, uint32_t cmd, void *data, uint32_t
 }
 
 /**
- * @fn              GpioClose(gpioInst_t *gpio_inst)
- * @brief           Function that deinit the gpio pin
- * @param[in,out]   gpio_inst   Instance that contains GPIOs parameters
- * @retval          #RET_SUCCESSFUL if changing parameters succeed
- * @retval          #RET_INVALID_PARAM if instance is a null pointer
+ * @copydoc GpioClose
  */
 returnCode_t GpioClose(gpioInst_t *gpio_inst)
 {

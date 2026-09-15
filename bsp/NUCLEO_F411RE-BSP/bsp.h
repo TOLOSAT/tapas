@@ -27,7 +27,17 @@
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn      SystemClock_Config
+ * @brief   System Clock Configuration
+ */
 returnCode_t SystemClock_Config(void);
+
+/**
+ * @fn      BSPLateInit(void)
+ * @brief   This function will initialise some BSP specifique peripherals
+ * @return  Nothing
+ */
 void BSPLateInit(void);
 
 #endif /* BSP_H */

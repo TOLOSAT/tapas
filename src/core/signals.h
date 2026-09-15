@@ -33,7 +33,24 @@
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn          SendSignal(taskNo_t task, signalMask_t mask)
+ * @brief       This function sends signal(s) to a specific task.
+ * @param[in]   task    Task to which the signal will be sent
+ * @param[in]   mask    Mask defining which signal type(s) will be sent
+ * @retval      #RET_INVALID_PARAM if task does not exists
+ * @retval      #RET_INVALID_PARAM if mask is null
+ * @retval      #RET_SUCCESSFUL else
+ */
 returnCode_t SendSignal(taskNo_t task, signalMask_t mask);
+
+/**
+ * @fn          WaitSignal(signalMask_t mask)
+ * @brief       This function waits until one of the specified signals is received.
+ * @param[in]   mask    Mask defining which signal type(s) will be waited for
+ * @retval      #RET_INVALID_PARAM if mask is null
+ * @retval      #RET_SUCCESSFUL else
+ */
 returnCode_t WaitSignal(signalMask_t mask);
 
 #endif /* SIGNALS_H */

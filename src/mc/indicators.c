@@ -53,9 +53,7 @@ extern gpioInst_t led_error_inst;
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      InitIndicators(void)
- * @brief   Function that initialises the system leds (used for debug)
- * @return  Nothing
+ * @copydoc InitIndicators
  */
 void InitIndicators(void)
 {
@@ -99,9 +97,7 @@ void InitIndicators(void)
 }
 
 /**
- * @fn      LEDStatToggle(void)
- * @brief   Function that toggles the LED stat
- * @return  Nothing
+ * @copydoc LEDStatToggle
  */
 void LEDStatToggle(void)
 {
@@ -109,9 +105,7 @@ void LEDStatToggle(void)
 }
 
 /**
- * @fn      LEDErrorOn(void)
- * @brief   Function that turns on the LED error (and turn off the LED stat)
- * @return  Nothing
+ * @copydoc LEDErrorOn
  */
 void LEDErrorOn(void)
 {

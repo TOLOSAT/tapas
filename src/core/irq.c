@@ -20,22 +20,14 @@ extern void Generic_IRQHandler(void);
 /*************************** Variables Definitions ***************************/
 
 /**
- * @var     g_irq_table
- * @brief   Interrupt descriptor table
+ * @copydoc g_irq_table
  */
 IRQDesc_t g_irq_table[MAX_GENERIC_IRQS] = { 0 };
 
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn          RequestIRQ(IRQNo_t irq_no, IRQPrio_t priority, IRQHandler_t handler, IRQHandlerParam_t handler_param)
- * @brief       This function setups a interrupt
- * @param[in]   irq_no          Interrupt number (as defined in CMSIS)
- * @param[in]   priority        Interrupt priority
- * @param[in]   handler         Interrupt handler
- * @param[in]   handler_param   Interrupt handler param
- * @retval      #RET_INVALID_PARAM if irq number is not valid
- * @retval      #RET_SUCCESSFUL else
+ * @copydoc RequestIRQ
  */
 returnCode_t RequestIRQ(IRQNo_t irq_no, IRQPrio_t priority, IRQHandler_t handler, IRQHandlerParam_t handler_param)
 {
@@ -66,11 +58,7 @@ returnCode_t RequestIRQ(IRQNo_t irq_no, IRQPrio_t priority, IRQHandler_t handler
 }
 
 /**
- * @fn          EnableIRQ(IRQNo_t irq_no)
- * @brief       Enable the interrupt
- * @param[in]   irq_no  Interrupt number (as defined in CMSIS)
- * @retval      #RET_INVALID_PARAM if irq number is not valid
- * @retval      #RET_SUCCESSFUL else
+ * @copydoc EnableIRQ
  */
 returnCode_t EnableIRQ(IRQNo_t irq_no)
 {
@@ -92,11 +80,7 @@ returnCode_t EnableIRQ(IRQNo_t irq_no)
 }
 
 /**
- * @fn          DisableIRQ(IRQNo_t irq_no)
- * @brief       Disable the interrupt
- * @param[in]   irq_no  Interrupt number (as defined in CMSIS)
- * @retval      #RET_INVALID_PARAM if irq number is not valid
- * @retval      #RET_SUCCESSFUL else
+ * @copydoc DisableIRQ
  */
 returnCode_t DisableIRQ(IRQNo_t irq_no)
 {

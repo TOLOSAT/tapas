@@ -30,12 +30,7 @@ static returnCode_t SpiStopRXTX(spiInst_t *spi_inst);
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn              SpiOpen(spiInst_t *spi_inst, const spiConf_t *const spi_conf)
- * @brief           Function that initialise a SPI connection
- * @param[in,out]   spi_inst   Instance that contains SPI handlers
- * @param[in]       spi_conf   Configuration that contains SPI parameters
- * @retval          #RET_SUCCESSFUL if creation succeed
- * @retval          #RET_INVALID_PARAM if SPI ref is not available for this board or one pointer is null
+ * @copydoc SpiOpen
  */
 returnCode_t SpiOpen(spiInst_t *spi_inst, const spiConf_t *const spi_conf)
 {
@@ -125,15 +120,7 @@ returnCode_t SpiOpen(spiInst_t *spi_inst, const spiConf_t *const spi_conf)
 }
 
 /**
- * @fn          SpiWrite(spiInst_t *spi_inst, data_t data, length_t length)
- * @brief       Function that write over a SPI connection
- * @param[in]   spi_inst    Instance that contains SPI parameters and SPI Handler
- * @param[in]   data        Message we want to send
- * @param[in]   length      Size of the message we want to sent
- * @retval      #RET_SUCCESSFUL if message sent successfully
- * @retval      #RET_INVALID_PARAM if one pointer is null
- * @retval      #RET_TIMEOUT if spi timed out before sending message
- * @retval      #RET_NOT_AVAILABLE if spi is still sending previous message
+ * @copydoc SpiWrite
  */
 returnCode_t SpiWrite(spiInst_t *spi_inst, data_t data, length_t length)
 {
@@ -187,16 +174,7 @@ returnCode_t SpiWrite(spiInst_t *spi_inst, data_t data, length_t length)
 }
 
 /**
- * @fn          SpiRead(spiInst_t *spi_inst, data_t data, length_t length)
- * @brief       Function that read over SPI connection
- * @param[in]   spi_inst        Instance that contains SPI parameters and SPI Handler
- * @param[in]   slave_addr      Adress of the slave to which the message will be requested
- * @param[out]  data            Message we want to receive
- * @param[in]   length          Size of the message we want to receive
- * @retval      #RET_SUCCESSFUL if message sent successfully
- * @retval      #RET_INVALID_PARAM if one pointer is null
- * @retval      #RET_TIMEOUT if spi timed out before receiving message
- * @retval      #RET_NOT_AVAILABLE if spi is still receiving previous message
+ * @copydoc SpiRead
  */
 returnCode_t SpiRead(spiInst_t *spi_inst, data_t data, length_t length)
 {
@@ -271,17 +249,7 @@ returnCode_t SpiRead(spiInst_t *spi_inst, data_t data, length_t length)
 }
 
 /**
- * @fn              SpiIoctl(spiInst_t *spi_inst, uint32_t cmd, void *data, uint32_t data_size)
- * @brief           Function that adds advanced control to the driver
- * @param[in,out]   spi_inst    Instance that contains SPI parameters and SPI Handler
- * @param[in]       cmd         IO Control command
- * @param[in,out]   data        IO Control command
- * @param[in]       data_size   IO Control data size
- * @retval          #RET_INVALID_PARAM if instance is a null pointer
- * @retval          #RET_NOT_AVAILABLE if action cannot be performed because driver is busy
- * @retval          #RET_SUCCESSFUL else
- *
- * @warning This feature is not supported yet so it does nothing
+ * @copydoc SpiIoctl
  */
 returnCode_t SpiIoctl(spiInst_t *spi_inst, uint32_t cmd, void *data, uint32_t data_size)
 {
@@ -338,11 +306,7 @@ returnCode_t SpiIoctl(spiInst_t *spi_inst, uint32_t cmd, void *data, uint32_t da
 }
 
 /**
- * @fn              SpiClose(spiInst_t *spi_inst)
- * @brief           Function that desinit the SPI connection
- * @param[in,out]   spi_inst    Instance that contains SPI parameters and SPI Handler
- * @retval          #RET_SUCCESSFUL if changing parameters succeed
- * @retval          #RET_INVALID_PARAM if instance is a null pointer
+ * @copydoc SpiClose
  */
 returnCode_t SpiClose(spiInst_t *spi_inst)
 {

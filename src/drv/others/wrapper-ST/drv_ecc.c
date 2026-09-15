@@ -54,9 +54,7 @@ static RAMECC_HandleTypeDef g_ecc_rams[NB_ECCRAM] = {
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      InitEcc(void)
- * @brief   This function init ECC
- * @return  Nothing
+ * @copydoc InitEcc
  */
 void InitEcc(void)
 {
@@ -250,9 +248,7 @@ void ECC_IRQHandler(void *param)
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      InitEcc(void)
- * @brief   This function init ECC
- * @return  Nothing
+ * @copydoc InitEcc
  */
 void InitEcc(void)
 {

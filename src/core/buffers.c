@@ -21,17 +21,14 @@ static returnCode_t GetBufferCount(bufferNo_t buffer, length_t *count);
 /*************************** Variables Definitions ***************************/
 
 /**
- * @var     g_buffers_desc_table
- * @brief   Configuration table where all buffers' descriptors are stored
+ * @copydoc g_buffers_desc_table
  */
 bufferDesc_t g_buffers_desc_table[CONFIG_MAX_NB_BUFFERS] = { 0 };
 
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      CreateBuffers(void)
- * @brief   Function that creates buffers
- * @return  Nothing
+ * @copydoc CreateBuffers
  */
 void CreateBuffers(void)
 {
@@ -54,15 +51,7 @@ void CreateBuffers(void)
 }
 
 /**
- * @fn          BufferWrite(bufferNo_t buffer, data_t data, length_t length)
- * @brief       Function that send a message in a buffer
- * @param[in]   buffer  Reference of the buffer (in BUFFERS_ENUM)
- * @param[in]   data    Message that will be written in the buffer
- * @param[in]   length  Size of the message that will be written in the buffer
- * @retval      #RET_SUCCESSFUL if writing in the buffer is successful
- * @retval      #RET_INVALID_PARAM if buffer does not exist or the current task is not the sender
- *
- * This function does not support timeout.
+ * @copydoc BufferWrite
  */
 returnCode_t BufferWrite(bufferNo_t buffer, data_t data, length_t length)
 {
@@ -105,16 +94,7 @@ returnCode_t BufferWrite(bufferNo_t buffer, data_t data, length_t length)
 }
 
 /**
- * @fn          BufferRead(bufferNo_t buffer, data_t data, length_t length)
- * @brief       Function that read a message in a buffer
- * @param[in]   buffer  Reference of the buffer (in BUFFERS_ENUM)
- * @param[out]  data    Message that will be read in the buffer
- * @param[in]   length  Size of the message that will be read in the buffer
- * @retval      #RET_SUCCESSFUL if reading in the buffer is successful
- * @retval      #RET_INVALID_PARAM if buffer does not exist or the current task is not the receiver
- * @retval      #RET_NOT_AVAILABLE if there is no message in the buffer currently
- *
- * This function does not support timeout.
+ * @copydoc BufferRead
  */
 returnCode_t BufferRead(bufferNo_t buffer, data_t data, length_t length)
 {
@@ -158,14 +138,7 @@ returnCode_t BufferRead(bufferNo_t buffer, data_t data, length_t length)
 }
 
 /**
- * @fn              BufferIoctl(bufferNo_t buffer, uint32_t cmd, void *data, uint32_t data_size)
- * @brief           Function that allows specific control over the buffer
- * @param[in]       buffer      Buffer numero
- * @param[in]       cmd         IO control command
- * @param[in,out]   data        Data related to the command (if any), can be input or output
- * @param[in]       data_size   Data length (if any)
- * @retval          #RET_INVALID_PARAM if buffer is not valid
- * @retval          #RET_SUCCESSFUL else
+ * @copydoc BufferIoctl
  */
 returnCode_t BufferIoctl(bufferNo_t buffer, uint32_t cmd, void *data, uint32_t data_size)
 {

@@ -63,13 +63,43 @@ typedef struct
 
 /*************************** Variables Declarations **************************/
 
+/**
+ * @var     g_mutexes_desc_table
+ * @brief   Table where all mutexes configuration are stored
+ */
 extern const mutexConf_t g_mutexes_conf_table[CONFIG_MAX_NB_MUTEXES];
+
+/**
+ * @var     g_mutexes_desc_table
+ * @brief   Table where all mutexes descriptors are stored
+ */
 extern mutexDesc_t g_mutexes_desc_table[CONFIG_MAX_NB_MUTEXES];
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn      CreateMutexes(void)
+ * @brief   Function that creates all mutexes
+ * @return  Nothing
+ */
 extern void CreateMutexes(void);
+
+/**
+ * @fn          AcquireMutex(mutexNo_t mutex)
+ * @brief       Function that acquires the mutex.
+ * @param[in]   mutex   Mutex reference number
+ * @retval      #RET_INVALID_PARAM if mutex ref does not exist
+ * @retval      #RET_SUCCESSFUL else
+ */
 extern returnCode_t AcquireMutex(mutexNo_t mutex);
+
+/**
+ * @fn          ReleaseMutex(mutexNo_t mutex)
+ * @brief       Function that releases the mutex.
+ * @param[in]   mutex   Mutex reference number
+ * @retval      #RET_INVALID_PARAM if mutex ref does not exist
+ * @retval      #RET_SUCCESSFUL else
+ */
 extern returnCode_t ReleaseMutex(mutexNo_t mutex);
 
 #endif /* MUTEX_H */

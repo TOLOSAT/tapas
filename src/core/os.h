@@ -27,10 +27,18 @@
 
 /*************************** Variables Declarations **************************/
 
+/**
+ * @brief Syscall Vector Table
+ */
 extern const uint32_t syscall_vector[NB_SYSCALLS];
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn      StartOS(void)
+ * @brief   Function that starts the OS
+ * @return  Nothing
+ */
 extern void StartOS(void);
 
 #endif /* OS_H */

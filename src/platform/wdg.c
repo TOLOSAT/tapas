@@ -25,9 +25,7 @@
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      InitSYSWDG(void)
- * @brief   Enables System Watchdog
- * @return  Nothing
+ * @copydoc InitSYSWDG
  */
 void InitSYSWDG(void)
 {
@@ -43,8 +41,7 @@ void InitSYSWDG(void)
 }
 
 /**
- * @fn              SYSWDGMain(void)
- * @brief           Main of the SYSWDG task
+ * @copydoc SYSWDGMain
  */
 void SYSWDGMain(void)
 {

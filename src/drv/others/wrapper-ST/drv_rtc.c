@@ -30,9 +30,7 @@ static RTC_HandleTypeDef rtc_inst = { 0 };
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      InitRtc(void)
- * @brief   Function that initialise RTC
- * @return  Nothing
+ * @copydoc InitRtc
  */
 void InitRtc(void)
 {
@@ -107,11 +105,7 @@ void InitRtc(void)
 }
 
 /**
- * @fn          RtcSetTime(const rtcTime_t *rtc_time)
- * @brief       Function that sets time from RTC
- * @param[in]   rtc_time    Value of RTC time we want to set
- * @retval      #RET_INVALID_PARAM if a pointer is NULL
- * @retval      #RET_SUCCESSFUL else
+ * @copydoc RtcSetTime
  */
 returnCode_t RtcSetTime(const rtcTime_t *rtc_time)
 {
@@ -153,11 +147,7 @@ returnCode_t RtcSetTime(const rtcTime_t *rtc_time)
 }
 
 /**
- * @fn          RtcGetTime(rtcTime_t *rtc_time)
- * @brief       Function that gets time from RTC
- * @param[out]  rtc_time    Value to RTC time we want to read
- * @retval      #RET_INVALID_PARAM if a pointer is NULL
- * @retval      #RET_SUCCESSFUL else
+ * @copydoc RtcGetTime
  */
 returnCode_t RtcGetTime(rtcTime_t *rtc_time)
 {

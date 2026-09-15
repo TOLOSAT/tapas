@@ -43,11 +43,25 @@ typedef struct
 
 /*************************** Variables Declarations **************************/
 
+/**
+ * @var     g_system_info
+ * @brief   Constante struct containing system information
+ */
 extern const sytemInfo_t g_system_info;
+
+/**
+ * @var     g_program_name
+ * @brief   Constant that holds program name
+ */
 extern const char *g_program_name;
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn      PrintSystemInfo(void)
+ * @brief   Function that prints all the system information onto the console
+ * @return  Nothing
+ */
 extern void PrintSystemInfo(void);
 
 #endif /* SYSINFO_H */

@@ -42,6 +42,11 @@ extern uint32_t __dmabuff_start__;
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn      BSPLateInit(void)
+ * @brief   This function will initialise some BSP specifique peripherals
+ * @return  Nothing
+ */
 void BSPLateInit(void);
 
 #endif /* BSP_H */

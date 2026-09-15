@@ -21,9 +21,7 @@
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      InitMemories(void)
- * @brief   Function that initialises the memories
- * @return  Nothing
+ * @copydoc InitMemories
  */
 void InitMemories(void)
 {
@@ -88,14 +86,7 @@ void InitMemories(void)
 }
 
 /**
- * @fn          MemoryWrite(memoryNo_t memory, memorySector_t sector, data_t data, length_t length)
- * @brief       Function that writes data to a memory
- * @param[in]   memory  Memory numero
- * @param[in]   sector  Base sector from which the writing starts
- * @param[in]   data    Data that will be sent to the device
- * @param[in]   length  Length of the data in sector
- * @retval      #RET_INVALID_PARAM if data is a null pointer or memory is not valid
- * @retval      #RET_SUCCESSFUL else
+ * @copydoc MemoryWrite
  */
 returnCode_t MemoryWrite(memoryNo_t memory, memorySector_t sector, data_t data, length_t length)
 {
@@ -152,14 +143,7 @@ returnCode_t MemoryWrite(memoryNo_t memory, memorySector_t sector, data_t data, 
 }
 
 /**
- * @fn          MemoryRead(memoryNo_t memory, memorySector_t sector, data_t data, length_t length)
- * @brief       Function that reads data from a memory
- * @param[in]   memory  Memory numero
- * @param[in]   sector  Base sector from which the reading starts
- * @param[out]  data    Data that will be received to the memory
- * @param[in]   length  Length of the data in sector
- * @retval      #RET_INVALID_PARAM if data is a null pointer or memory is not valid
- * @retval      #RET_SUCCESSFUL else
+ * @copydoc MemoryRead
  */
 returnCode_t MemoryRead(memoryNo_t memory, memorySector_t sector, data_t data, length_t length)
 {
@@ -216,14 +200,7 @@ returnCode_t MemoryRead(memoryNo_t memory, memorySector_t sector, data_t data, l
 }
 
 /**
- * @fn              MemoryIoctl(memoryNo_t memory, uint32_t cmd, void *data, uint32_t data_size)
- * @brief           Function that allows specific control over the memory
- * @param[in]       memory      Memory numero
- * @param[in]       cmd         IO control command
- * @param[in,out]   data        Data related to the command (if any), can be input or output
- * @param[in]       data_size   Data length (if any) in bytes
- * @retval          #RET_INVALID_PARAM if memory is not valid
- * @retval          #RET_SUCCESSFUL else
+ * @copydoc MemoryIoctl
  */
 returnCode_t MemoryIoctl(memoryNo_t memory, uint32_t cmd, void *data, uint32_t data_size)
 {

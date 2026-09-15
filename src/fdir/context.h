@@ -33,9 +33,38 @@
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn          InitContext(void)
+ * @brief       Initialise the context of the kernel
+ * @retval      #RET_INVALID_PARAM if an error occurs in the context memory driver
+ * @retval      #RET_SUCCESSFUL else
+ */
 extern void InitContext(void);
+
+/**
+ * @fn          ReadContext(context_t *context)
+ * @brief       Read the context of the kernel using the context memory driver
+ * @param[out]  context Pointer to the context structure
+ * @retval      #RET_INVALID_PARAM if an error occurs in the context memory driver
+ * @retval      #RET_SUCCESSFUL else
+ */
 extern returnCode_t ReadContext(context_t *context);
+
+/**
+ * @fn          WriteContext(context_t *context)
+ * @brief       Save the context of the kernel using the context memory driver
+ * @param[in]   context Context structure
+ * @retval      #RET_INVALID_PARAM if an error occurs in the context memory driver
+ * @retval      #RET_SUCCESSFUL else
+ */
 extern returnCode_t WriteContext(context_t *context);
+
+/**
+ * @fn          EraseContext(void)
+ * @brief       Erase the context of the kernel using the context memory driver
+ * @retval      #RET_INVALID_PARAM if an error occurs in the context memory driver
+ * @retval      #RET_SUCCESSFUL else
+ */
 extern returnCode_t EraseContext(void);
 
 #endif /* CONTEXT_H */

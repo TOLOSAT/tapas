@@ -51,12 +51,7 @@ static inline uint32_t QspiMramCalcFlashSize(const qspimramConf_t *const qspimra
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn              QspiMramOpen(qspimramInst_t *qspimram_inst, const qspimramConf_t *const qspimram_conf)
- * @brief           Function that initialise a QSPI MRAM memory
- * @param[in,out]   qspimram_inst   Instance that contains QSPI MRAM handlers
- * @param[in]       qspimram_conf   Configuration that contains QSPI MRAM parameters
- * @retval          #RET_SUCCESSFUL if creation succeed
- * @retval          #RET_INVALID_PARAM if a pointer is null
+ * @copydoc QspiMramOpen
  */
 returnCode_t QspiMramOpen(qspimramInst_t *qspimram_inst, const qspimramConf_t *const qspimram_conf)
 {
@@ -131,16 +126,7 @@ returnCode_t QspiMramOpen(qspimramInst_t *qspimram_inst, const qspimramConf_t *c
 }
 
 /**
- * @fn          QspiMramWrite(qspimramInst_t *qspimram_inst, memorySector_t sector, data_t data, length_t length)
- * @brief       Function that writes onto an QSPI MRAM memory
- * @param[in]   qspimram_inst     Instance that contains QSPI MRAM parameters and QSPI MRAM Handler
- * @param[in]   sector      Sector numero from wich data will be read
- * @param[out]  data        Pointer from which data will be copied
- * @param[in]   length      Number of sector that will be read
- * @retval      #RET_SUCCESSFUL if data has been written successfully
- * @retval      #RET_INVALID_PARAM if one pointer is null
- * @retval      #RET_TIMEOUT if qspimram timed out before sending message
- * @retval      #RET_NOT_AVAILABLE if qspimram is still sending previous message
+ * @copydoc QspiMramWrite
  */
 returnCode_t QspiMramWrite(qspimramInst_t *qspimram_inst, memorySector_t sector, data_t data, length_t length)
 {
@@ -231,16 +217,7 @@ returnCode_t QspiMramWrite(qspimramInst_t *qspimram_inst, memorySector_t sector,
 }
 
 /**
- * @fn          QspiMramRead(qspimramInst_t *qspimram_inst, memorySector_t sector, data_t data, length_t length)
- * @brief       Function that read onto an QSPI MRAM memory
- * @param[in]   qspimram_inst     Instance that contains QSPI MRAM parameters and QSPI MRAM Handler
- * @param[in]   sector      Sector numero from wich data will be read
- * @param[out]  data        Pointer to where data will be copied
- * @param[in]   length      Number of sector that will be read
- * @retval      #RET_SUCCESSFUL if data has been read successfully
- * @retval      #RET_INVALID_PARAM if one pointer is null
- * @retval      #RET_TIMEOUT if qspimram timed out before sending message
- * @retval      #RET_NOT_AVAILABLE if qspimram is still sending previous message
+ * @copydoc QspiMramRead
  */
 returnCode_t QspiMramRead(qspimramInst_t *qspimram_inst, memorySector_t sector, data_t data, length_t length)
 {
@@ -328,15 +305,7 @@ returnCode_t QspiMramRead(qspimramInst_t *qspimram_inst, memorySector_t sector, 
 }
 
 /**
- * @fn              QspiMramIoctl(qspimramInst_t *qspimram_inst, uint32_t cmd, void *data, uint32_t data_size);
- * @brief           Function that adds advanced control to the driver
- * @param[in,out]   qspimram_inst    Instance that contains QSPI MRAM handlers
- * @param[in]       cmd             IO Control command
- * @param[in,out]   data            IO Control command
- * @param[in]       data_size       IO Control data size
- * @retval          #RET_INVALID_PARAM if instance is a null pointer
- * @retval          #RET_NOT_AVAILABLE if action cannot be performed because driver is busy
- * @retval          #RET_SUCCESSFUL else
+ * @copydoc QspiMramIoctl
  */
 returnCode_t QspiMramIoctl(qspimramInst_t *qspimram_inst, uint32_t cmd, void *data, uint32_t data_size)
 {
@@ -404,11 +373,7 @@ returnCode_t QspiMramIoctl(qspimramInst_t *qspimram_inst, uint32_t cmd, void *da
 }
 
 /**
- * @fn              QspiMramClose(qspimramInst_t *qspimram_inst)
- * @brief           Function that desinit the QSPI MRAM connection
- * @param[in,out]   qspimram_inst   Instance that contains QSPI MRAM handlers
- * @retval          #RET_SUCCESSFUL if changing parameters succeed
- * @retval          #RET_INVALID_PARAM if instance is a null pointer
+ * @copydoc QspiMramClose
  */
 returnCode_t QspiMramClose(qspimramInst_t *qspimram_inst)
 {

@@ -56,31 +56,160 @@
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn      sys_CheckError(returnCode_t retcode, severityLevel_t severity)
+ * @brief   Syscall declaration for CheckError
+ */
 extern void CheckError(returnCode_t retcode, severityLevel_t severity);
+
+/**
+ * @fn      sys_Sleep(tick_t tick)
+ * @brief   Syscall declaration for Sleep
+ */
 extern void Sleep(tick_t tick);
+
+/**
+ * @fn      sys_SleepPeriodic(void)
+ * @brief   Syscall declaration for SleepPeriodic
+ */
 extern void SleepPeriodic(void);
+
+/**
+ * @fn      sys_GetTick(void)
+ * @brief   Syscall declaration for GetTick
+ */
 extern tick_t GetTick(void);
+
+/**
+ * @fn      sys_GetTime(void)
+ * @brief   Syscall declaration for GetTime
+ */
 extern time_t GetTime(void);
+
+/**
+ * @fn      sys_SetTime(time_t time)
+ * @brief   Syscall declaration for SetTime
+ */
 extern returnCode_t SetTime(time_t time);
+
+/**
+ * @fn      sys_GetTickFreq(void)
+ * @brief   Syscall declaration for GetTickFreq
+ */
 extern uint32_t GetTickFreq(void);
+
+/**
+ * @fn      sys_DeviceOpen(deviceNo_t *device, deviceType_t type, uint32_t resource)
+ * @brief   Syscall declaration for DeviceOpen
+ */
 extern returnCode_t DeviceOpen(deviceNo_t *device, deviceType_t type, uint32_t resource);
+
+/**
+ * @fn      sys_DeviceWrite(deviceNo_t device, data_t data, length_t length)
+ * @brief   Syscall declaration for DeviceWrite
+ */
 extern returnCode_t DeviceWrite(deviceNo_t device, data_t data, length_t length);
+
+/**
+ * @fn      sys_DeviceRead(deviceNo_t device, data_t data, length_t length)
+ * @brief   Syscall declaration for DeviceRead
+ */
 extern returnCode_t DeviceRead(deviceNo_t device, data_t data, length_t length);
+
+/**
+ * @fn      sys_DeviceIoctl(deviceNo_t device, uint32_t cmd, void *data, uint32_t data_size)
+ * @brief   Syscall declaration for DeviceIoctl
+ */
 extern returnCode_t DeviceIoctl(deviceNo_t device, uint32_t cmd, void *data, uint32_t data_size);
+
+/**
+ * @fn      sys_DeviceClose(deviceNo_t device)
+ * @brief   Syscall declaration for DeviceClose
+ */
 extern returnCode_t DeviceClose(deviceNo_t device);
+
+/**
+ * @fn      sys_GetCurrentTask(void)
+ * @brief   Syscall declaration for GetCurrentTask
+ */
 extern taskNo_t GetCurrentTask(void);
+
+/**
+ * @fn      sys_SuspendTask(taskNo_t task)
+ * @brief   Syscall declaration for SuspendTask
+ */
 extern returnCode_t SuspendTask(taskNo_t task);
+
+/**
+ * @fn      sys_ResumeTask(taskNo_t task)
+ * @brief   Syscall declaration for ResumeTask
+ */
 extern returnCode_t ResumeTask(taskNo_t task);
+
+/**
+ * @fn      sys_GetTaskPriority(taskNo_t task, taskPriority_t *priority)
+ * @brief   Syscall declaration for GetTaskPriority
+ */
 extern returnCode_t GetTaskPriority(taskNo_t task, taskPriority_t *priority);
+
+/**
+ * @fn      sys_SetTaskPriority(taskNo_t task, taskPriority_t priority)
+ * @brief   Syscall declaration for SetTaskPriority
+ */
 extern returnCode_t SetTaskPriority(taskNo_t task, taskPriority_t priority);
+
+/**
+ * @fn      sys_AcquireMutex(mutexNo_t mutex)
+ * @brief   Syscall declaration for AcquireMutex
+ */
 extern returnCode_t AcquireMutex(mutexNo_t mutex);
+
+/**
+ * @fn      sys_ReleaseMutex(mutexNo_t mutex)
+ * @brief   Syscall declaration for ReleaseMutex
+ */
 extern returnCode_t ReleaseMutex(mutexNo_t mutex);
+
+/**
+ * @fn      sys_SendSignal(taskNo_t task, signalMask_t mask)
+ * @brief   Syscall declaration for SendSignal
+ */
 extern returnCode_t SendSignal(taskNo_t task, signalMask_t mask);
+
+/**
+ * @fn      sys_WaitSignal(signalMask_t mask)
+ * @brief   Syscall declaration for WaitSignal
+ */
 extern returnCode_t WaitSignal(signalMask_t mask);
+
+/**
+ * @fn      sys_StartTimer(timerNo_t timer)
+ * @brief   Syscall declaration for StartTimer
+ */
 extern returnCode_t StartTimer(timerNo_t timer);
+
+/**
+ * @fn      sys_PauseTimer(timerNo_t timer)
+ * @brief   Syscall declaration for PauseTimer
+ */
 extern returnCode_t PauseTimer(timerNo_t timer);
+
+/**
+ * @fn      sys_ResumeTimer(timerNo_t timer)
+ * @brief   Syscall declaration for ResumeTimer
+ */
 extern returnCode_t ResumeTimer(timerNo_t timer);
+
+/**
+ * @fn      sys_SetTimer(timerNo_t timer, tick_t period, timerMode_t mode)
+ * @brief   Syscall declaration for SetTimer
+ */
 extern returnCode_t SetTimer(timerNo_t timer, tick_t period, timerMode_t mode);
+
+/**
+ * @fn      sys_ConsolePrint(const char *fmt, ...)
+ * @brief   Syscall declaration for ConsolePrint
+ */
 extern ATTR_CHECK_FORMAT void ConsolePrint(const char *fmt, ...);
 
 #endif /* KERNEL_H */

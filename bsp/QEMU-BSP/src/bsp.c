@@ -19,9 +19,7 @@
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      BSPLateInit(void)
- * @brief   This function will initialise some BSP specifique peripherals
- * @return  Nothing
+ * @copydoc BSPLateInit
  */
 void BSPLateInit(void)
 {

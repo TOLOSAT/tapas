@@ -36,23 +36,19 @@ extern unsigned long getRunTimeCounterValue(void);
 /*************************** Variables Definitions ***************************/
 
 /**
- * @var     g_system_usage
- * @brief   System usage struct
+ * @copydoc g_system_usage
  */
 systemUsage_t g_system_usage = { 0 };
 
 /**
- * @var     g_task_usages
- * @brief   Task usage struct
+ * @copydoc g_task_usages
  */
 taskUsage_t g_task_usages[CONFIG_MAX_NB_TASKS] = { 0 };
 
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      InitSYSMON(void)
- * @brief   Enables System Monitoring
- * @return  Nothing
+ * @copydoc InitSYSMON
  */
 void InitSYSMON(void)
 {
@@ -86,8 +82,7 @@ void InitSYSMON(void)
 }
 
 /**
- * @fn              SYSMONMain(void)
- * @brief           Main of the SYSMON task
+ * @copydoc SYSMONMain
  */
 void SYSMONMain(void)
 {

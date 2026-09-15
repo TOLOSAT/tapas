@@ -53,6 +53,11 @@ typedef enum
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn      InitEcc(void)
+ * @brief   This function init ECC
+ * @return  Nothing
+ */
 extern void InitEcc(void);
 
 #endif /* ECC_H */

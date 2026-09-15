@@ -32,6 +32,15 @@
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn     InitMPU(void)
+ * @brief  Function that initialises Memory Protection Unit
+ *
+ * The default cache and shareability strategies are :
+ * - For normal memories : non-shareable and cacheable with write back and write and read allocate (i.e. TEX=001, C=1, B=1, S=0)
+ * - For devices : shareable and not cacheable (i.e. TEX=000, C=0, B=1, S=1)
+ * - For dma buffers : shareable and not cacheable (i.e. TEX=001, C=0, B=0, S=1)
+ */
 extern void InitMPU(void);
 
 #endif /* MPU_H */

@@ -32,7 +32,17 @@
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn      InitSYSWDG(void)
+ * @brief   Enables System Watchdog
+ * @return  Nothing
+ */
 extern void InitSYSWDG(void);
+
+/**
+ * @fn              SYSWDGMain(void)
+ * @brief           Main of the SYSWDG task
+ */
 extern void SYSWDGMain(void);
 
 #endif /* WDG_H */

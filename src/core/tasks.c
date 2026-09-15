@@ -20,17 +20,14 @@ extern void vInitTaskPrivilege(TaskHandle_t xTask, BaseType_t xRunPrivileged);
 /*************************** Variables Definitions ***************************/
 
 /**
- * @var     g_tasks_desc_table
- * @brief   Configuration table where all tasks descriptors are stored
+ * @copydoc g_tasks_desc_table
  */
 taskDesc_t g_tasks_desc_table[CONFIG_MAX_NB_TASKS] = { 0 };
 
 /*************************** Functions Definitions ***************************/
 
 /**
- * @fn      CreateTasks(void)
- * @brief   Function that initialises the tasks
- * @return  Nothing
+ * @copydoc CreateTasks
  */
 void CreateTasks(void)
 {
@@ -75,11 +72,7 @@ void CreateTasks(void)
 }
 
 /**
- * @fn          GetCurrentTask(void)
- * @brief       Functions that gets the task no of the current task
- * @return      Current task
- *
- * @note If a task is not registered by the TAPAS API, it means either it's a FreeRTOS internal task or badly initialised task
+ * @copydoc GetCurrentTask
  */
 taskNo_t GetCurrentTask(void)
 {
@@ -96,11 +89,7 @@ taskNo_t GetCurrentTask(void)
 }
 
 /**
- * @fn          SuspendTask(taskNo_t task)
- * @brief       Function that allow to suspend an active task
- * @param[in]   task    Reference of the task (in TASKS_ENUM)
- * @retval      #RET_SUCCESSFUL if halt is successful
- * @retval      #RET_INVALID_PARAM if task ref does not exist
+ * @copydoc SuspendTask
  */
 returnCode_t SuspendTask(taskNo_t task)
 {
@@ -121,11 +110,7 @@ returnCode_t SuspendTask(taskNo_t task)
 }
 
 /**
- * @fn          ResumeTask(taskNo_t task)
- * @brief       Function that allow to resume a suspended tasks
- * @param[in]   task    Reference of the task (in TASKS_ENUM)
- * @retval      #RET_SUCCESSFUL if resume is successful
- * @retval      #RET_INVALID_PARAM if task does not exist
+ * @copydoc ResumeTask
  */
 returnCode_t ResumeTask(taskNo_t task)
 {
@@ -149,12 +134,7 @@ returnCode_t ResumeTask(taskNo_t task)
 }
 
 /**
- * @fn          GetTaskPriority(taskNo_t task, taskPriority_t *priority)
- * @brief       Function that allows to get task priority
- * @param[in]   task        Reference of the task (in TASKS_ENUM)
- * @param[out]  priority    Current priority of the task
- * @retval      #RET_SUCCESSFUL if get is successful
- * @retval      #RET_INVALID_PARAM if task does not exist
+ * @copydoc GetTaskPriority
  */
 returnCode_t GetTaskPriority(taskNo_t task, taskPriority_t *priority)
 {
@@ -174,12 +154,7 @@ returnCode_t GetTaskPriority(taskNo_t task, taskPriority_t *priority)
 }
 
 /**
- * @fn          SetTaskPriority(taskNo_t task, taskPriority_t priority)
- * @brief       Function that allows to change task priority
- * @param[in]   task        Reference of the task (in TASKS_ENUM)
- * @param[in]   priority    New priority of the task
- * @retval      #RET_SUCCESSFUL if set is successful
- * @retval      #RET_INVALID_PARAM if task does not exist or if priority < IDLE or priority > ISR
+ * @copydoc SetTaskPriority
  */
 returnCode_t SetTaskPriority(taskNo_t task, taskPriority_t priority)
 {

@@ -77,10 +77,62 @@ typedef struct
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn              UartOpen(uartInst_t *uart_inst, const uartConf_t *const uart_conf)
+ * @brief           Function that initialise a UART connection
+ * @param[in,out]   uart_inst   Instance that contains UART handlers
+ * @param[in]       uart_conf   Configuration that contains UART parameters
+ * @retval          #RET_SUCCESSFUL if creation succeed
+ * @retval          #RET_INVALID_PARAM if UART ref is not available for this board, baudrate or one pointer is null
+ */
 extern returnCode_t UartOpen(uartInst_t *uart_inst, const uartConf_t *const uart_conf);
+
+/**
+ * @fn          UartWrite(uartInst_t *uart_inst, data_t data, length_t length)
+ * @brief       Function that write over a UART connection
+ * @param[in]   uart_inst   Instance that contains UART parameters and UART Handler
+ * @param[in]   data        Message we want to send
+ * @param[in]   length      Size of the message we want to send
+ * @retval      #RET_SUCCESSFUL if message sent successfully
+ * @retval      #RET_INVALID_PARAM if one pointer is null
+ * @retval      #RET_TIMEOUT if uart timed out before sending message
+ * @retval      #RET_NOT_AVAILABLE if uart is still sending previous message
+ */
 extern returnCode_t UartWrite(uartInst_t *uart_inst, data_t data, length_t length);
+
+/**
+ * @fn          UartRead(uartInst_t *uart_inst, data_t data, length_t length)
+ * @brief       Function that read over UART connection
+ * @param[in]   uart_inst   Instance that contains UART parameters and UART Handler
+ * @param[out]  data        Message we want to receive
+ * @param[in]   length      Size of the message we want to receive
+ * @retval      #RET_SUCCESSFUL if message sent successfully
+ * @retval      #RET_INVALID_PARAM if one pointer is null
+ * @retval      #RET_TIMEOUT if uart timed out before sending message
+ * @retval      #RET_NOT_AVAILABLE if uart is still sending previous message
+ */
 extern returnCode_t UartRead(uartInst_t *uart_inst, data_t data, length_t length);
+
+/**
+ * @fn              UartIoctl(uartInst_t *uart_inst, uint32_t cmd, void *data, uint32_t data_size);
+ * @brief           Function that adds advanced control to the driver
+ * @param[in,out]   uart_inst   Instance that contains UART parameters and UART Handler
+ * @param[in]       cmd         IO Control command
+ * @param[in,out]   data        IO Control command
+ * @param[in]       data_size   IO Control data size
+ * @retval          #RET_INVALID_PARAM if instance is a null pointer
+ * @retval          #RET_NOT_AVAILABLE if action cannot be performed because driver is busy
+ * @retval          #RET_SUCCESSFUL else
+ */
 extern returnCode_t UartIoctl(uartInst_t *uart_inst, uint32_t cmd, void *data, uint32_t data_size);
+
+/**
+ * @fn              UartClose(uartInst_t *uart_inst)
+ * @brief           Function that desinit the UART connection and puts defaults parameters
+ * @param[in,out]   uart_inst   Instance that contains UART parameters and UART Handler
+ * @retval          #RET_SUCCESSFUL if changing parameters succeed
+ * @retval          #RET_INVALID_PARAM if instance is a null pointer
+ */
 extern returnCode_t UartClose(uartInst_t *uart_inst);
 
 #endif /* DRV_UART_H */

@@ -71,12 +71,42 @@ typedef struct
 
 /*************************** Variables Declarations **************************/
 
+/**
+ * @var     g_irq_table
+ * @brief   Interrupt descriptor table
+ */
 extern IRQDesc_t g_irq_table[MAX_GENERIC_IRQS];
 
 /*************************** Functions Declarations **************************/
 
+/**
+ * @fn          RequestIRQ(IRQNo_t irq_no, IRQPrio_t priority, IRQHandler_t handler, IRQHandlerParam_t handler_param)
+ * @brief       This function setups a interrupt
+ * @param[in]   irq_no          Interrupt number (as defined in CMSIS)
+ * @param[in]   priority        Interrupt priority
+ * @param[in]   handler         Interrupt handler
+ * @param[in]   handler_param   Interrupt handler param
+ * @retval      #RET_INVALID_PARAM if irq number is not valid
+ * @retval      #RET_SUCCESSFUL else
+ */
 returnCode_t RequestIRQ(IRQNo_t irq_no, IRQPrio_t priority, IRQHandler_t handler, IRQHandlerParam_t handler_param);
+
+/**
+ * @fn          EnableIRQ(IRQNo_t irq_no)
+ * @brief       Enable the interrupt
+ * @param[in]   irq_no  Interrupt number (as defined in CMSIS)
+ * @retval      #RET_INVALID_PARAM if irq number is not valid
+ * @retval      #RET_SUCCESSFUL else
+ */
 returnCode_t EnableIRQ(IRQNo_t irq_no);
+
+/**
+ * @fn          DisableIRQ(IRQNo_t irq_no)
+ * @brief       Disable the interrupt
+ * @param[in]   irq_no  Interrupt number (as defined in CMSIS)
+ * @retval      #RET_INVALID_PARAM if irq number is not valid
+ * @retval      #RET_SUCCESSFUL else
+ */
 returnCode_t DisableIRQ(IRQNo_t irq_no);
 
 #endif /* IRQ_H */
