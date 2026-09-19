@@ -30,12 +30,12 @@ extern void vInitTaskPrivilege(TaskHandle_t xTask, BaseType_t xRunPrivileged);
 extern void vApplicationIdleHook(void);
 extern void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName);
 extern void vApplicationMallocFailedHook(void);
-
-extern void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize);
+extern void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer,
+                                          configSTACK_DEPTH_TYPE *puxIdleTaskStackSize);
 extern void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer,
-                                           uint32_t *pulTimerTaskStackSize);
+                                           configSTACK_DEPTH_TYPE *puxTimerTaskStackSize);
 
-extern StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack, TaskFunction_t pxCode, void *pvParameters);
+extern StackType_t *__wrap_pxPortInitialiseStack(StackType_t *pxTopOfStack, TaskFunction_t pxCode, void *pvParameters);
 
 static void InitializeFirstTaskContext(void);
 static void SVCEntry(uint32_t *p_stack, uint32_t svc_no);
@@ -126,15 +126,16 @@ void vApplicationMallocFailedHook(void)
  *
  * Os specific function that need to be provided if static allocation is used
  */
-void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize)
+void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer,
+                                   configSTACK_DEPTH_TYPE *puxIdleTaskStackSize)
 {
     // Idle task control block and stack
-    static StaticTask_t Idle_TCB;
-    static StackType_t Idle_Stack[configMINIMAL_STACK_SIZE];
+    static StaticTask_t xIdleTaskTCB;
+    static StackType_t uxIdleTaskStack[configMINIMAL_STACK_SIZE];
 
-    *ppxIdleTaskTCBBuffer   = &Idle_TCB;
-    *ppxIdleTaskStackBuffer = &Idle_Stack[0];
-    *pulIdleTaskStackSize   = (uint32_t)configMINIMAL_STACK_SIZE;
+    *ppxIdleTaskTCBBuffer   = &xIdleTaskTCB;
+    *ppxIdleTaskStackBuffer = &uxIdleTaskStack[0];
+    *puxIdleTaskStackSize   = configMINIMAL_STACK_SIZE;
 }
 
 /**
@@ -145,15 +146,16 @@ void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackTyp
  *
  * Os specific function that need to be provided if static allocation is used
  */
-void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, uint32_t *pulTimerTaskStackSize)
+void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer,
+                                    configSTACK_DEPTH_TYPE *puxTimerTaskStackSize)
 {
     // Timer task control block and stack
-    static StaticTask_t Timer_TCB;
-    static StackType_t Timer_Stack[configTIMER_TASK_STACK_DEPTH];
+    static StaticTask_t xTimerTaskTCB;
+    static StackType_t uxTimerTaskStack[configTIMER_TASK_STACK_DEPTH];
 
-    *ppxTimerTaskTCBBuffer   = &Timer_TCB;
-    *ppxTimerTaskStackBuffer = &Timer_Stack[0];
-    *pulTimerTaskStackSize   = (uint32_t)configTIMER_TASK_STACK_DEPTH;
+    *ppxTimerTaskTCBBuffer   = &xTimerTaskTCB;
+    *ppxTimerTaskStackBuffer = &uxTimerTaskStack[0];
+    *puxTimerTaskStackSize   = configTIMER_TASK_STACK_DEPTH;
 }
 
 /********************* pxPortInitialiseStack Reefinitions ********************/
@@ -166,10 +168,10 @@ void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer, StackT
 
 /**
  * @fn      InitializeFirstTaskContext(void)
- * @brief   Initialize the context for the first stack when scheduler starts
- * @note    Retrieved from FreeRTOS and slightly modified to meet requirements
+ * @brief   Initialize a task stack with the additional CONTROL context expected by TAPAS.
+ * @note    This function wraps the FreeRTOS port implementation through the linker.
  */
-StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack, TaskFunction_t pxCode, void *pvParameters)
+StackType_t *__wrap_pxPortInitialiseStack(StackType_t *pxTopOfStack, TaskFunction_t pxCode, void *pvParameters)
 {
     // Simulate the stack frame as it would be created by a context switch
     // interrupt.
