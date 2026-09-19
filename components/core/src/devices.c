@@ -10,8 +10,8 @@
 
 #include <string.h>
 
-#include "core/devices.h"
-#include "core/buffers.h"
+#include "devices.h"
+#include "buffers.h"
 #include "fs/fs.h"
 #include "drv/peripherals.h"
 #include "mc/mon.h"

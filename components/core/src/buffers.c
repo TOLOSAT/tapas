@@ -8,7 +8,7 @@
 
 /******************************* Include Files *******************************/
 
-#include "core/buffers.h"
+#include "buffers.h"
 #include "core/tasks.h"
 #include "fdir/fdir.h"
 

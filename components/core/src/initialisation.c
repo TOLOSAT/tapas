@@ -8,10 +8,10 @@
 
 /******************************* Include Files *******************************/
 
-#include "core/initialisation.h"
-#include "core/buffers.h"
+#include "initialisation.h"
+#include "buffers.h"
 #include "core/tasks.h"
-#include "core/timers.h"
+#include "timers.h"
 #include "drv/common.h"
 #include "drv/peripherals.h"
 #include "drv/memories.h"

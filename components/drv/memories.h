@@ -24,21 +24,21 @@
 
 #include "drv/common.h"
 
-#include "memories/drv_ram.h"
+#include "drv/memories/drv_ram.h"
 #if defined(CONFIG_HAS_SD_MEMORY)
-#include "memories/drv_sd.h"
+#include "drv/memories/drv_sd.h"
 #endif
 #if defined(CONFIG_HAS_SPISD_MEMORY)
-#include "memories/drv_spisd.h"
+#include "drv/memories/drv_spisd.h"
 #endif
 #if defined(CONFIG_HAS_QSPI_NOR_MEMORY)
-#include "memories/drv_qspinor.h"
+#include "drv/memories/drv_qspinor.h"
 #endif
 #if defined(CONFIG_HAS_QSPI_MRAM_MEMORY)
-#include "memories/drv_qspimram.h"
+#include "drv/memories/drv_qspimram.h"
 #endif
 #if defined(CONFIG_HAS_FMC_NAND_MEMORY)
-#include "memories/drv_nand.h"
+#include "drv/memories/drv_nand.h"
 #endif
 
 /***************************** Macros Definitions ****************************/

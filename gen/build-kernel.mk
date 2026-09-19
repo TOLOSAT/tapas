@@ -8,11 +8,12 @@ BUILD_KERNEL_MK := yes
 ##############################################
 
 # Directories
-KERNEL_INCDIR	= $(KERNEL_DIR)/src
 KERNEL_OBJDIR	= $(BUILD_DIR)/kernel
 
 # Files
-KERNEL_SRCS = $(wildcard $(KERNEL_DIR)/src/*/*.c) $(wildcard $(KERNEL_DIR)/src/drv/*/wrapper-$(CHIP_VENDOR)/*.c) \
+KERNEL_COMPONENTS = core drv fdir fs mc platform time
+KERNEL_SRCS = $(foreach component,$(KERNEL_COMPONENTS),$(wildcard $(KERNEL_COMPONENTS_DIR)/$(component)/src/*.c)) \
+			  $(wildcard $(KERNEL_COMPONENTS_DIR)/drv/src/*/wrapper-$(CHIP_VENDOR)/*.c) \
 			  $(wildcard $(KERNEL_DIR)/bsp/$(BOARD)-BSP/src/*.c) \
 			  $(BSP_CONF_SRCS)
 KERNEL_OBJS = $(patsubst $(KERNEL_DIR)/%.c,$(KERNEL_OBJDIR)/%.o, \
@@ -35,13 +36,14 @@ SYSTEM_DEFINES += -DBOARD=\"$(BOARD)\"
 # Flags
 KERNEL_CFLAGS   = 	$(CFLAGS) \
 				   	-D$(CHIP) -D$(CHIP_FAMILLY) $(CORE_SELECT)
-KERNEL_INCDIRS  =	$(KERNEL_DIR)/src $(KERNEL_HEADERS) $(KERNEL_DIR)/bsp/$(BOARD)-BSP \
+KERNEL_INCDIRS  =	$(KERNEL_HEADERS) $(KERNEL_COMPONENTS_DIR) $(BSP_INCDIR) \
 					$(FREERTOS_INCLUDES) $(FREERTOS_ARM_DIR) \
 					$(HAL_INCDIR) $(HAL_INCDIR)/Legacy \
 					$(FATFS_INCDIR) \
 					$(CMSIS_INCDIR) $(CMSIS_INCDIR_DEVICE) \
 					$(THIRD_PARTIES_CONFDIR) \
 					$(PRE_BUILD_DIR)
+KERNEL_PRIVATE_INCDIRS = $(foreach component,$(KERNEL_COMPONENTS),$(wildcard $(KERNEL_COMPONENTS_DIR)/$(component)/inc))
 KERNEL_INCFLAGS = $(addprefix -I,$(KERNEL_INCDIRS))
 
 ##############################################
@@ -63,6 +65,7 @@ define KERNEL_START_VERBOSE
 	@echo $(KERNEL_CFLAGS)
 	@echo "$(YELLOW)Include Paths:$(RESET)"
 	@$(foreach dir,$(patsubst $(WORKSPACE)/%,%,$(KERNEL_INCDIRS)),echo "  - $(dir)";)
+	@$(foreach dir,$(patsubst $(WORKSPACE)/%,%,$(KERNEL_PRIVATE_INCDIRS)),echo "  - $(dir) (private)";)
 	@echo "$(BLUE)Start building...$(RESET)"
 endef
 
@@ -79,20 +82,29 @@ kernel-start :
 	$(if $(PARALLEL_BUILD),$(QUIET_RECIPE),$(KERNEL_START_VERBOSE))
 
 # Building recipes
-$(KERNEL_OBJDIR)/%.o : $(KERNEL_DIR)/%.c
+$(KERNEL_OBJDIR)/bsp/%.o : $(KERNEL_DIR)/bsp/%.c
 	@echo "  CC  $(@F)"
 	@mkdir -p $(@D)
 	@$(CC) $(KERNEL_CFLAGS) $(KERNEL_INCFLAGS) $< -o $@
+
+define KERNEL_COMPONENT_RULE
+$(KERNEL_OBJDIR)/components/$(1)/src/%.o : $(KERNEL_COMPONENTS_DIR)/$(1)/src/%.c
+	@echo "  CC  $$(@F)"
+	@mkdir -p $$(@D)
+	@$(CC) $(KERNEL_CFLAGS) $(KERNEL_INCFLAGS) $(if $(wildcard $(KERNEL_COMPONENTS_DIR)/$(1)/inc),-iquote $(KERNEL_COMPONENTS_DIR)/$(1)/inc) $$< -o $$@
+endef
+
+$(foreach component,$(KERNEL_COMPONENTS),$(eval $(call KERNEL_COMPONENT_RULE,$(component))))
 
 $(PRE_BUILD_DIR)/%.o  : $(PRE_BUILD_DIR)/%.c
 	@echo "  CC  $(@F)"
 	@mkdir -p $(@D)
 	@$(CC) $(KERNEL_CFLAGS) $(KERNEL_INCFLAGS) $< -o $@
 
-$(KERNEL_OBJDIR)/src/mc/info.o : $(KERNEL_DIR)/src/mc/info.c
+$(KERNEL_OBJDIR)/components/mc/src/info.o : $(KERNEL_COMPONENTS_DIR)/mc/src/info.c
 	@echo "  CC  $(@F)"
 	@mkdir -p $(@D)
-	@$(CC) $(KERNEL_CFLAGS) $(SYSTEM_DEFINES) $(KERNEL_INCFLAGS) $< -o $@
+	@$(CC) $(KERNEL_CFLAGS) $(SYSTEM_DEFINES) $(KERNEL_INCFLAGS) $(if $(wildcard $(KERNEL_COMPONENTS_DIR)/mc/inc),-iquote $(KERNEL_COMPONENTS_DIR)/mc/inc) $< -o $@
 
 # Library generation
 $(KERNEL_LIB) : $(KERNEL_OBJS)

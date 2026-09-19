@@ -24,7 +24,7 @@
 
 #include "autoconf.h"
 #include "kernel_types.h"
-#include "stacktrace.h"
+#include "fdir/stacktrace.h"
 
 /***************************** Macros Definitions ****************************/
 

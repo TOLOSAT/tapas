@@ -23,7 +23,7 @@
 
 #include "autoconf.h"
 #include "kernel_types.h"
-#include "core/buffers.h"
+#include "buffers.h"
 #include "fs/fs.h"
 #include "drv/peripherals.h"
 

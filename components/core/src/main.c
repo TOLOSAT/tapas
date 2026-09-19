@@ -9,7 +9,7 @@
 /******************************* Include Files *******************************/
 
 #include "main.h"
-#include "core/initialisation.h"
+#include "initialisation.h"
 #include "core/os.h"
 #include "fdir/fdir.h"
 

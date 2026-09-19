@@ -9,7 +9,7 @@
 
 /******************************* Include Files *******************************/
 
-#include "core/timers.h"
+#include "timers.h"
 #include "core/signals.h"
 #include "fdir/fdir.h"
 
