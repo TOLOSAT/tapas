@@ -11,7 +11,7 @@
  * @{
  * @defgroup platform Platform
  * @{
- * @defgroup wdg Watchdog
+ * @defgroup watchdog Watchdog
  * @brief Provides system watchdog handling interface.
  * @{
  */

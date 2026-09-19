@@ -19,7 +19,7 @@
 #include "devices.h"
 #include "core/signals.h"
 #include "timers.h"
-#include "mc/console.h"
+#include "monitoring/console.h"
 #include "fdir/fdir.h"
 
 /***************************** Macros Definitions ****************************/

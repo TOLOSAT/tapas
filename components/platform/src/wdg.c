@@ -1,5 +1,5 @@
 /**
- * @file    wdg.h
+ * @file    wdg.c
  * @author  Merlin Kooshmanian
  * @brief   Source file for watchdog handling
  *
@@ -10,7 +10,7 @@
 
 #include "platform/wdg.h"
 #include "core/tasks.h"
-#include "drv/others/drv_wdg.h"
+#include "drivers/others/wdg.h"
 #include "fdir/fdir.h"
 
 /***************************** Macros Definitions ****************************/

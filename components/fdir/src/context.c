@@ -11,8 +11,8 @@
 #include <string.h>
 
 #include "fdir/context.h"
-#include "mc/info.h"
-#include "drv/memories.h"
+#include "monitoring/info.h"
+#include "drivers/memories.h"
 #include "fdir/fdir.h"
 
 /***************************** Macros Definitions ****************************/

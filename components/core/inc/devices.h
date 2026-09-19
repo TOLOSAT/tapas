@@ -9,7 +9,7 @@
 /**
  * @defgroup kernel Kernel
  * @{
- * @defgroup drv Drivers
+ * @defgroup drivers Drivers
  * @{
  * @defgroup devices Devices Management
  * @brief Abstraction layer for managing devices using their corresponding peripheral.
@@ -24,8 +24,8 @@
 #include "autoconf.h"
 #include "kernel_types.h"
 #include "buffers.h"
-#include "fs/fs.h"
-#include "drv/peripherals.h"
+#include "file-system/fs.h"
+#include "drivers/peripherals.h"
 
 /***************************** Macros Definitions ****************************/
 

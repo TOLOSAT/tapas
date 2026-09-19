@@ -11,9 +11,9 @@ BUILD_KERNEL_MK := yes
 KERNEL_OBJDIR	= $(BUILD_DIR)/kernel
 
 # Files
-KERNEL_COMPONENTS = core drv fdir fs mc platform time
+KERNEL_COMPONENTS = core drivers fdir file-system monitoring platform time
 KERNEL_SRCS = $(foreach component,$(KERNEL_COMPONENTS),$(wildcard $(KERNEL_COMPONENTS_DIR)/$(component)/src/*.c)) \
-			  $(wildcard $(KERNEL_COMPONENTS_DIR)/drv/src/*/wrapper-$(CHIP_VENDOR)/*.c) \
+			  $(wildcard $(KERNEL_COMPONENTS_DIR)/drivers/src/*/wrapper-$(CHIP_VENDOR)/*.c) \
 			  $(wildcard $(KERNEL_DIR)/bsp/$(BOARD)-BSP/src/*.c) \
 			  $(BSP_CONF_SRCS)
 KERNEL_OBJS = $(patsubst $(KERNEL_DIR)/%.c,$(KERNEL_OBJDIR)/%.o, \
@@ -83,13 +83,13 @@ kernel-start :
 
 # Building recipes
 $(KERNEL_OBJDIR)/bsp/%.o : $(KERNEL_DIR)/bsp/%.c
-	@echo "  CC  $(@F)"
+	@echo "  CC  [bsp] $(@F)"
 	@mkdir -p $(@D)
 	@$(CC) $(KERNEL_CFLAGS) $(KERNEL_INCFLAGS) $< -o $@
 
 define KERNEL_COMPONENT_RULE
 $(KERNEL_OBJDIR)/components/$(1)/src/%.o : $(KERNEL_COMPONENTS_DIR)/$(1)/src/%.c
-	@echo "  CC  $$(@F)"
+	@echo "  CC  [$(1)] $$(@F)"
 	@mkdir -p $$(@D)
 	@$(CC) $(KERNEL_CFLAGS) $(KERNEL_INCFLAGS) $(if $(wildcard $(KERNEL_COMPONENTS_DIR)/$(1)/inc),-iquote $(KERNEL_COMPONENTS_DIR)/$(1)/inc) $$< -o $$@
 endef
@@ -97,14 +97,14 @@ endef
 $(foreach component,$(KERNEL_COMPONENTS),$(eval $(call KERNEL_COMPONENT_RULE,$(component))))
 
 $(PRE_BUILD_DIR)/%.o  : $(PRE_BUILD_DIR)/%.c
-	@echo "  CC  $(@F)"
+	@echo "  CC  [generated] $(@F)"
 	@mkdir -p $(@D)
 	@$(CC) $(KERNEL_CFLAGS) $(KERNEL_INCFLAGS) $< -o $@
 
-$(KERNEL_OBJDIR)/components/mc/src/info.o : $(KERNEL_COMPONENTS_DIR)/mc/src/info.c
-	@echo "  CC  $(@F)"
+$(KERNEL_OBJDIR)/components/monitoring/src/info.o : $(KERNEL_COMPONENTS_DIR)/monitoring/src/info.c
+	@echo "  CC  [monitoring] $(@F)"
 	@mkdir -p $(@D)
-	@$(CC) $(KERNEL_CFLAGS) $(SYSTEM_DEFINES) $(KERNEL_INCFLAGS) $(if $(wildcard $(KERNEL_COMPONENTS_DIR)/mc/inc),-iquote $(KERNEL_COMPONENTS_DIR)/mc/inc) $< -o $@
+	@$(CC) $(KERNEL_CFLAGS) $(SYSTEM_DEFINES) $(KERNEL_INCFLAGS) $(if $(wildcard $(KERNEL_COMPONENTS_DIR)/monitoring/inc),-iquote $(KERNEL_COMPONENTS_DIR)/monitoring/inc) $< -o $@
 
 # Library generation
 $(KERNEL_LIB) : $(KERNEL_OBJS)

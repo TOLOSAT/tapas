@@ -12,8 +12,8 @@
 #include "fdir/fdir.h"
 #include "fdir/context.h"
 #include "core/tasks.h"
-#include "mc/console.h"
-#include "mc/indicators.h"
+#include "monitoring/console.h"
+#include "monitoring/indicators.h"
 #include "bsp.h"
 
 /***************************** Macros Definitions ****************************/

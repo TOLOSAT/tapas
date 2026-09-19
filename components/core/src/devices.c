@@ -12,10 +12,10 @@
 
 #include "devices.h"
 #include "buffers.h"
-#include "fs/fs.h"
-#include "drv/peripherals.h"
-#include "mc/mon.h"
-#include "mc/info.h"
+#include "file-system/fs.h"
+#include "drivers/peripherals.h"
+#include "monitoring/monitoring.h"
+#include "monitoring/info.h"
 #include "fdir/context.h"
 #include "fdir/fdir.h"
 
