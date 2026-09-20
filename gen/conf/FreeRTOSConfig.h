@@ -587,7 +587,7 @@ extern unsigned long getRunTimeCounterValue(void);
  * The application can provide it's own implementation of
  * vApplicationGetIdleTaskMemory() and vApplicationGetTimerTaskMemory() by
  * setting configKERNEL_PROVIDED_STATIC_MEMORY to 0 or leaving it undefined. */
-#define configKERNEL_PROVIDED_STATIC_MEMORY                    1
+#define configKERNEL_PROVIDED_STATIC_MEMORY                    0
 
 /******************************************************************************/
 /* ARMv8-M port Specific Configuration definitions. ***************************/

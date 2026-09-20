@@ -16,12 +16,44 @@ AUTOCONF_SRC 	= $(PRE_BUILD_DIR)/autoconf.h
 BSP_CONF_SRCS	= $(PRE_BUILD_DIR)/peripherals_conf.c \
 				  $(PRE_BUILD_DIR)/system_peripherals_conf.c \
 				  $(PRE_BUILD_DIR)/memories_conf.c
+BSP_CONF_HEADERS = $(PRE_BUILD_DIR)/peripherals_conf.h \
+				   $(PRE_BUILD_DIR)/system_peripherals_conf.h \
+				   $(PRE_BUILD_DIR)/memories_conf.h
+BSP_CONF_FILES = $(BSP_CONF_SRCS) $(BSP_CONF_HEADERS)
+AUTOCONF_STAMP = $(PRE_BUILD_DIR)/autoconf.stamp
+BSP_CONF_STAMP = $(PRE_BUILD_DIR)/bsp-conf.stamp
+AUTOCONF_GENERATOR = $(TOOLS_DIR)/config-parser.py
+BSP_CONF_GENERATOR = $(TOOLS_DIR)/bsp-parser.py
+AUTOCONF_KCONFIGS = $(GEN_DIR)/Kconfig \
+					$(GEN_DIR)/Kconfig.platform \
+					$(GEN_DIR)/Kconfig.options \
+					$(BSP_DIR)/Kconfig
+
+# The workspace may run this phase before invoking the kernel build. Standalone
+# kernel builds still keep pre-build as an order-only prerequisite.
+ifeq ($(KERNEL_PRE_BUILD_DONE),1)
+KERNEL_PRE_BUILD_PREREQUISITE =
+else
+KERNEL_PRE_BUILD_PREREQUISITE = pre-build
+endif
+
+# A stamp alone cannot detect a manually removed generated file. Force the
+# generator once when at least one declared output is missing.
+ifeq ($(wildcard $(AUTOCONF_SRC)),)
+.PHONY : autoconf-missing
+$(AUTOCONF_STAMP) : autoconf-missing
+endif
+BSP_CONF_MISSING := $(filter-out $(wildcard $(BSP_CONF_FILES)),$(BSP_CONF_FILES))
+ifneq ($(BSP_CONF_MISSING),)
+.PHONY : bsp-conf-missing
+$(BSP_CONF_STAMP) : bsp-conf-missing
+endif
 
 ##############################################
 ################ BUILD RECIPES ###############
 ##############################################
 
-.PHONY : pre-build pre-build-start autoconf conf-files pre-build-end
+.PHONY : pre-build pre-build-start autoconf conf-files pre-build-end pre-build-clean
 pre-build : pre-build-end
 pre-build-end : autoconf conf-files
 autoconf conf-files : | pre-build-start
@@ -30,7 +62,7 @@ define KERNEL_PRE_BUILD_START_VERBOSE
 	@echo "$(BOLD)=============================$(RESET)"
 	@echo "$(BOLD)===    KERNEL PRE BUILD   ===$(RESET)"
 	@echo "$(BOLD)=============================$(RESET)"
-	@echo "$(YELLOW)Files to pre-build:$(RESET) $(words $(AUTOCONF_SRC) $(BSP_CONF_SRCS))"
+	@echo "$(YELLOW)Files to pre-build:$(RESET) $(words $(AUTOCONF_SRC) $(BSP_CONF_FILES))"
 	@echo "$(BLUE)Start pre-building...$(RESET)"
 endef
 
@@ -41,30 +73,39 @@ endef
 
 # Pre-build header
 pre-build-start :
-	$(if $(PARALLEL_BUILD),$(QUIET_RECIPE),$(KERNEL_PRE_BUILD_START_VERBOSE))
+	$(if $(or $(PARALLEL_BUILD),$(filter verif,$(MAKECMDGOALS))),$(QUIET_RECIPE),$(KERNEL_PRE_BUILD_START_VERBOSE))
 
 # Autoconf recipes
 autoconf : $(AUTOCONF_SRC)
 
-$(AUTOCONF_SRC) : $(CONFIG_FILE)
-	@echo "  PY  $(@F)"
+$(AUTOCONF_SRC) : | $(AUTOCONF_STAMP)
+
+$(AUTOCONF_STAMP) : $(CONFIG_FILE) $(AUTOCONF_GENERATOR) $(AUTOCONF_KCONFIGS)
+	@echo "  PY  [kernel/generated] $(notdir $(AUTOCONF_SRC))"
 	@mkdir -p $(@D)
-	@${PYTHON} $(TOOLS_DIR)/config-parser.py -i $^ -o $(@D)
+	@${PYTHON} $(AUTOCONF_GENERATOR) -i $(CONFIG_FILE) -o $(@D) \
+		$(foreach kconfig,$(AUTOCONF_KCONFIGS),--kconfig $(kconfig))
+	@stamp_tmp="$@.tmp.$$$$"; \
+		printf '%s\n' $(notdir $(AUTOCONF_SRC)) > "$$stamp_tmp"; \
+		mv -f "$$stamp_tmp" "$@"
 
 # Configuration files generation
-conf-files : $(PRE_BUILD_DIR)/bsp-conf.stamp
-$(BSP_CONF_SRCS): $(PRE_BUILD_DIR)/bsp-conf.stamp
+conf-files : $(BSP_CONF_FILES)
+$(BSP_CONF_FILES) : | $(BSP_CONF_STAMP)
 
-$(PRE_BUILD_DIR)/bsp-conf.stamp : $(BSP_JSON)
+$(BSP_CONF_STAMP) : $(BSP_JSON) $(BSP_CONF_GENERATOR)
 	@mkdir -p $(@D)
-	@echo "  PY  peripherals_conf.c, peripherals_conf.h"; echo "peripherals_conf.c, peripherals_conf.h" >> $@
-	@echo "  PY  system_peripherals_conf.c, system_peripherals_conf.h"; echo "system_peripherals_conf.c, system_peripherals_conf.h" >> $@
-	@echo "  PY  memories_conf.c, memories_conf.h"; echo "memories_conf.c, memories_conf.h" >> $@
-	@${PYTHON} $(TOOLS_DIR)/bsp-parser.py -i $(BSP_JSON) -o $(PRE_BUILD_DIR)
+	@echo "  PY  [kernel/generated] peripherals_conf.c, peripherals_conf.h"
+	@echo "  PY  [kernel/generated] system_peripherals_conf.c, system_peripherals_conf.h"
+	@echo "  PY  [kernel/generated] memories_conf.c, memories_conf.h"
+	@${PYTHON} $(BSP_CONF_GENERATOR) -i $(BSP_JSON) -o $(PRE_BUILD_DIR)
+	@stamp_tmp="$@.tmp.$$$$"; \
+		printf '%s\n' $(notdir $(BSP_CONF_FILES)) > "$$stamp_tmp"; \
+		mv -f "$$stamp_tmp" "$@"
 
 # Pre-build footer
 pre-build-end :
-	$(if $(PARALLEL_BUILD),$(QUIET_RECIPE),$(KERNEL_PRE_BUILD_END_VERBOSE))
+	$(if $(or $(PARALLEL_BUILD),$(filter verif,$(MAKECMDGOALS))),$(QUIET_RECIPE),$(KERNEL_PRE_BUILD_END_VERBOSE))
 
 # Pre-build clean recipes
 pre-build-clean :

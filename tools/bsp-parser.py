@@ -3,14 +3,37 @@
 import os
 import json
 import argparse
-from datetime import datetime
+import tempfile
+
+
+def write_generated_file(filename, content):
+    """Atomically publish generated content without changing unchanged files."""
+    try:
+        with open(filename, "r", encoding="utf-8") as existing_file:
+            if existing_file.read() == content:
+                return
+        mode = os.stat(filename).st_mode & 0o777
+    except FileNotFoundError:
+        mode = 0o644
+
+    output_directory = os.path.dirname(filename) or "."
+    descriptor, temporary_filename = tempfile.mkstemp(
+        prefix=f".{os.path.basename(filename)}.", dir=output_directory, text=True
+    )
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8", newline="") as output_file:
+            output_file.write(content)
+        os.chmod(temporary_filename, mode)
+        os.replace(temporary_filename, filename)
+    finally:
+        if os.path.exists(temporary_filename):
+            os.unlink(temporary_filename)
 
 # ==============================================================================
 # =================== Generation of peripherals configuration ==================
 # ==============================================================================
 
 def generate_peripherals_conf(peripherals, output_directory):
-    current_date = datetime.now().strftime("%d/%m/%Y")
     peripherals_c_filename = os.path.join(output_directory, "peripherals_conf.c")
     peripherals_h_filename = os.path.join(output_directory, "peripherals_conf.h")
 
@@ -18,14 +41,13 @@ def generate_peripherals_conf(peripherals, output_directory):
  * @file    peripherals_conf.c
  * @brief   Source file containing peripherals information
  * @author  Auto-generated
- * @date    {current_date}
  *
  * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /******************************* Include Files *******************************/
 
-#include "drv/peripherals.h"
+#include "drivers/peripherals.h"
 #include "peripherals_conf.h"
 
 /***************************** Macros Definitions ****************************/
@@ -36,7 +58,6 @@ def generate_peripherals_conf(peripherals, output_directory):
  * @file    peripherals_conf.h
  * @brief   Header file containing peripherals information
  * @author  Auto-generated
- * @date    {current_date}
  *
  * @copyright Copyright (c) TOLOSAT 2026
  */
@@ -146,10 +167,8 @@ peripheralDesc_t g_peripherals_desc_table[CONFIG_MAX_NB_PERIPHERALS] =
     h_content = HEADER_FILE_HEADER_TEMPLATE.replace("{nb_peripherals}", str(len(peripherals)))
     h_content = h_content.replace("{defines}", "\n".join(defines))
 
-    with open(peripherals_c_filename, "w") as f:
-        f.write(c_content)
-    with open(peripherals_h_filename, "w") as f:
-        f.write(h_content)
+    write_generated_file(peripherals_c_filename, c_content)
+    write_generated_file(peripherals_h_filename, h_content)
 
 
 # ==============================================================================
@@ -157,7 +176,6 @@ peripheralDesc_t g_peripherals_desc_table[CONFIG_MAX_NB_PERIPHERALS] =
 # ==============================================================================
 
 def generate_system_peripherals_conf(peripherals, output_directory):
-    current_date = datetime.now().strftime("%d/%m/%Y")
     peripherals_c_filename = os.path.join(output_directory, "system_peripherals_conf.c")
     peripherals_h_filename = os.path.join(output_directory, "system_peripherals_conf.h")
 
@@ -165,7 +183,6 @@ def generate_system_peripherals_conf(peripherals, output_directory):
  * @file    system_peripherals_conf.c
  * @brief   Source file containing system peripherals information
  * @author  Auto-generated
- * @date    {current_date}
  *
  * @copyright Copyright (c) TOLOSAT 2026
  */
@@ -174,7 +191,7 @@ def generate_system_peripherals_conf(peripherals, output_directory):
 
 #include "autoconf.h"
 #include "system_peripherals_conf.h"
-#include "drv/peripherals.h"
+#include "drivers/peripherals.h"
 
 /***************************** Macros Definitions ****************************/
 
@@ -189,7 +206,6 @@ def generate_system_peripherals_conf(peripherals, output_directory):
  * @file    system_peripherals_conf.h
  * @brief   Empty header (kept for compatibility) for system peripherals information
  * @author  Auto-generated
- * @date    {current_date}
  *
  * @copyright Copyright (c) TOLOSAT 2026
  */
@@ -199,7 +215,7 @@ def generate_system_peripherals_conf(peripherals, output_directory):
 
 /******************************* Include Files *******************************/
 
-#include "drv/peripherals.h"
+#include "drivers/peripherals.h"
 
 /*********************************** Others **********************************/
 
@@ -282,10 +298,8 @@ const {struct_name} {conf_name} = {{
     # Build empty header file
     h_content = HEADER_FILE_HEADER_TEMPLATE
 
-    with open(peripherals_c_filename, "w") as f:
-        f.write(c_content)
-    with open(peripherals_h_filename, "w") as f:
-        f.write(h_content)
+    write_generated_file(peripherals_c_filename, c_content)
+    write_generated_file(peripherals_h_filename, h_content)
 
 
 # ==============================================================================
@@ -293,7 +307,6 @@ const {struct_name} {conf_name} = {{
 # ==============================================================================
 
 def generate_memories_conf(memories, fs_mem, context_mem, output_directory):
-    current_date = datetime.now().strftime("%d/%m/%Y")
     memories_c_filename = os.path.join(output_directory, "memories_conf.c")
     memories_h_filename = os.path.join(output_directory, "memories_conf.h")
 
@@ -301,14 +314,13 @@ def generate_memories_conf(memories, fs_mem, context_mem, output_directory):
  * @file    memories_conf.c
  * @brief   Source file containing memories information
  * @author  Auto-generated
- * @date    {current_date}
  *
  * @copyright Copyright (c) TOLOSAT 2026
  */
 
 /******************************* Include Files *******************************/
 
-#include "drv/memories.h"
+#include "drivers/memories.h"
 #include "memories_conf.h"
 
 /***************************** Macros Definitions ****************************/
@@ -319,7 +331,6 @@ def generate_memories_conf(memories, fs_mem, context_mem, output_directory):
  * @file    memories_conf.h
  * @brief   Header file containing memories information
  * @author  Auto-generated
- * @date    {current_date}
  *
  * @copyright Copyright (c) TOLOSAT 2026
  */
@@ -459,10 +470,8 @@ memoryDesc_t g_memories_desc_table[CONFIG_MAX_NB_MEMORIES] =
     h_content = h_content.replace("{defines}", "\n".join(defines))
 
     # Write files
-    with open(memories_c_filename, "w") as f:
-        f.write(c_content)
-    with open(memories_h_filename, "w") as f:
-        f.write(h_content)
+    write_generated_file(memories_c_filename, c_content)
+    write_generated_file(memories_h_filename, h_content)
 
 
 # ==============================================================================
@@ -479,7 +488,7 @@ def main():
     if not os.path.exists(args.output):
         os.makedirs(args.output)
 
-    with open(args.input, "r") as f:
+    with open(args.input, "r", encoding="utf-8") as f:
         data = json.load(f)
 
     system = data.get("bsp", {})

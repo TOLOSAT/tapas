@@ -13,9 +13,11 @@ CHECKER_ERROR_MSG = "\033[1;31mCode checked: errors have been found. Please corr
 
 # Checker files and includes
 CONF_MISRA = $(GEN_DIR)/MISRA/misra.json
-CHECKER_SRCS = $(wildcard $(KERNEL_DIR)/src/*/*.c) $(wildcard $(KERNEL_DIR)/src/drv/*/wrapper-$(CHIP_VENDOR)/*.c) \
+CHECKER_SRCS = $(foreach component,$(KERNEL_COMPONENTS),$(wildcard $(KERNEL_COMPONENTS_DIR)/$(component)/src/*.c)) \
+			   $(wildcard $(KERNEL_COMPONENTS_DIR)/drivers/src/*/wrapper-$(CHIP_VENDOR)/*.c) \
 			   $(wildcard $(KERNEL_DIR)/bsp/$(BOARD)-BSP/src/*.c)
-CHECKER_INCS = -I$(KERNEL_INCDIR) -I$(KERNEL_HEADERS) -I$(KERNEL_DIR)/bsp/$(BOARD)-BSP \
+CHECKER_INCS = -I$(KERNEL_COMPONENTS_DIR) -I$(KERNEL_HEADERS) -I$(BSP_INCDIR) \
+			   $(addprefix -I,$(KERNEL_PRIVATE_INCDIRS)) \
 			   -I$(THIRD_PARTIES_CONFDIR) \
 			   -I$(PRE_BUILD_DIR)
 CHECKER_DEFS = -D$(CHIP) -D$(CHIP_FAMILLY)

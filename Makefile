@@ -13,13 +13,15 @@ PATCH = 6
 ################### MAKE #####################
 ##############################################
 
+.PHONY : all clean
+
 # Main recipe
 all : pre-build hal fatfs freertos kernel
 
-clean : kernel-clean
+clean : pre-build-clean hal-clean fatfs-clean freertos-clean kernel-clean
 
-echoes :
-	@echo $(KERNEL_SRCS)
+print-%:
+	@printf '%s = %s\n' '$*' '$($*)'
 
 ##############################################
 ################## INCLUDES ##################
