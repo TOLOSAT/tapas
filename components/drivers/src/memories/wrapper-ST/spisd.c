@@ -4,6 +4,7 @@
  * @brief   Source file for SD card memory over SPI bus
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /******************************* Include Files *******************************/

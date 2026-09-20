@@ -5,6 +5,7 @@
  * @note    Based on "Exception Handling ABI for the Arm Architecture" (6 october 2023)
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /******************************* Include Files *******************************/

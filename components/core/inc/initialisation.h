@@ -4,6 +4,7 @@
  * @brief   Header file initialising tools and HAL
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /**

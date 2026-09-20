@@ -1,3 +1,6 @@
+# Copyright (c) TOLOSAT 2026
+# SPDX-License-Identifier: Apache-2.0
+
 # This file declares which sources files we need in STM32H7xx HAL
 
 HAL_SRCS  = $(HAL_SRCDIR)/stm32h7xx_hal.c \

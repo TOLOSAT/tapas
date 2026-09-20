@@ -4,6 +4,7 @@
  * @brief   Source file for NAND memory using FMC
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 #if !defined(STM32F411xE)

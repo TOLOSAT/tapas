@@ -1,3 +1,6 @@
+# Copyright (c) TOLOSAT 2026
+# SPDX-License-Identifier: Apache-2.0
+
 # This file declares which sources files we need in CMSDK HAL
 
 HAL_SRCS  = $(HAL_SRCDIR)/cmsdk_hal.c \

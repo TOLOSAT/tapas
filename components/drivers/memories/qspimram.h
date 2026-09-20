@@ -4,6 +4,7 @@
  * @brief   Header file for QSPI_MRAM flash memory using QSPI bus
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /**

@@ -5,6 +5,7 @@
  * @brief   Source file for Failure Detection, Identification and Recovery (FDIR).
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /******************************* Include Files *******************************/

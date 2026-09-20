@@ -64,4 +64,9 @@ The supported toolchain is provided by the parent project's Docker image. See th
 
 Kernel code follows the repository MISRA-oriented coding rules, is compiled with warnings as errors, and is checked with Cppcheck and clang-format. See [`CODING_GUIDELINES.md`](CODING_GUIDELINES.md) before contributing.
 
-Copyright and redistribution terms are described in [`COPYRIGHT.md`](COPYRIGHT.md).
+## License
+
+TAPAS code developed by TOLOSAT is licensed under the Apache License 2.0. See
+[`LICENSE`](LICENSE) for details. Bundled third-party components remain subject
+to their respective licenses; see
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

@@ -1,3 +1,6 @@
+# Copyright (c) TOLOSAT 2026
+# SPDX-License-Identifier: Apache-2.0
+
 # Makefile including all build recipes for kernel
 
 ifndef BUILD_KERNEL_MK

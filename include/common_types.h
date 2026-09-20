@@ -4,6 +4,7 @@
  * @brief   Common types and macros for the system
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 #ifndef COMMON_TYPES_H

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) TOLOSAT 2026
+# SPDX-License-Identifier: Apache-2.0
 
 import os
 import json
@@ -43,6 +45,7 @@ def generate_peripherals_conf(peripherals, output_directory):
  * @author  Auto-generated
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /******************************* Include Files *******************************/
@@ -60,6 +63,7 @@ def generate_peripherals_conf(peripherals, output_directory):
  * @author  Auto-generated
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 #ifndef PERIPHERALS_CONF_H
@@ -185,6 +189,7 @@ def generate_system_peripherals_conf(peripherals, output_directory):
  * @author  Auto-generated
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /******************************* Include Files *******************************/
@@ -208,6 +213,7 @@ def generate_system_peripherals_conf(peripherals, output_directory):
  * @author  Auto-generated
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 #ifndef SYSTEM_PERIPHERALS_CONF_H
@@ -316,6 +322,7 @@ def generate_memories_conf(memories, fs_mem, context_mem, output_directory):
  * @author  Auto-generated
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /******************************* Include Files *******************************/
@@ -333,6 +340,7 @@ def generate_memories_conf(memories, fs_mem, context_mem, output_directory):
  * @author  Auto-generated
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 #ifndef MEMORIES_CONF_H

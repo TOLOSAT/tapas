@@ -3,6 +3,9 @@
  * @author  Merlin Kooshmanian
  * @brief   Header file for HAL CMSDK types
  * @date    09/06/2024
+ *
+ * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 #ifndef HAL_CMSDK_TYPES_H

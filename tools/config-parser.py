@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) TOLOSAT 2026
+# SPDX-License-Identifier: Apache-2.0
 
 import argparse
 import os
@@ -59,6 +61,7 @@ def parse_config(config_file, output_dir, owned_symbols):
  * @author  Auto-generated
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 #ifndef AUTOCONF_H

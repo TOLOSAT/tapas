@@ -4,6 +4,7 @@
  * @brief   Header file defining peripherals
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /**

@@ -4,6 +4,7 @@
  * @brief   Header file for SD card memory using SDIO bus
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /**

@@ -4,6 +4,7 @@
  * @brief   Interface for stack trace handling
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 #ifndef STACKTRACE_H

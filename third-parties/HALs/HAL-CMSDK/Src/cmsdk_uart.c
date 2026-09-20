@@ -4,7 +4,11 @@
  * @brief   Source file for UART CMSDK functions
  * @date    09/06/2024
  *
- * Largely inspired by the Zephyr driver and STM32 HAL style.
+ * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * @note The design is inspired by Zephyr drivers and STM32 HAL conventions;
+ *       the implementation is original to TAPAS.
  */
 
 /******************************* Include Files *******************************/

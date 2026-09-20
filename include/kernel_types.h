@@ -4,6 +4,7 @@
  * @brief   Header defining type for kernel
  *
  * @copyright Copyright (c) TOLOSAT 2026
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 /**
