@@ -120,7 +120,8 @@ void vApplicationMallocFailedHook(void)
 }
 
 /**
- * @fn      vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize)
+ * @fn      vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, configSTACK_DEPTH_TYPE
+ * *puxIdleTaskStackSize)
  * @brief   This function is used to allocate memory to Idle Task when scheduler is started
  * @return  Nothing
  *
@@ -139,8 +140,8 @@ void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer, StackTyp
 }
 
 /**
- * @fn      vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, uint32_t
- * *pulTimerTaskStackSize)
+ * @fn      vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, configSTACK_DEPTH_TYPE
+ * *puxTimerTaskStackSize)
  * @brief   This function is used to allocate memory to timer tasks when they are created
  * @return  Nothing
  *

@@ -1,134 +1,67 @@
-# TAPAS Kernel — TOLOSAT Autonomous Payload & Avionics Software
+# TAPAS Kernel
 
-## 1. Overview
+The TAPAS kernel provides the operating-system and hardware-facing services used by the flight software. It targets ARM Cortex-M processors and integrates FreeRTOS, FATFS, CMSIS, and board-specific HAL implementations.
 
-The **TAPAS Kernel** is the core component of the TOLOSAT flight software. It provides all low-level services required for the autonomous and reliable operation of the satellite. Designed as a **monolithic, real-time operating system (RTOS)**, the kernel ensures deterministic behavior, fault tolerance, and a high level of integration between critical software components.
+## Architecture
 
-The kernel acts as the bridge between the hardware and user-level applications. It handles task scheduling, memory management, peripheral interfaces, telemetry, fault recovery, and system supervision.
+The stable API consumed by applications and middleware is exported from `include/`. Internal code is organised into components:
 
-## 2. Objectives
+| Component | Responsibility |
+|-----------|----------------|
+| `core` | Tasks, system objects, interrupts, signals, system calls, and OS integration. |
+| `drivers` | Memory and peripheral abstractions plus vendor-specific wrappers. |
+| `fdir` | Fault detection, context capture, and stack tracing. |
+| `file-system` | FATFS integration and file-system services. |
+| `monitoring` | Console, indicators, build information, and system monitoring. |
+| `platform` | Cache, MPU, and watchdog support. |
+| `time` | Kernel time services and conversions. |
 
-The main purposes of the TAPAS kernel are:
-- Provide a **real-time execution environment** using FreeRTOS.
-- Manage **hardware resources** such as memory, I/O devices, and timers.
-- Implement **Failure Detection, Isolation and Recovery (FDIR)** mechanisms.
-- Ensure **deterministic and safe execution** through static resource allocation.
-- Offer a consistent **Device API** for communication between applications and kernel-managed objects.
-- Provide **monitoring and diagnostic capabilities** including stack traces and system snapshots.
+Within `components/<name>/`, headers at the component root form the API shared with other kernel components. `inc/` contains private headers and `src/` contains implementation files. Driver implementations selected for a chip vendor live under `components/drivers/src/*/wrapper-<vendor>/`.
 
-## 3. Architecture
+Board support packages are stored under `bsp/<board>-BSP/`. Third-party code is kept under `third-parties/` and is not part of the TAPAS component layout.
 
-The TAPAS kernel follows a **monolithic architecture** built on top of mature third-party components. It integrates multiple functionalities within a single software space for better control, reduced complexity, and deterministic operation.
+## Building as part of the flight software
 
-### 3.1 Third-Party Dependencies
-- **FreeRTOS** — multitasking, scheduling, inter-task synchronization.
-- **FATFS** — file system management for non-volatile memory.
-- **HALs (Hardware Abstraction Layers)** — vendor-provided interfaces for hardware peripherals.
+The normal workflow is driven from the flight-software repository root:
 
-### 3.2 Internal Layers
-| Layer      | Description                                                                                |
-|------------|--------------------------------------------------------------------------------------------|
-| **Core**   | Low-level kernel infrastructure: task and memory management, system objects, system calls. |
-| **DRV**    | Hardware drivers and peripheral abstractions.                                              |
-| **FDIR**   | Failure detection, isolation and recovery logic.                                           |
-| **System** | Diagnostics, monitoring, logging, and housekeeping services.                               |
-
-### 3.3 Key Features
-- Multitasking with task, mutex, and signal management.
-- Static resource allocation to ensure deterministic execution.
-- File system access through FATFS.
-- Fault management and system context capture.
-- Console interface and logging system.
-- Real-time clock and timer management (CUC-compliant).
-- On-the-fly flight software image switching.
-- Watchdog integration.
-- Planned extensions: event system, housekeeping service, and enhanced task isolation.
-
-## 4. Development Environment
-
-The kernel uses the same development and build infrastructure as the main TAPAS project.
-
-### 4.1 Requirements
-A Linux-based environment is required (Ubuntu 22.04 recommended). Docker usage is advised for consistency.
-
-**Dependencies:**
-- build-essential
-- cppcheck (v2.7)
-- kconfig-frontends
-- doxygen
-- gcc-arm-none-eabi (v10.3.1)
-- gdb-multiarch
-- git
-- graphviz
-- openocd
-
-### 4.2 Docker Usage
 ```bash
-git clone https://github.com/TOLOSAT/flight-software.git
-cd flight-software/kernel
-./run-docker.sh
+make default_defconfig
+make kernel
 ```
 
-This command builds and runs the TAPAS kernel Docker container. You can attach Visual Studio Code or connect via terminal.
+The top-level configuration selects the matching kernel defconfig before the kernel build. Kernel objects, generated configuration, libraries, and build state are written below the top-level `build/` directory.
 
-## 5. Build System and Usage
+## Standalone build
 
-The kernel build is handled through the project-wide Makefile system.
+The kernel can also be configured and built independently:
 
-| Command                          | Description                                                 |
-|----------------------------------|-------------------------------------------------------------|
-| `make`, `make all`, `make build` | Build the kernel.                                           |
-| `make menuconfig`                | Configure kernel options (target board, debug level, etc.). |
-| `make pre-build`                 | Generate precompiled sources based on configuration files.  |
-| `make clean`                     | Remove all build artifacts.                                 |
-| `./update-doc.sh`                | Generate or update Doxygen documentation.                   |
+```bash
+make default_defconfig
+make -j"$(nproc)"
+```
 
-## 6. Coding Standards and Quality Assurance
+Useful standalone targets are:
 
-The kernel is written entirely in **C** and developed according to best practices for safety-critical embedded systems:
+| Command | Description |
+|---------|-------------|
+| `make`, `make all` | Generate configuration and build HAL, FATFS, FreeRTOS, and the kernel archive. |
+| `make clean` | Remove generated configuration and all kernel build domains. |
+| `make <name>_defconfig` | Load a kernel defconfig. |
+| `make menuconfig` | Edit the kernel configuration. |
+| `make hal`, `make fatfs`, `make freertos`, `make kernel` | Build one domain. |
+| `make <domain>-clean` | Clean one domain. |
+| `make print-<variable>` | Print an effective Make variable. |
+| `make verif` | Run static analysis. |
+| `make format` | Format kernel-owned C and header files. |
 
-- Compliance with **MISRA-C:2012** rules.
-- Partial compliance with **ECSS-E-ST-40C** and **ECSS-Q-ST-80C** standards.
-- Static analysis using **cppcheck**.
-- Automatic documentation with **Doxygen**.
-- Code formatting enforced by **clang-format**.
-- Version control and peer review via **Git**.
+The supported toolchain is provided by the parent project's Docker image. See the main flight-software README for setup instructions.
 
-## 7. Documentation
+## Configuration and generated files
 
-- Technical note: *TOLOSAT_TN_13_25 – TAPAS Flight Software Architecture and Kernel Description*
-- Reference Standards:
-  - **ECSS Standards**:
-    - ECSS-E-ST-40C — Software Engineering
-    - ECSS-Q-ST-80C — Software Product Assurance
-    - ECSS-E-ST-70-41C — Packet Utilization Standard (PUS)
-  - **SAVOIR Standards**
+Kconfig descriptions and defconfigs are stored in `gen/` and `configs/`. Kernel and BSP generators write their outputs to `build/kernel/conf/`; these files must not be edited manually. Effective build settings are recorded in `build/state/kernel.flags`, `hal.flags`, `fatfs.flags`, and `freertos.flags`.
 
-## 8. Acronyms
+## Quality and contribution
 
-| Acronym | Definition                                         |
-|---------|----------------------------------------------------|
-| API     | Application Programming Interface                  |
-| BSP     | Board Support Package                              |
-| CCSDS   | Consultative Committee for Space Data Systems      |
-| CMSIS   | Cortex Microcontroller Software Interface Standard |
-| CUC     | CCSDS Unsegmented Time Code                        |
-| ECSS    | European Cooperation for Space Standardization     |
-| FDIR    | Failure Detection, Isolation and Recovery          |
-| HAL     | Hardware Abstraction Layer                         |
-| MC      | Monitoring & Control                               |
-| NVM     | Non-Volatile Memory                                |
-| OS      | Operating System                                   |
-| PUS     | Packet Utilization Standard                        |
-| PS      | Packet Store                                       |
-| RTOS    | Real-Time Operating System                         |
-| TAPAS   | TOLOSAT Autonomous Payload and Avionic Software    |
-| TC      | TeleCommand                                        |
-| TM      | TeleMetry                                          |
+Kernel code follows the repository MISRA-oriented coding rules, is compiled with warnings as errors, and is checked with Cppcheck and clang-format. See [`CODING_GUIDELINES.md`](CODING_GUIDELINES.md) before contributing.
 
-## 9. Authors and Maintainers
-
-- **Merlin Kooshmanian** — Flight Software Architect
-- **Theo Bessel** — Flight Software Maintainer
-
-For technical questions, please contact the TOLOSAT Flight Software team.
+Copyright and redistribution terms are described in [`COPYRIGHT.md`](COPYRIGHT.md).
