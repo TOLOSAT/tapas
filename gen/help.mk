@@ -1,5 +1,7 @@
 # Makefile defining the help message
 
+.PHONY : help
+
 help:
 	@echo "Usage: make <target>"
 	@echo ""
@@ -30,5 +32,8 @@ help:
 	@echo ""
 	@echo "Formatting Commands:"
 	@echo "  make format                   Format the source code according to project standards."
+	@echo ""
+	@echo "Debugging Commands:"
+	@echo "  make print-<variable>         Print a Make variable for debugging."
 	@echo ""
 	@echo "For more details, refer to the project documentation."

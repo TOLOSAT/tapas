@@ -49,7 +49,7 @@ endif
 ################ BUILD RECIPES ###############
 ##############################################
 
-.PHONY : pre-build pre-build-start autoconf conf-files pre-build-end
+.PHONY : pre-build pre-build-start autoconf conf-files pre-build-end pre-build-clean
 pre-build : pre-build-end
 pre-build-end : autoconf conf-files
 autoconf conf-files : | pre-build-start
