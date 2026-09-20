@@ -37,7 +37,7 @@ FATFS_INCFLAGS	=	$(addprefix -I,$(FATFS_INCDIRS))
 .PHONY : fatfs fatfs-start fatfs-end fatfs-clean
 fatfs : fatfs-end
 fatfs-end : $(FATFS_LIB)
-$(FATFS_OBJS) : | pre-build fatfs-start
+$(FATFS_OBJS) : | $(KERNEL_PRE_BUILD_PREREQUISITE) fatfs-start
 
 define FATFS_START_VERBOSE
 	@echo "$(BOLD)=============================$(RESET)"
@@ -65,13 +65,13 @@ fatfs-start :
 
 # Building recipes
 $(FATFS_OBJDIR)/%.o : $(FATFS_SRCDIR)/%.c
-	@echo "  CC  $(@F)"
+	@echo "  CC  [kernel/fatfs] $(@F)"
 	@mkdir -p $(@D)
 	@$(CC) $(FATFS_CFLAGS) $(FATFS_INCFLAGS) $< -o $@
 
 # Library generation
 $(FATFS_LIB) : $(FATFS_OBJS)
-	@echo "  AR  $(@F)"
+	@echo "  AR  [kernel/fatfs] $(@F)"
 	@mkdir -p $(@D)
 	@$(AR) rcs $@ $^
 

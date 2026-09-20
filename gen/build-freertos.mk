@@ -40,7 +40,7 @@ FREERTOS_INCFLAGS	=	$(addprefix -I,$(FREERTOS_INCDIRS))
 .PHONY : freertos freertos-start freertos-end freertos-clean
 freertos : freertos-end
 freertos-end : $(FREERTOS_LIB)
-$(FREERTOS_OBJS) : | pre-build freertos-start
+$(FREERTOS_OBJS) : | $(KERNEL_PRE_BUILD_PREREQUISITE) freertos-start
 
 define FREERTOS_START_VERBOSE
 	@echo "$(BOLD)=============================$(RESET)"
@@ -68,13 +68,13 @@ freertos-start :
 
 # Building recipes
 $(FREERTOS_OBJDIR)/%.o : $(FREERTOS_SRCDIR)/%.c
-	@echo "  CC  $(@F)"
+	@echo "  CC  [kernel/freertos] $(@F)"
 	@mkdir -p $(@D)
 	@$(CC) $(FREERTOS_CFLAGS) $(FREERTOS_INCFLAGS) $< -o $@
 
 # Library generation
 $(FREERTOS_LIB) : $(FREERTOS_OBJS)
-	@echo "  AR  $(@F)"
+	@echo "  AR  [kernel/freertos] $(@F)"
 	@mkdir -p $(@D)
 	@$(AR) rcs $@ $^
 

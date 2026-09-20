@@ -53,7 +53,7 @@ KERNEL_INCFLAGS = $(addprefix -I,$(KERNEL_INCDIRS))
 .PHONY : kernel kernel-start kernel-end kernel-clean
 kernel : kernel-end
 kernel-end : $(KERNEL_LIB)
-$(KERNEL_OBJS) : | pre-build kernel-start
+$(KERNEL_OBJS) : | $(KERNEL_PRE_BUILD_PREREQUISITE) kernel-start
 
 define KERNEL_START_VERBOSE
 	@echo "$(BOLD)=============================$(RESET)"
@@ -83,13 +83,13 @@ kernel-start :
 
 # Building recipes
 $(KERNEL_OBJDIR)/bsp/%.o : $(KERNEL_DIR)/bsp/%.c
-	@echo "  CC  [bsp] $(@F)"
+	@echo "  CC  [kernel/bsp] $(@F)"
 	@mkdir -p $(@D)
 	@$(CC) $(KERNEL_CFLAGS) $(KERNEL_INCFLAGS) $< -o $@
 
 define KERNEL_COMPONENT_RULE
 $(KERNEL_OBJDIR)/components/$(1)/src/%.o : $(KERNEL_COMPONENTS_DIR)/$(1)/src/%.c
-	@echo "  CC  [$(1)] $$(@F)"
+	@echo "  CC  [kernel/$(1)] $$(@F)"
 	@mkdir -p $$(@D)
 	@$(CC) $(KERNEL_CFLAGS) $(KERNEL_INCFLAGS) $(if $(wildcard $(KERNEL_COMPONENTS_DIR)/$(1)/inc),-iquote $(KERNEL_COMPONENTS_DIR)/$(1)/inc) $$< -o $$@
 endef
@@ -97,18 +97,18 @@ endef
 $(foreach component,$(KERNEL_COMPONENTS),$(eval $(call KERNEL_COMPONENT_RULE,$(component))))
 
 $(PRE_BUILD_DIR)/%.o  : $(PRE_BUILD_DIR)/%.c
-	@echo "  CC  [generated] $(@F)"
+	@echo "  CC  [kernel/generated] $(@F)"
 	@mkdir -p $(@D)
 	@$(CC) $(KERNEL_CFLAGS) $(KERNEL_INCFLAGS) $< -o $@
 
 $(KERNEL_OBJDIR)/components/monitoring/src/info.o : $(KERNEL_COMPONENTS_DIR)/monitoring/src/info.c
-	@echo "  CC  [monitoring] $(@F)"
+	@echo "  CC  [kernel/monitoring] $(@F)"
 	@mkdir -p $(@D)
 	@$(CC) $(KERNEL_CFLAGS) $(SYSTEM_DEFINES) $(KERNEL_INCFLAGS) $(if $(wildcard $(KERNEL_COMPONENTS_DIR)/monitoring/inc),-iquote $(KERNEL_COMPONENTS_DIR)/monitoring/inc) $< -o $@
 
 # Library generation
 $(KERNEL_LIB) : $(KERNEL_OBJS)
-	@echo "  AR  $(@F)"
+	@echo "  AR  [kernel] $(@F)"
 	@mkdir -p $(@D)
 	@$(AR) rcs $@ $^
 

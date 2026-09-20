@@ -38,7 +38,7 @@ HAL_INCFLAGS	=	$(addprefix -I,$(HAL_INCDIRS))
 .PHONY : hal hal-start hal-end hal-clean
 hal : hal-end
 hal-end : $(HAL_LIB)
-$(HAL_OBJS) : | pre-build hal-start
+$(HAL_OBJS) : | $(KERNEL_PRE_BUILD_PREREQUISITE) hal-start
 
 define HAL_START_VERBOSE
 	@echo "$(BOLD)=============================$(RESET)"
@@ -66,13 +66,13 @@ hal-start :
 
 # Building recipes
 $(HAL_OBJDIR)/%.o : $(HAL_SRCDIR)/%.c
-	@echo "  CC  $(@F)"
+	@echo "  CC  [kernel/hal] $(@F)"
 	@mkdir -p $(@D)
 	@$(CC) $(HAL_CFLAGS) $(HAL_INCFLAGS) $< -o $@
 
 # Library generation
 $(HAL_LIB) : $(HAL_OBJS)
-	@echo "  AR  $(@F)"
+	@echo "  AR  [kernel/hal] $(@F)"
 	@mkdir -p $(@D)
 	@$(AR) rcs $@ $^
 

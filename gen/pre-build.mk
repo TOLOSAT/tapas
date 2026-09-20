@@ -25,6 +25,14 @@ BSP_CONF_STAMP = $(PRE_BUILD_DIR)/bsp-conf.stamp
 AUTOCONF_GENERATOR = $(TOOLS_DIR)/config-parser.py
 BSP_CONF_GENERATOR = $(TOOLS_DIR)/bsp-parser.py
 
+# The workspace may run this phase before invoking the kernel build. Standalone
+# kernel builds still keep pre-build as an order-only prerequisite.
+ifeq ($(KERNEL_PRE_BUILD_DONE),1)
+KERNEL_PRE_BUILD_PREREQUISITE =
+else
+KERNEL_PRE_BUILD_PREREQUISITE = pre-build
+endif
+
 # A stamp alone cannot detect a manually removed generated file. Force the
 # generator once when at least one declared output is missing.
 ifeq ($(wildcard $(AUTOCONF_SRC)),)
@@ -69,7 +77,7 @@ autoconf : $(AUTOCONF_SRC)
 $(AUTOCONF_SRC) : | $(AUTOCONF_STAMP)
 
 $(AUTOCONF_STAMP) : $(CONFIG_FILE) $(AUTOCONF_GENERATOR)
-	@echo "  PY  $(notdir $(AUTOCONF_SRC))"
+	@echo "  PY  [kernel/generated] $(notdir $(AUTOCONF_SRC))"
 	@mkdir -p $(@D)
 	@${PYTHON} $(AUTOCONF_GENERATOR) -i $(CONFIG_FILE) -o $(@D)
 	@stamp_tmp="$@.tmp.$$$$"; \
@@ -82,7 +90,9 @@ $(BSP_CONF_FILES) : | $(BSP_CONF_STAMP)
 
 $(BSP_CONF_STAMP) : $(BSP_JSON) $(BSP_CONF_GENERATOR)
 	@mkdir -p $(@D)
-	@echo "  PY  BSP configuration"
+	@echo "  PY  [kernel/generated] peripherals_conf.c, peripherals_conf.h"
+	@echo "  PY  [kernel/generated] system_peripherals_conf.c, system_peripherals_conf.h"
+	@echo "  PY  [kernel/generated] memories_conf.c, memories_conf.h"
 	@${PYTHON} $(BSP_CONF_GENERATOR) -i $(BSP_JSON) -o $(PRE_BUILD_DIR)
 	@stamp_tmp="$@.tmp.$$$$"; \
 		printf '%s\n' $(notdir $(BSP_CONF_FILES)) > "$$stamp_tmp"; \
