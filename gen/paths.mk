@@ -26,6 +26,7 @@ TOOLS_DIR        		= $(KERNEL_DIR)/tools
 GEN_DIR          		= $(KERNEL_DIR)/gen
 THIRD_PARTIES_CONFDIR	= $(GEN_DIR)/conf
 LIBS_DIR				= $(BUILD_DIR)/libs
+BUILD_STATE_DIR			= $(BUILD_DIR)/state
 
 # CMSIS Directories
 CMSIS_DIR				= $(THIRD_PARTIES_DIR)/CMSIS
