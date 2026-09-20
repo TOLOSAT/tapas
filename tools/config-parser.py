@@ -2,7 +2,11 @@
 
 import argparse
 import os
+import re
 import tempfile
+
+
+CONFIG_DECLARATION = re.compile(r"^\s*(?:menu)?config\s+([A-Za-z0-9_]+)\s*$")
 
 
 def write_generated_file(filename, content):
@@ -28,7 +32,24 @@ def write_generated_file(filename, content):
         if os.path.exists(temporary_filename):
             os.unlink(temporary_filename)
 
-def parse_config(config_file, output_dir):
+
+def parse_kconfig_symbols(kconfig_files):
+    """Return the symbols owned by the supplied Kconfig descriptions."""
+    symbols = set()
+    for filename in kconfig_files:
+        with open(filename, "r", encoding="utf-8") as kconfig_file:
+            for line in kconfig_file:
+                match = CONFIG_DECLARATION.match(line)
+                if match:
+                    symbols.add(match.group(1))
+    return symbols
+
+
+def is_owned_option(option, owned_symbols):
+    return option.startswith("CONFIG_") and option[7:] in owned_symbols
+
+
+def parse_config(config_file, output_dir, owned_symbols):
     # Define the output header file
     output_file = os.path.join(output_dir, 'autoconf.h')
 
@@ -58,7 +79,8 @@ def parse_config(config_file, output_dir):
                 if "is not set" in line:
                     # Handle disabled config options
                     option = line.split()[1]
-                    content.append(f"// {option} is not set\n")
+                    if is_owned_option(option, owned_symbols):
+                        content.append(f"// {option} is not set\n")
                 continue
 
             # Handle config options that are set
@@ -66,6 +88,9 @@ def parse_config(config_file, output_dir):
                 option, value = line.split("=", 1)
                 option = option.strip()
                 value = value.strip()
+
+                if not is_owned_option(option, owned_symbols):
+                    continue
 
                 if value == "y":
                     content.append(f"#define {option} y\n")
@@ -77,11 +102,19 @@ def parse_config(config_file, output_dir):
     content.append("\n#endif /* AUTOCONF_H */\n")
     write_generated_file(output_file, "".join(content))
 
+
 def main():
     # Set up argument parsing
     parser = argparse.ArgumentParser(description="Generate autoconf.h from a .config file.")
     parser.add_argument('-i', '--input', required=True, help="Path to the input .config file")
     parser.add_argument('-o', '--output', required=True, help="Path to the output directory")
+    parser.add_argument(
+        '-k',
+        '--kconfig',
+        action='append',
+        required=True,
+        help="Kconfig file declaring symbols to include (repeatable)",
+    )
 
     args = parser.parse_args()
 
@@ -90,7 +123,8 @@ def main():
         os.makedirs(args.output)
 
     # Call the parsing function
-    parse_config(args.input, args.output)
+    parse_config(args.input, args.output, parse_kconfig_symbols(args.kconfig))
+
 
 if __name__ == "__main__":
     main()

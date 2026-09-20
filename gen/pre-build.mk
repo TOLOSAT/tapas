@@ -24,6 +24,10 @@ AUTOCONF_STAMP = $(PRE_BUILD_DIR)/autoconf.stamp
 BSP_CONF_STAMP = $(PRE_BUILD_DIR)/bsp-conf.stamp
 AUTOCONF_GENERATOR = $(TOOLS_DIR)/config-parser.py
 BSP_CONF_GENERATOR = $(TOOLS_DIR)/bsp-parser.py
+AUTOCONF_KCONFIGS = $(GEN_DIR)/Kconfig \
+					$(GEN_DIR)/Kconfig.platform \
+					$(GEN_DIR)/Kconfig.options \
+					$(BSP_DIR)/Kconfig
 
 # The workspace may run this phase before invoking the kernel build. Standalone
 # kernel builds still keep pre-build as an order-only prerequisite.
@@ -76,10 +80,11 @@ autoconf : $(AUTOCONF_SRC)
 
 $(AUTOCONF_SRC) : | $(AUTOCONF_STAMP)
 
-$(AUTOCONF_STAMP) : $(CONFIG_FILE) $(AUTOCONF_GENERATOR)
+$(AUTOCONF_STAMP) : $(CONFIG_FILE) $(AUTOCONF_GENERATOR) $(AUTOCONF_KCONFIGS)
 	@echo "  PY  [kernel/generated] $(notdir $(AUTOCONF_SRC))"
 	@mkdir -p $(@D)
-	@${PYTHON} $(AUTOCONF_GENERATOR) -i $(CONFIG_FILE) -o $(@D)
+	@${PYTHON} $(AUTOCONF_GENERATOR) -i $(CONFIG_FILE) -o $(@D) \
+		$(foreach kconfig,$(AUTOCONF_KCONFIGS),--kconfig $(kconfig))
 	@stamp_tmp="$@.tmp.$$$$"; \
 		printf '%s\n' $(notdir $(AUTOCONF_SRC)) > "$$stamp_tmp"; \
 		mv -f "$$stamp_tmp" "$@"

@@ -29,7 +29,7 @@ make default_defconfig
 make kernel
 ```
 
-The top-level configuration selects the matching kernel defconfig before the kernel build. Kernel objects, generated configuration, libraries, and build state are written below the top-level `build/` directory.
+The top-level `make menuconfig` sources `gen/Kconfig.options` into the integrated firmware configuration. The parent build passes that configuration to the kernel; `autoconf.h` contains only symbols owned by the kernel and is not rewritten when those symbols are unchanged. Kernel objects, generated configuration, libraries, and build state are written below the top-level `build/` directory.
 
 ## Standalone build
 
@@ -58,7 +58,7 @@ The supported toolchain is provided by the parent project's Docker image. See th
 
 ## Configuration and generated files
 
-Kconfig descriptions and defconfigs are stored in `gen/` and `configs/`. Kernel and BSP generators write their outputs to `build/kernel/conf/`; these files must not be edited manually. Effective build settings are recorded in `build/state/kernel.flags`, `hal.flags`, `fatfs.flags`, and `freertos.flags`.
+`gen/Kconfig` is the standalone entry point, `gen/Kconfig.platform` describes standalone target selection, and `gen/Kconfig.options` contains the kernel options shared with the parent menu. Defconfigs remain under `configs/`. Kernel and BSP generators write their outputs to `build/kernel/conf/`; these files must not be edited manually. Effective build settings are recorded in `build/state/kernel.flags`, `hal.flags`, `fatfs.flags`, and `freertos.flags`.
 
 ## Quality and contribution
 
