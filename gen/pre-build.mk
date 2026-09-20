@@ -69,7 +69,7 @@ endef
 
 # Pre-build header
 pre-build-start :
-	$(if $(PARALLEL_BUILD),$(QUIET_RECIPE),$(KERNEL_PRE_BUILD_START_VERBOSE))
+	$(if $(or $(PARALLEL_BUILD),$(filter verif,$(MAKECMDGOALS))),$(QUIET_RECIPE),$(KERNEL_PRE_BUILD_START_VERBOSE))
 
 # Autoconf recipes
 autoconf : $(AUTOCONF_SRC)
@@ -100,7 +100,7 @@ $(BSP_CONF_STAMP) : $(BSP_JSON) $(BSP_CONF_GENERATOR)
 
 # Pre-build footer
 pre-build-end :
-	$(if $(PARALLEL_BUILD),$(QUIET_RECIPE),$(KERNEL_PRE_BUILD_END_VERBOSE))
+	$(if $(or $(PARALLEL_BUILD),$(filter verif,$(MAKECMDGOALS))),$(QUIET_RECIPE),$(KERNEL_PRE_BUILD_END_VERBOSE))
 
 # Pre-build clean recipes
 pre-build-clean :
