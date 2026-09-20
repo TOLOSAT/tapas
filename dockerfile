@@ -5,7 +5,7 @@ FROM ubuntu:22.04
 
 # Labels
 LABEL version="1.3"
-LABEL description="Docker for TOLOSAT Autonomous Payload & Avionic Software (TAPAS)"
+LABEL description="Docker for TAPAS Adaptative Platform for Avionic Software"
 
 # Fancier prompt
 ENV color_prompt=yes
