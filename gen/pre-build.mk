@@ -15,7 +15,7 @@ PRE_BUILD_DIR	= $(BUILD_DIR)/kernel/conf
 
 # Files
 BSP_JSON 		= $(BSP_DIR)/bsp.json
-AUTOCONF_SRC 	= $(PRE_BUILD_DIR)/autoconf.h
+AUTOCONF_SRC 	= $(PRE_BUILD_DIR)/kernel_autoconf.h
 BSP_CONF_SRCS	= $(PRE_BUILD_DIR)/peripherals_conf.c \
 				  $(PRE_BUILD_DIR)/system_peripherals_conf.c \
 				  $(PRE_BUILD_DIR)/memories_conf.c
@@ -87,6 +87,7 @@ $(AUTOCONF_STAMP) : $(CONFIG_FILE) $(AUTOCONF_GENERATOR) $(AUTOCONF_KCONFIGS)
 	@echo "  PY  [kernel/generated] $(notdir $(AUTOCONF_SRC))"
 	@mkdir -p $(@D)
 	@${PYTHON} $(AUTOCONF_GENERATOR) -i $(CONFIG_FILE) -o $(@D) \
+		--header-name $(notdir $(AUTOCONF_SRC)) \
 		$(foreach kconfig,$(AUTOCONF_KCONFIGS),--kconfig $(kconfig))
 	@stamp_tmp="$@.tmp.$$$$"; \
 		printf '%s\n' $(notdir $(AUTOCONF_SRC)) > "$$stamp_tmp"; \

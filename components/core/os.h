@@ -19,7 +19,7 @@
 #include <semphr.h>
 #include <timers.h>
 
-#include "autoconf.h"
+#include "kernel_autoconf.h"
 #include "kernel_types.h"
 
 /***************************** Macros Definitions ****************************/

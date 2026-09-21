@@ -43,7 +43,7 @@
 #define FREERTOS_CONFIG_H
 
 #include <stdint.h>
-#include "autoconf.h"
+#include "kernel_autoconf.h"
 
 #if defined(STM32H7)
 #include "stm32h7xx.h"

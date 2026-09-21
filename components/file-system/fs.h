@@ -26,7 +26,7 @@
 #include <ffconf.h>
 #include <ff_gen_drv.h>
 
-#include "autoconf.h"
+#include "kernel_autoconf.h"
 #include "kernel_types.h"
 
 /***************************** Macros Definitions ****************************/

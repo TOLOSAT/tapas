@@ -10,7 +10,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "autoconf.h"
+#include "kernel_autoconf.h"
 #include "system_stm32f4xx.h"
 
 /***************************** Macros Definitions ****************************/

@@ -19,7 +19,7 @@
 
 /******************************* Include Files *******************************/
 
-#include "autoconf.h"
+#include "kernel_autoconf.h"
 #include "kernel_types.h"
 #include "core/irq.h"
 #include "bsp.h"

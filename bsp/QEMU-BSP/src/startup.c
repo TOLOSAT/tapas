@@ -10,7 +10,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "autoconf.h"
+#include "kernel_autoconf.h"
 #include "system_CMSDK_CM7.h"
 
 /***************************** Macros Definitions ****************************/

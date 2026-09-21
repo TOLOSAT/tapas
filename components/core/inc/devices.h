@@ -22,7 +22,7 @@
 
 /******************************* Include Files *******************************/
 
-#include "autoconf.h"
+#include "kernel_autoconf.h"
 #include "kernel_types.h"
 #include "buffers.h"
 #include "file-system/fs.h"

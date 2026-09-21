@@ -33,7 +33,7 @@
  */
 
 #include "stm32f4xx.h"
-#include "autoconf.h"
+#include "kernel_autoconf.h"
 #include "system_stm32f4xx.h"
 
 #if !defined(HSE_VALUE)

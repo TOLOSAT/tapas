@@ -21,7 +21,7 @@
 #ifndef STM32H7xx_HAL_CONF_H
 #define STM32H7xx_HAL_CONF_H
 
-#include "autoconf.h"
+#include "kernel_autoconf.h"
 
 #ifdef __cplusplus
 extern "C"

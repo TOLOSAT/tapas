@@ -33,7 +33,7 @@ make default_defconfig
 make kernel
 ```
 
-The top-level `make menuconfig` sources `gen/Kconfig.options` into the integrated firmware configuration. The parent build passes that configuration to the kernel; `autoconf.h` contains only symbols owned by the kernel and is not rewritten when those symbols are unchanged. Kernel objects, generated configuration, libraries, and build state are written below the top-level `build/` directory.
+The top-level `make menuconfig` sources `gen/Kconfig.options` into the integrated project configuration. The parent build passes that configuration to the kernel; `kernel_autoconf.h` contains only symbols owned by the kernel and is not rewritten when those symbols are unchanged. Kernel objects, generated configuration, libraries, and build state are written below the top-level `build/` directory.
 
 ## Standalone build
 
