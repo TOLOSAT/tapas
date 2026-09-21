@@ -19,3 +19,6 @@
 [submodule "third-parties/OS/FreeRTOS"]
 	path = third-parties/OS/FreeRTOS
 	url = ../../FreeRTOS/FreeRTOS-Kernel.git
+[submodule "tools"]
+	path = tools
+	url = ../tapas-tools.git

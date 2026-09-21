@@ -20,6 +20,10 @@ Within `components/<name>/`, headers at the component root form the API shared w
 
 Board support packages are stored under `bsp/<board>-BSP/`. Third-party code is kept under `third-parties/` and is not part of the TAPAS component layout.
 
+Shared configuration, formatting, and generation utilities are provided by the
+`tools/` Git submodule. Initialise submodules recursively when building the
+kernel from a standalone checkout.
+
 ## Building as part of the flight software
 
 The normal workflow is driven from the flight-software repository root:
