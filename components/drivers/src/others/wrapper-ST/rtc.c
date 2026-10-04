@@ -17,7 +17,7 @@
 #define RTC_DEFAULT_YEAR   0u    /**< Default year alias 2000 */
 #define RTC_DEFAULT_MONTH  2u    /**< Default month alias february */
 #define RTC_DEFAULT_DAY    17u   /**< Default day alias 17th */
-#define RTC_DEFAULT_HOUR   11u   /**< Default hour alias 13h */
+#define RTC_DEFAULT_HOUR   11u   /**< Default hour alias 11h */
 #define RTC_DEFAULT_MINUTE 30u   /**< Default minute alias 30m */
 #define RTC_DEFAULT_SECOND 0u    /**< Default second alias 0 */
 #define MILLISECOND_SCALER 1000u /**< Scaler to obtain millisecond precision time */
